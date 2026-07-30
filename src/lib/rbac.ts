@@ -22,3 +22,20 @@ const MIN_RANK_FOR_ACTION: Record<Action, number> = {
 export function can(role: Role, action: Action): boolean {
   return ROLE_RANK[role] >= MIN_RANK_FOR_ACTION[action];
 }
+
+/**
+ * Server Action guard: throws if there's no session or the session's role
+ * can't perform `action`. Call this as the first line of every mutating
+ * Server Action so RBAC can't be bypassed by calling the action directly.
+ */
+export async function requireRole(action: Action) {
+  const { auth } = await import("@/auth");
+  const session = await auth();
+  const role = session?.user?.role as Role | undefined;
+
+  if (!role || !can(role, action)) {
+    throw new Error("Not authorized to perform this action.");
+  }
+
+  return session!;
+}

@@ -1,4 +1,5 @@
 import { auth } from "@/auth";
+import type { Role } from "@prisma/client";
 import { Sidebar } from "@/components/admin/sidebar";
 import { SignOutButton } from "@/components/admin/sign-out-button";
 
@@ -11,7 +12,7 @@ export default async function DashboardLayout({
 
   return (
     <div className="flex min-h-screen bg-neutral-50">
-      <Sidebar />
+      <Sidebar role={(session?.user?.role as Role) ?? "READ_ONLY"} />
       <div className="flex-1">
         <header className="flex items-center justify-between border-b border-neutral-200 bg-white px-6 py-3">
           <div className="text-sm text-neutral-500">

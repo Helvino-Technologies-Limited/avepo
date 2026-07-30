@@ -1,6 +1,12 @@
+import { prisma } from "@/lib/db";
 import { PageHeader } from "@/components/public/page-header";
 
-export default function AboutPage() {
+export default async function AboutPage() {
+  const partners = await prisma.partner.findMany({
+    where: { isActive: true },
+    orderBy: { order: "asc" },
+  });
+
   return (
     <div>
       <PageHeader
@@ -26,6 +32,24 @@ export default function AboutPage() {
             <p className="mt-2 text-sm text-neutral-600">Editable from the Admin Portal.</p>
           </div>
         </div>
+
+        {partners.length > 0 && (
+          <div className="mt-12 border-t border-neutral-200 pt-10">
+            <h2 className="text-lg font-semibold text-neutral-900">Our Partners & Suppliers</h2>
+            <div className="mt-6 grid grid-cols-3 items-center gap-6 sm:grid-cols-5 md:grid-cols-6">
+              {partners.map((partner) => (
+                <div key={partner.id} className="flex items-center justify-center" title={partner.name}>
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={partner.logo}
+                    alt={partner.name}
+                    className="h-12 w-full object-contain grayscale transition hover:grayscale-0"
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

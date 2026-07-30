@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { getSiteSetting } from "@/lib/settings";
 
 const NAV_ITEMS = [
   { href: "/", label: "Home" },
@@ -14,12 +15,19 @@ const NAV_ITEMS = [
   { href: "/contact", label: "Contact" },
 ];
 
-export function Header() {
+export async function Header() {
+  const logo = await getSiteSetting("branding.logo");
+
   return (
     <header className="border-b border-neutral-200 bg-white">
       <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-2 px-4 py-3">
-        <Link href="/" className="text-lg font-bold text-green-800">
-          Avepo
+        <Link href="/" className="flex items-center gap-2 text-lg font-bold text-green-800">
+          {logo.url ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img src={logo.url} alt="Avepo Enterprises" className="h-9 w-auto object-contain" />
+          ) : (
+            "Avepo"
+          )}
         </Link>
         <nav className="flex flex-wrap gap-x-4 gap-y-1 text-sm text-neutral-700">
           {NAV_ITEMS.map((item) => (

@@ -1,18 +1,42 @@
 import { prisma } from "@/lib/db";
 
 async function getCounts() {
-  const [products, news, events, messages, subscribers, galleryItems, branches] =
-    await Promise.all([
-      prisma.product.count(),
-      prisma.newsPost.count(),
-      prisma.event.count(),
-      prisma.contactMessage.count({ where: { isRead: false } }),
-      prisma.subscriber.count({ where: { isActive: true } }),
-      prisma.galleryMedia.count(),
-      prisma.branch.count(),
-    ]);
+  const [
+    products,
+    services,
+    news,
+    events,
+    messages,
+    subscribers,
+    galleryItems,
+    branches,
+    partners,
+    jobs,
+  ] = await Promise.all([
+    prisma.product.count(),
+    prisma.service.count(),
+    prisma.newsPost.count(),
+    prisma.event.count(),
+    prisma.contactMessage.count({ where: { isRead: false } }),
+    prisma.subscriber.count({ where: { isActive: true } }),
+    prisma.galleryMedia.count(),
+    prisma.branch.count(),
+    prisma.partner.count(),
+    prisma.jobPosting.count({ where: { isActive: true } }),
+  ]);
 
-  return { products, news, events, messages, subscribers, galleryItems, branches };
+  return {
+    products,
+    services,
+    news,
+    events,
+    messages,
+    subscribers,
+    galleryItems,
+    branches,
+    partners,
+    jobs,
+  };
 }
 
 export default async function DashboardPage() {
@@ -20,12 +44,15 @@ export default async function DashboardPage() {
 
   const stats: { label: string; value: number }[] = [
     { label: "Products", value: counts.products },
+    { label: "Services", value: counts.services },
     { label: "News Posts", value: counts.news },
     { label: "Events", value: counts.events },
     { label: "Unread Messages", value: counts.messages },
     { label: "Active Subscribers", value: counts.subscribers },
     { label: "Gallery Items", value: counts.galleryItems },
     { label: "Branches", value: counts.branches },
+    { label: "Partners", value: counts.partners },
+    { label: "Open Job Postings", value: counts.jobs },
   ];
 
   return (

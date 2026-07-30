@@ -1,5 +1,6 @@
 import { Header } from "@/components/public/header";
 import { Footer } from "@/components/public/footer";
+import { FloatingWhatsApp } from "@/components/public/floating-whatsapp";
 
 // Content here comes from the admin-editable database (branches, products,
 // news, events, settings), so every public route must render fresh on each
@@ -12,6 +13,7 @@ export default function PublicLayout({ children }: { children: React.ReactNode }
       <Header />
       <main className="flex-1">{children}</main>
       <Footer />
+      <FloatingWhatsApp />
     </div>
   );
 }

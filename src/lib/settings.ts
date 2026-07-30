@@ -17,6 +17,15 @@ export type HomepageHero = {
   ctaLabel: string;
   ctaHref: string;
 };
+export type BrandingLogo = { url: string };
+export type ThemeColors = { primary: string; secondary: string; accent: string };
+export type FloatingWidgets = {
+  whatsapp: boolean;
+  call: boolean;
+  messenger: boolean;
+  backToTop: boolean;
+  liveChat: boolean;
+};
 
 const DEFAULTS = {
   "contact.general": { phone: "0722976171", email: "avepoent@gmail.com" } as ContactSettings,
@@ -36,12 +45,31 @@ const DEFAULTS = {
     ctaLabel: "Explore Products",
     ctaHref: "/products",
   } as HomepageHero,
+  "branding.logo": { url: "" } as BrandingLogo,
+  "theme.colors": { primary: "#16a34a", secondary: "#166534", accent: "#f59e0b" } as ThemeColors,
+  "widgets.floating": {
+    whatsapp: true,
+    call: true,
+    messenger: false,
+    backToTop: true,
+    liveChat: false,
+  } as FloatingWidgets,
 };
 
-export async function getSiteSetting<K extends keyof typeof DEFAULTS>(
+export type SettingKey = keyof typeof DEFAULTS;
+
+export async function getSiteSetting<K extends SettingKey>(
   key: K
 ): Promise<(typeof DEFAULTS)[K]> {
   const row = await prisma.siteSetting.findUnique({ where: { key } });
   if (!row) return DEFAULTS[key];
   return { ...DEFAULTS[key], ...(row.value as object) } as (typeof DEFAULTS)[K];
+}
+
+export async function getAllSiteSettings() {
+  const keys = Object.keys(DEFAULTS) as SettingKey[];
+  const values = await Promise.all(keys.map((key) => getSiteSetting(key)));
+  return Object.fromEntries(keys.map((key, i) => [key, values[i]])) as {
+    [K in SettingKey]: (typeof DEFAULTS)[K];
+  };
 }

@@ -370,3 +370,15 @@ model SiteSetting {
   value     Json
   updatedAt DateTime @updatedAt
 }
+
+// ---------- Partners ----------
+
+model Partner {
+  id        String   @id @default(cuid())
+  name      String
+  logo      String
+  website   String?
+  order     Int      @default(0)
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+}

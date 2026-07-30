@@ -5,7 +5,7 @@ import { getSiteSetting } from "@/lib/settings";
 export default async function HomePage() {
   const hero = await getSiteSetting("homepage.hero");
 
-  const [featuredProducts, featuredServices, latestNews] = await Promise.all([
+  const [featuredProducts, featuredServices, latestNews, partners] = await Promise.all([
     prisma.product.findMany({ where: { isFeatured: true, isActive: true }, take: 4 }),
     prisma.service.findMany({ where: { isFeatured: true, isActive: true }, take: 3 }),
     prisma.newsPost.findMany({
@@ -13,6 +13,7 @@ export default async function HomePage() {
       orderBy: { publishAt: "desc" },
       take: 3,
     }),
+    prisma.partner.findMany({ where: { isActive: true }, orderBy: { order: "asc" } }),
   ]);
 
   return (
@@ -80,6 +81,26 @@ export default async function HomePage() {
           </div>
         )}
       </section>
+
+      {partners.length > 0 && (
+        <section className="border-t border-neutral-200 bg-neutral-50 px-4 py-12">
+          <div className="mx-auto max-w-6xl">
+            <h2 className="text-center text-xl font-semibold text-neutral-900">Our Partners</h2>
+            <div className="mt-6 grid grid-cols-3 items-center gap-6 sm:grid-cols-5 md:grid-cols-6">
+              {partners.map((partner) => (
+                <div key={partner.id} className="flex items-center justify-center" title={partner.name}>
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={partner.logo}
+                    alt={partner.name}
+                    className="h-12 w-full object-contain grayscale transition hover:grayscale-0"
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
     </div>
   );
 }
