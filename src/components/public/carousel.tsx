@@ -3,9 +3,25 @@
 import { useEffect, useRef, useState } from "react";
 import type { ReactNode } from "react";
 
+function step(track: HTMLDivElement, direction: 1 | -1) {
+  const firstItem = track.firstElementChild as HTMLElement | null;
+  const itemWidth = firstItem ? firstItem.offsetWidth + 16 /* gap-4 */ : 300;
+
+  const atEnd = track.scrollLeft + track.clientWidth >= track.scrollWidth - 4;
+  const atStart = track.scrollLeft <= 4;
+
+  if (direction > 0 && atEnd) {
+    track.scrollTo({ left: 0, behavior: "smooth" });
+  } else if (direction < 0 && atStart) {
+    track.scrollTo({ left: track.scrollWidth, behavior: "smooth" });
+  } else {
+    track.scrollBy({ left: direction * itemWidth, behavior: "smooth" });
+  }
+}
+
 export function Carousel({
   children,
-  autoPlayMs = 3000,
+  autoPlayMs = 2800,
 }: {
   children: ReactNode;
   autoPlayMs?: number;
@@ -13,27 +29,12 @@ export function Carousel({
   const trackRef = useRef<HTMLDivElement>(null);
   const [isPaused, setIsPaused] = useState(false);
 
-  function scrollBy(amount: number) {
-    const track = trackRef.current;
-    if (!track) return;
-
-    const atEnd = track.scrollLeft + track.clientWidth >= track.scrollWidth - 4;
-    const atStart = track.scrollLeft <= 4;
-
-    if (amount > 0 && atEnd) {
-      track.scrollTo({ left: 0, behavior: "smooth" });
-    } else if (amount < 0 && atStart) {
-      track.scrollTo({ left: track.scrollWidth, behavior: "smooth" });
-    } else {
-      track.scrollBy({ left: amount, behavior: "smooth" });
-    }
-  }
-
   useEffect(() => {
     if (isPaused) return;
-    const id = setInterval(() => scrollBy(300), autoPlayMs);
+    const id = setInterval(() => {
+      if (trackRef.current) step(trackRef.current, 1);
+    }, autoPlayMs);
     return () => clearInterval(id);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isPaused, autoPlayMs]);
 
   return (
@@ -41,11 +42,10 @@ export function Carousel({
       className="relative"
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
-      onTouchStart={() => setIsPaused(true)}
     >
       <div
         ref={trackRef}
-        className="scrollbar-none flex snap-x snap-mandatory gap-4 overflow-x-auto scroll-smooth pb-2"
+        className="scrollbar-none flex snap-x snap-proximity gap-4 overflow-x-auto scroll-smooth pb-2"
       >
         {children}
       </div>
@@ -53,7 +53,7 @@ export function Carousel({
       <button
         type="button"
         aria-label="Scroll left"
-        onClick={() => scrollBy(-320)}
+        onClick={() => trackRef.current && step(trackRef.current, -1)}
         className="absolute -left-3 top-1/2 hidden -translate-y-1/2 rounded-full bg-white p-2 text-neutral-700 shadow-md hover:bg-neutral-50 sm:block"
       >
         ‹
@@ -61,7 +61,7 @@ export function Carousel({
       <button
         type="button"
         aria-label="Scroll right"
-        onClick={() => scrollBy(320)}
+        onClick={() => trackRef.current && step(trackRef.current, 1)}
         className="absolute -right-3 top-1/2 hidden -translate-y-1/2 rounded-full bg-white p-2 text-neutral-700 shadow-md hover:bg-neutral-50 sm:block"
       >
         ›
