@@ -1,17 +1,48 @@
 "use client";
 
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { ReactNode } from "react";
 
-export function Carousel({ children }: { children: ReactNode }) {
+export function Carousel({
+  children,
+  autoPlayMs = 3000,
+}: {
+  children: ReactNode;
+  autoPlayMs?: number;
+}) {
   const trackRef = useRef<HTMLDivElement>(null);
+  const [isPaused, setIsPaused] = useState(false);
 
   function scrollBy(amount: number) {
-    trackRef.current?.scrollBy({ left: amount, behavior: "smooth" });
+    const track = trackRef.current;
+    if (!track) return;
+
+    const atEnd = track.scrollLeft + track.clientWidth >= track.scrollWidth - 4;
+    const atStart = track.scrollLeft <= 4;
+
+    if (amount > 0 && atEnd) {
+      track.scrollTo({ left: 0, behavior: "smooth" });
+    } else if (amount < 0 && atStart) {
+      track.scrollTo({ left: track.scrollWidth, behavior: "smooth" });
+    } else {
+      track.scrollBy({ left: amount, behavior: "smooth" });
+    }
   }
 
+  useEffect(() => {
+    if (isPaused) return;
+    const id = setInterval(() => scrollBy(300), autoPlayMs);
+    return () => clearInterval(id);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isPaused, autoPlayMs]);
+
   return (
-    <div className="relative">
+    <div
+      className="relative"
+      onMouseEnter={() => setIsPaused(true)}
+      onMouseLeave={() => setIsPaused(false)}
+      onTouchStart={() => setIsPaused(true)}
+    >
       <div
         ref={trackRef}
         className="scrollbar-none flex snap-x snap-mandatory gap-4 overflow-x-auto scroll-smooth pb-2"

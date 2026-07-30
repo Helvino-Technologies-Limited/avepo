@@ -2,6 +2,7 @@ import { auth } from "@/auth";
 import type { Role } from "@prisma/client";
 import { Sidebar } from "@/components/admin/sidebar";
 import { SignOutButton } from "@/components/admin/sign-out-button";
+import { VoiceAlerts } from "@/components/admin/voice-alerts";
 
 export default async function DashboardLayout({
   children,

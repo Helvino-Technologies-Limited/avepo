@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import { prisma } from "@/lib/db";
 import { getSiteSetting } from "@/lib/settings";
 import { PageHeader } from "@/components/public/page-header";
@@ -21,7 +22,9 @@ export default async function ContactPage() {
           <div>
             <h2 className="text-lg font-semibold text-neutral-900">Send us a message</h2>
             <div className="mt-4">
-              <ContactForm />
+              <Suspense>
+                <ContactForm />
+              </Suspense>
             </div>
           </div>
 

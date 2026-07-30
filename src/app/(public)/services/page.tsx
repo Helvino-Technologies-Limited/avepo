@@ -21,7 +21,10 @@ export default async function ServicesPage() {
           <Carousel>
             {services.map((service) => (
               <CarouselItem key={service.id}>
-                <div className="h-full rounded-lg border border-neutral-200 bg-white p-4">
+                <a
+                  href={`/contact?service=${encodeURIComponent(service.title)}`}
+                  className="block h-full rounded-lg border border-neutral-200 bg-white p-4 transition hover:border-[var(--brand-primary)] hover:shadow-md"
+                >
                   {service.image ? (
                     // eslint-disable-next-line @next/next/no-img-element
                     <img
@@ -38,7 +41,8 @@ export default async function ServicesPage() {
                   {service.description && (
                     <p className="mt-1 line-clamp-3 text-sm text-neutral-600">{service.description}</p>
                   )}
-                </div>
+                  <div className="mt-2 text-xs text-[var(--brand-primary)]">Enquire now →</div>
+                </a>
               </CarouselItem>
             ))}
           </Carousel>

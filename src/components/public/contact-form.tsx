@@ -1,12 +1,15 @@
 "use client";
 
 import { useActionState } from "react";
+import { useSearchParams } from "next/navigation";
 import { submitContactForm, type ContactFormState } from "@/app/(public)/contact/actions";
 
 const initialState: ContactFormState = { success: false };
 
 export function ContactForm() {
   const [state, formAction, isPending] = useActionState(submitContactForm, initialState);
+  const searchParams = useSearchParams();
+  const serviceInterest = searchParams.get("service");
 
   if (state.success) {
     return (
@@ -59,6 +62,7 @@ export function ContactForm() {
           <input
             id="subject"
             name="subject"
+            defaultValue={serviceInterest ? `Enquiry: ${serviceInterest}` : ""}
             className="mt-1 w-full rounded-md border border-neutral-300 bg-white px-3 py-2 text-sm text-neutral-900"
           />
         </div>
@@ -73,6 +77,11 @@ export function ContactForm() {
           name="message"
           required
           rows={4}
+          defaultValue={
+            serviceInterest
+              ? `Hi, I'd like to enquire about your "${serviceInterest}" service. Please contact me with more details.`
+              : ""
+          }
           className="mt-1 w-full rounded-md border border-neutral-300 bg-white px-3 py-2 text-sm text-neutral-900"
         />
       </div>

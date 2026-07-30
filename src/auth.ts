@@ -5,6 +5,11 @@ import { prisma } from "@/lib/db";
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
   session: { strategy: "jwt" },
+  // Derive the redirect URL from the incoming request instead of a fixed
+  // NEXTAUTH_URL — this app is reachable at multiple hosts (Vercel preview
+  // URLs, avepo.vercel.app, and eventually avepo.co.ke), and a stale/local
+  // NEXTAUTH_URL would otherwise send every login redirect to the wrong host.
+  trustHost: true,
   pages: {
     signIn: "/admin/login",
   },
