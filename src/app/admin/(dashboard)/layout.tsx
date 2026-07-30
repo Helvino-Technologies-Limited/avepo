@@ -23,7 +23,10 @@ export default async function DashboardLayout({
               {session?.user?.role}
             </span>
           </div>
-          <SignOutButton />
+          <div className="flex items-center gap-2">
+            <VoiceAlerts />
+            <SignOutButton />
+          </div>
         </header>
         <main className="overflow-x-auto p-4 sm:p-6">{children}</main>
       </div>
