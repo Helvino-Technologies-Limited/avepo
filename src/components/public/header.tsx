@@ -42,7 +42,17 @@ export async function Header() {
           <CartBadge />
         </nav>
 
-        <MobileNav />
+        <div className="flex shrink-0 items-center gap-3">
+          {logo.secondaryUrl && (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              src={logo.secondaryUrl}
+              alt=""
+              className="hidden h-9 w-auto object-contain sm:block"
+            />
+          )}
+          <MobileNav />
+        </div>
       </div>
     </header>
   );

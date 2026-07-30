@@ -19,7 +19,7 @@ export type HomepageHero = {
   videoUrl: string;
   posterImage: string;
 };
-export type BrandingLogo = { url: string };
+export type BrandingLogo = { url: string; secondaryUrl: string };
 export type ThemeColors = { primary: string; secondary: string; accent: string };
 export type FloatingWidgets = {
   whatsapp: boolean;
@@ -57,7 +57,7 @@ const DEFAULTS = {
     videoUrl: "",
     posterImage: "",
   } as HomepageHero,
-  "branding.logo": { url: "" } as BrandingLogo,
+  "branding.logo": { url: "", secondaryUrl: "" } as BrandingLogo,
   // A muted, "faded" farming green rather than a bright saturated green —
   // admin can always change this from Site Settings.
   "theme.colors": { primary: "#5b8c5a", secondary: "#3f6b47", accent: "#c99a3d" } as ThemeColors,

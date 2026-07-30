@@ -24,12 +24,22 @@ export default async function SiteSettingsPage({
       <form action={updateSiteSettings} className="mt-6 space-y-8">
         <section>
           <h2 className="text-sm font-semibold text-neutral-900">Branding</h2>
-          <div className="mt-3">
+          <p className="text-xs text-neutral-500">
+            The main logo appears on the left of the header. The second logo (e.g. a partner or
+            certification badge) appears on the right — leave it blank to hide.
+          </p>
+          <div className="mt-3 grid gap-4 sm:grid-cols-2">
             <ImageUpload
               name="logoUrl"
-              label="Site Logo"
+              label="Main Logo (left)"
               folder="branding"
               defaultValue={settings["branding.logo"].url}
+            />
+            <ImageUpload
+              name="secondaryLogoUrl"
+              label="Second Logo (right, optional)"
+              folder="branding"
+              defaultValue={settings["branding.logo"].secondaryUrl}
             />
           </div>
         </section>

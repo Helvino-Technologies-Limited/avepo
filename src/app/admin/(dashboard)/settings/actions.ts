@@ -16,7 +16,10 @@ async function upsert(key: string, value: unknown) {
 export async function updateSiteSettings(formData: FormData) {
   await requireRole("update");
 
-  await upsert("branding.logo", { url: String(formData.get("logoUrl") ?? "") });
+  await upsert("branding.logo", {
+    url: String(formData.get("logoUrl") ?? ""),
+    secondaryUrl: String(formData.get("secondaryLogoUrl") ?? ""),
+  });
 
   await upsert("theme.colors", {
     primary: String(formData.get("primaryColor") ?? "#16a34a"),
