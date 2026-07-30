@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { prisma } from "@/lib/db";
 import { PageHeader, EmptyState } from "@/components/public/page-header";
 import { getEventStatus } from "@/lib/events";
@@ -30,13 +31,25 @@ export default async function EventsPage() {
         ) : (
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
             {visibleEvents.map((event) => (
-              <div key={event.id} className="rounded-lg border border-neutral-200 p-4">
+              <Link
+                key={event.id}
+                href={`/events/${event.slug}`}
+                className="block rounded-lg border border-neutral-200 p-4 hover:border-green-300"
+              >
+                {event.coverImage && (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
+                    src={event.coverImage}
+                    alt={event.title}
+                    className="mb-3 h-32 w-full rounded object-cover"
+                  />
+                )}
                 <div className="text-xs uppercase text-green-700">
                   {STATUS_LABEL[getEventStatus(event)]}
                 </div>
                 <div className="font-medium text-neutral-900">{event.title}</div>
                 <div className="mt-1 text-sm text-neutral-500">{event.venue}</div>
-              </div>
+              </Link>
             ))}
           </div>
         )}

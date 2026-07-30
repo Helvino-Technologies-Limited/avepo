@@ -1,6 +1,7 @@
 import { getAllSiteSettings } from "@/lib/settings";
 import { Field, TextInput, TextArea, Checkbox, SubmitButton } from "@/components/admin/ui";
 import { ImageUpload } from "@/components/admin/image-upload";
+import { VideoUpload } from "@/components/admin/video-upload";
 import { updateSiteSettings } from "./actions";
 
 export default async function SiteSettingsPage() {
@@ -142,6 +143,36 @@ export default async function SiteSettingsPage() {
                 <TextInput id="heroCtaHref" name="heroCtaHref" defaultValue={settings["homepage.hero"].ctaHref} />
               </Field>
             </div>
+            <VideoUpload
+              name="heroVideoUrl"
+              label="Hero Background Video (MP4, optional)"
+              folder="hero"
+              defaultValue={settings["homepage.hero"].videoUrl}
+            />
+            <ImageUpload
+              name="heroPosterImage"
+              label="Hero Fallback Image (shown if video doesn't load)"
+              folder="hero"
+              defaultValue={settings["homepage.hero"].posterImage}
+            />
+          </div>
+        </section>
+
+        <section>
+          <h2 className="text-sm font-semibold text-neutral-900">Analytics</h2>
+          <p className="text-xs text-neutral-500">
+            Paste your Google Analytics Measurement ID (e.g. G-XXXXXXXXXX) to enable tracking.
+            Leave blank to disable.
+          </p>
+          <div className="mt-3">
+            <Field label="GA Measurement ID" htmlFor="gaMeasurementId">
+              <TextInput
+                id="gaMeasurementId"
+                name="gaMeasurementId"
+                placeholder="G-XXXXXXXXXX"
+                defaultValue={settings["analytics.ga"].gaMeasurementId}
+              />
+            </Field>
           </div>
         </section>
 

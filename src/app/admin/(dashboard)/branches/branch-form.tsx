@@ -1,4 +1,5 @@
 import { Field, TextInput, Checkbox, SubmitButton } from "@/components/admin/ui";
+import { ImageUpload } from "@/components/admin/image-upload";
 import type { Branch } from "@prisma/client";
 
 export function BranchForm({
@@ -44,6 +45,13 @@ export function BranchForm({
           <TextInput id="lng" name="lng" type="number" step="any" defaultValue={branch?.lng ?? ""} />
         </Field>
       </div>
+
+      <ImageUpload
+        name="photo"
+        label="Branch Photo (building/office/shop)"
+        folder="branches"
+        defaultValue={branch?.photo}
+      />
 
       <Checkbox name="isActive" label="Active (visible on site)" defaultChecked={branch?.isActive ?? true} />
 

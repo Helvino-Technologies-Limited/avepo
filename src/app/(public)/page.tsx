@@ -1,6 +1,9 @@
 import Link from "next/link";
 import { prisma } from "@/lib/db";
 import { getSiteSetting } from "@/lib/settings";
+import { HeroVideo } from "@/components/public/hero-video";
+import { Carousel, CarouselItem } from "@/components/public/carousel";
+import { AddToCartButton } from "@/components/public/add-to-cart-button";
 
 export default async function HomePage() {
   const hero = await getSiteSetting("homepage.hero");
@@ -18,15 +21,23 @@ export default async function HomePage() {
 
   return (
     <div>
-      <section className="bg-green-800 px-4 py-20 text-center text-white">
-        <h1 className="mx-auto max-w-2xl text-3xl font-bold sm:text-4xl">{hero.headline}</h1>
-        <p className="mx-auto mt-4 max-w-xl text-green-100">{hero.subheadline}</p>
-        <Link
-          href={hero.ctaHref}
-          className="mt-6 inline-block rounded-md bg-white px-5 py-2.5 text-sm font-semibold text-green-800 hover:bg-green-50"
-        >
-          {hero.ctaLabel}
-        </Link>
+      <section className="relative overflow-hidden bg-green-800 px-4 py-28 text-center text-white">
+        <HeroVideo videoUrl={hero.videoUrl} posterImage={hero.posterImage} />
+        <div className="absolute inset-0 bg-green-900/60" />
+        <div className="relative">
+          <h1 className="mx-auto max-w-2xl animate-fade-in-up text-3xl font-bold sm:text-4xl">
+            {hero.headline}
+          </h1>
+          <p className="animate-fade-in-up-delay mx-auto mt-4 max-w-xl text-green-100">
+            {hero.subheadline}
+          </p>
+          <Link
+            href={hero.ctaHref}
+            className="animate-fade-in-up-delay mt-6 inline-block rounded-md bg-white px-5 py-2.5 text-sm font-semibold text-green-800 hover:bg-green-50"
+          >
+            {hero.ctaLabel}
+          </Link>
+        </div>
       </section>
 
       <section className="mx-auto max-w-6xl px-4 py-12">
@@ -38,8 +49,30 @@ export default async function HomePage() {
         ) : (
           <div className="mt-4 grid grid-cols-2 gap-4 sm:grid-cols-4">
             {featuredProducts.map((product) => (
-              <div key={product.id} className="rounded-lg border border-neutral-200 p-4">
-                {product.name}
+              <div key={product.id} className="rounded-lg border border-neutral-200 p-3">
+                <a href={`/products/${product.slug}`}>
+                  {product.images[0] ? (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img
+                      src={product.images[0]}
+                      alt={product.name}
+                      className="h-28 w-full rounded object-cover"
+                    />
+                  ) : (
+                    <div className="flex h-28 w-full items-center justify-center rounded bg-neutral-100 text-xs text-neutral-400">
+                      No image
+                    </div>
+                  )}
+                  <div className="mt-2 text-sm font-medium text-neutral-900">{product.name}</div>
+                </a>
+                <div className="mt-2">
+                  <AddToCartButton
+                    productId={product.id}
+                    name={product.name}
+                    price={product.price ? Number(product.price) : null}
+                    image={product.images[0] ?? null}
+                  />
+                </div>
               </div>
             ))}
           </div>
@@ -54,12 +87,28 @@ export default async function HomePage() {
               Featured services will appear here once added in the Admin Portal.
             </p>
           ) : (
-            <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-3">
-              {featuredServices.map((service) => (
-                <div key={service.id} className="rounded-lg border border-neutral-200 bg-white p-4">
-                  {service.title}
-                </div>
-              ))}
+            <div className="mt-4">
+              <Carousel>
+                {featuredServices.map((service) => (
+                  <CarouselItem key={service.id}>
+                    <div className="h-full rounded-lg border border-neutral-200 bg-white p-4">
+                      {service.image ? (
+                        // eslint-disable-next-line @next/next/no-img-element
+                        <img
+                          src={service.image}
+                          alt={service.title}
+                          className="h-28 w-full rounded object-cover"
+                        />
+                      ) : (
+                        <div className="flex h-28 w-full items-center justify-center rounded bg-neutral-100 text-2xl">
+                          {service.icon || "🌾"}
+                        </div>
+                      )}
+                      <div className="mt-2 font-medium text-neutral-900">{service.title}</div>
+                    </div>
+                  </CarouselItem>
+                ))}
+              </Carousel>
             </div>
           )}
         </div>

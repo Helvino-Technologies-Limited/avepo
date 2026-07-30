@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { getSiteSetting } from "@/lib/settings";
+import { CartBadge } from "@/components/public/cart-badge";
 
 const NAV_ITEMS = [
   { href: "/", label: "Home" },
@@ -35,6 +36,7 @@ export async function Header() {
               {item.label}
             </Link>
           ))}
+          <CartBadge />
         </nav>
       </div>
     </header>

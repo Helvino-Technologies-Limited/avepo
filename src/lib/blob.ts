@@ -16,6 +16,9 @@ const MAX_IMAGE_BYTES = 5 * 1024 * 1024;
 const FILE_TYPES = new Set(["application/pdf"]);
 const MAX_FILE_BYTES = 15 * 1024 * 1024;
 
+const VIDEO_TYPES = new Set(["video/mp4", "video/webm", "video/ogg"]);
+const MAX_VIDEO_BYTES = 50 * 1024 * 1024;
+
 export type UploadResult = { url?: string; error?: string };
 
 async function requireSession() {
@@ -71,6 +74,30 @@ export async function uploadFile(formData: FormData): Promise<UploadResult> {
   }
 
   const folder = (formData.get("folder") as string) || "documents";
+  const blob = await put(`${folder}/${crypto.randomUUID()}${extFromName(file.name)}`, file, {
+    access: "public",
+    addRandomSuffix: false,
+  });
+
+  return { url: blob.url };
+}
+
+export async function uploadVideo(formData: FormData): Promise<UploadResult> {
+  await requireSession();
+
+  const file = formData.get("file");
+  if (!(file instanceof File)) {
+    return { error: "No file provided." };
+  }
+
+  if (!VIDEO_TYPES.has(file.type)) {
+    return { error: "Unsupported video type. Use MP4, WEBM, or OGG." };
+  }
+  if (file.size > MAX_VIDEO_BYTES) {
+    return { error: "Video is too large (max 50MB)." };
+  }
+
+  const folder = (formData.get("folder") as string) || "videos";
   const blob = await put(`${folder}/${crypto.randomUUID()}${extFromName(file.name)}`, file, {
     access: "public",
     addRandomSuffix: false,

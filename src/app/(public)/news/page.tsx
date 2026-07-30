@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { prisma } from "@/lib/db";
 import { PageHeader, EmptyState } from "@/components/public/page-header";
 
@@ -19,12 +20,24 @@ export default async function NewsPage() {
         ) : (
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
             {posts.map((post) => (
-              <div key={post.id} className="rounded-lg border border-neutral-200 p-4">
+              <Link
+                key={post.id}
+                href={`/news/${post.slug}`}
+                className="block rounded-lg border border-neutral-200 p-4 hover:border-green-300"
+              >
+                {post.coverImage && (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
+                    src={post.coverImage}
+                    alt={post.title}
+                    className="mb-3 h-32 w-full rounded object-cover"
+                  />
+                )}
                 {post.category && (
                   <div className="text-xs uppercase text-green-700">{post.category}</div>
                 )}
                 <div className="font-medium text-neutral-900">{post.title}</div>
-              </div>
+              </Link>
             ))}
           </div>
         )}

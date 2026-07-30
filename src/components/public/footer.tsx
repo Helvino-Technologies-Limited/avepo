@@ -1,5 +1,6 @@
 import { prisma } from "@/lib/db";
 import { getSiteSetting } from "@/lib/settings";
+import { NewsletterForm } from "@/components/public/newsletter-form";
 
 export async function Footer() {
   const [branches, contact, social] = await Promise.all([
@@ -56,6 +57,16 @@ export async function Footer() {
                 </li>
               ))}
             </ul>
+          </div>
+        </div>
+
+        <div className="mt-8 border-t border-neutral-800 pt-6">
+          <div className="text-sm font-semibold text-white">Newsletter</div>
+          <p className="mt-1 text-xs text-neutral-400">
+            Get farming tips, product updates, and event alerts in your inbox.
+          </p>
+          <div className="mt-3 max-w-sm">
+            <NewsletterForm />
           </div>
         </div>
 

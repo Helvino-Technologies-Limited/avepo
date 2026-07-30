@@ -16,6 +16,7 @@ const schema = z.object({
   hours: z.string().optional().or(z.literal("")),
   lat: z.string().optional().or(z.literal("")),
   lng: z.string().optional().or(z.literal("")),
+  photo: z.string().optional().or(z.literal("")),
   isActive: z.string().optional(),
 });
 
@@ -29,6 +30,7 @@ function parse(formData: FormData) {
     hours: formData.get("hours") ?? "",
     lat: formData.get("lat") ?? "",
     lng: formData.get("lng") ?? "",
+    photo: formData.get("photo") ?? "",
     isActive: formData.get("isActive") ?? undefined,
   });
 }
@@ -48,6 +50,7 @@ export async function createBranch(formData: FormData) {
       hours: data.hours || null,
       lat: data.lat ? Number(data.lat) : null,
       lng: data.lng ? Number(data.lng) : null,
+      photo: data.photo || null,
       isActive: data.isActive === "on",
     },
   });
@@ -73,6 +76,7 @@ export async function updateBranch(id: string, formData: FormData) {
       hours: data.hours || null,
       lat: data.lat ? Number(data.lat) : null,
       lng: data.lng ? Number(data.lng) : null,
+      photo: data.photo || null,
       isActive: data.isActive === "on",
     },
   });

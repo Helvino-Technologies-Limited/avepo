@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { prisma } from "@/lib/db";
 import { PageHeader, EmptyState } from "@/components/public/page-header";
 
@@ -19,12 +20,24 @@ export default async function KnowledgeCentrePage() {
         ) : (
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
             {articles.map((article) => (
-              <div key={article.id} className="rounded-lg border border-neutral-200 p-4">
+              <Link
+                key={article.id}
+                href={`/knowledge-centre/${article.slug}`}
+                className="block rounded-lg border border-neutral-200 p-4 hover:border-green-300"
+              >
+                {article.coverImage && (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
+                    src={article.coverImage}
+                    alt={article.title}
+                    className="mb-3 h-32 w-full rounded object-cover"
+                  />
+                )}
                 <div className="text-xs uppercase text-green-700">
                   {article.category.replaceAll("_", " ")}
                 </div>
                 <div className="font-medium text-neutral-900">{article.title}</div>
-              </div>
+              </Link>
             ))}
           </div>
         )}

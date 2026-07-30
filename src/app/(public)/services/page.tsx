@@ -1,5 +1,6 @@
 import { prisma } from "@/lib/db";
 import { PageHeader, EmptyState } from "@/components/public/page-header";
+import { Carousel, CarouselItem } from "@/components/public/carousel";
 
 export default async function ServicesPage() {
   const services = await prisma.service.findMany({
@@ -17,16 +18,30 @@ export default async function ServicesPage() {
         {services.length === 0 ? (
           <EmptyState message="No services published yet. Add services from the Admin Portal." />
         ) : (
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+          <Carousel>
             {services.map((service) => (
-              <div key={service.id} className="rounded-lg border border-neutral-200 p-4">
-                <div className="font-medium text-neutral-900">{service.title}</div>
-                {service.description && (
-                  <p className="mt-1 text-sm text-neutral-600">{service.description}</p>
-                )}
-              </div>
+              <CarouselItem key={service.id}>
+                <div className="h-full rounded-lg border border-neutral-200 bg-white p-4">
+                  {service.image ? (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img
+                      src={service.image}
+                      alt={service.title}
+                      className="h-32 w-full rounded object-cover"
+                    />
+                  ) : (
+                    <div className="flex h-32 w-full items-center justify-center rounded bg-neutral-100 text-2xl">
+                      {service.icon || "🌾"}
+                    </div>
+                  )}
+                  <div className="mt-3 font-medium text-neutral-900">{service.title}</div>
+                  {service.description && (
+                    <p className="mt-1 line-clamp-3 text-sm text-neutral-600">{service.description}</p>
+                  )}
+                </div>
+              </CarouselItem>
             ))}
-          </div>
+          </Carousel>
         )}
       </div>
     </div>

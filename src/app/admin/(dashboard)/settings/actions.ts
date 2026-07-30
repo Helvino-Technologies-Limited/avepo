@@ -52,6 +52,12 @@ export async function updateSiteSettings(formData: FormData) {
     subheadline: String(formData.get("heroSubheadline") ?? ""),
     ctaLabel: String(formData.get("heroCtaLabel") ?? ""),
     ctaHref: String(formData.get("heroCtaHref") ?? ""),
+    videoUrl: String(formData.get("heroVideoUrl") ?? ""),
+    posterImage: String(formData.get("heroPosterImage") ?? ""),
+  });
+
+  await upsert("analytics.ga", {
+    gaMeasurementId: String(formData.get("gaMeasurementId") ?? ""),
   });
 
   // Site settings back every public page (header/footer/hero/widgets),

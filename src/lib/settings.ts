@@ -16,6 +16,8 @@ export type HomepageHero = {
   subheadline: string;
   ctaLabel: string;
   ctaHref: string;
+  videoUrl: string;
+  posterImage: string;
 };
 export type BrandingLogo = { url: string };
 export type ThemeColors = { primary: string; secondary: string; accent: string };
@@ -26,6 +28,7 @@ export type FloatingWidgets = {
   backToTop: boolean;
   liveChat: boolean;
 };
+export type AnalyticsSettings = { gaMeasurementId: string };
 
 const DEFAULTS = {
   "contact.general": { phone: "0722976171", email: "avepoent@gmail.com" } as ContactSettings,
@@ -44,6 +47,8 @@ const DEFAULTS = {
     subheadline: "Agro-inputs, animal health, and Smart Farm expertise from Avepo Enterprises.",
     ctaLabel: "Explore Products",
     ctaHref: "/products",
+    videoUrl: "",
+    posterImage: "",
   } as HomepageHero,
   "branding.logo": { url: "" } as BrandingLogo,
   "theme.colors": { primary: "#16a34a", secondary: "#166534", accent: "#f59e0b" } as ThemeColors,
@@ -54,6 +59,7 @@ const DEFAULTS = {
     backToTop: true,
     liveChat: false,
   } as FloatingWidgets,
+  "analytics.ga": { gaMeasurementId: "" } as AnalyticsSettings,
 };
 
 export type SettingKey = keyof typeof DEFAULTS;

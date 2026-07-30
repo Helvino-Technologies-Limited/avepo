@@ -12,6 +12,8 @@ async function getCounts() {
     branches,
     partners,
     jobs,
+    pendingOrders,
+    pendingReviews,
   ] = await Promise.all([
     prisma.product.count(),
     prisma.service.count(),
@@ -23,6 +25,8 @@ async function getCounts() {
     prisma.branch.count(),
     prisma.partner.count(),
     prisma.jobPosting.count({ where: { isActive: true } }),
+    prisma.order.count({ where: { status: "PENDING" } }),
+    prisma.review.count({ where: { isApproved: false } }),
   ]);
 
   return {
@@ -36,6 +40,8 @@ async function getCounts() {
     branches,
     partners,
     jobs,
+    pendingOrders,
+    pendingReviews,
   };
 }
 
@@ -43,6 +49,8 @@ export default async function DashboardPage() {
   const counts = await getCounts();
 
   const stats: { label: string; value: number }[] = [
+    { label: "Pending Orders", value: counts.pendingOrders },
+    { label: "Pending Reviews", value: counts.pendingReviews },
     { label: "Products", value: counts.products },
     { label: "Services", value: counts.services },
     { label: "News Posts", value: counts.news },
