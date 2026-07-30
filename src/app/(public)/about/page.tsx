@@ -17,26 +17,26 @@ export default async function AboutPage() {
       <div className="mx-auto max-w-6xl px-4 py-12">
         <div className="grid gap-8 sm:grid-cols-2">
           <div>
-            <h2 className="text-lg font-semibold text-neutral-900">Our Vision</h2>
+            <h2 className="text-lg font-semibold text-[var(--brand-primary-dark)]">Our Vision</h2>
             <p className="mt-2 text-sm text-neutral-600">{about.vision}</p>
           </div>
           <div>
-            <h2 className="text-lg font-semibold text-neutral-900">Our Mission</h2>
+            <h2 className="text-lg font-semibold text-[var(--brand-primary-dark)]">Our Mission</h2>
             <p className="mt-2 text-sm text-neutral-600">{about.mission}</p>
           </div>
           <div>
-            <h2 className="text-lg font-semibold text-neutral-900">Our Commitment</h2>
+            <h2 className="text-lg font-semibold text-[var(--brand-primary-dark)]">Our Commitment</h2>
             <p className="mt-2 text-sm text-neutral-600">{about.coreValues}</p>
           </div>
           <div>
-            <h2 className="text-lg font-semibold text-neutral-900">Why Choose Avepo</h2>
+            <h2 className="text-lg font-semibold text-[var(--brand-primary-dark)]">Why Choose Avepo</h2>
             <p className="mt-2 text-sm text-neutral-600">{about.whyChooseUs}</p>
           </div>
         </div>
 
         {partners.length > 0 && (
           <div className="mt-12 border-t border-neutral-200 pt-10">
-            <h2 className="text-lg font-semibold text-neutral-900">Our Partners & Suppliers</h2>
+            <h2 className="text-lg font-semibold text-[var(--brand-primary-dark)]">Our Partners & Suppliers</h2>
             <div className="mt-6 grid grid-cols-3 items-center gap-6 sm:grid-cols-5 md:grid-cols-6">
               {partners.map((partner) => (
                 <div key={partner.id} className="flex items-center justify-center" title={partner.name}>
