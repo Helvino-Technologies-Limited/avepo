@@ -19,21 +19,26 @@ export function MultiImageUpload({
   const [isPending, startTransition] = useTransition();
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
-    const file = e.target.files?.[0];
-    if (!file) return;
+    const files = Array.from(e.target.files ?? []);
+    if (files.length === 0) return;
 
     setError(null);
-    const formData = new FormData();
-    formData.set("file", file);
-    formData.set("folder", folder);
 
     startTransition(async () => {
-      const result = await uploadImage(formData);
-      if (result.error) {
-        setError(result.error);
-        return;
-      }
-      if (result.url) setUrls((prev) => [...prev, result.url!]);
+      const results = await Promise.all(
+        files.map((file) => {
+          const formData = new FormData();
+          formData.set("file", file);
+          formData.set("folder", folder);
+          return uploadImage(formData);
+        })
+      );
+
+      const errors = results.filter((r) => r.error).map((r) => r.error!);
+      if (errors.length > 0) setError(errors[0]);
+
+      const newUrls = results.filter((r) => r.url).map((r) => r.url!);
+      if (newUrls.length > 0) setUrls((prev) => [...prev, ...newUrls]);
     });
 
     e.target.value = "";
@@ -66,7 +71,13 @@ export function MultiImageUpload({
         ))}
       </div>
 
-      <input type="file" accept="image/*,.jfif" onChange={handleChange} className="mt-2 text-sm" />
+      <input
+        type="file"
+        accept="image/*,.jfif"
+        multiple
+        onChange={handleChange}
+        className="mt-2 text-sm"
+      />
       {isPending && <p className="text-xs text-neutral-500">Uploading...</p>}
       {error && <p className="text-xs text-red-600">{error}</p>}
     </div>

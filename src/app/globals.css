@@ -51,3 +51,21 @@ body {
 .scrollbar-none::-webkit-scrollbar {
   display: none;
 }
+
+.rich-content p {
+  margin-bottom: 0.75em;
+}
+.rich-content ul {
+  list-style: disc;
+  padding-left: 1.5em;
+  margin-bottom: 0.75em;
+}
+.rich-content ol {
+  list-style: decimal;
+  padding-left: 1.5em;
+  margin-bottom: 0.75em;
+}
+.rich-content a {
+  color: #15803d;
+  text-decoration: underline;
+}

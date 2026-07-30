@@ -64,13 +64,18 @@ export async function deleteAlbum(id: string) {
 
 export async function addMedia(albumId: string, formData: FormData) {
   await requireRole("create");
-  const url = String(formData.get("url") ?? "");
   const type = String(formData.get("type") ?? "IMAGE") as "IMAGE" | "VIDEO";
   const caption = String(formData.get("caption") ?? "");
-  if (!url) return;
 
-  await prisma.galleryMedia.create({
-    data: { albumId, url, type, caption: caption || null },
+  const urls =
+    type === "IMAGE"
+      ? formData.getAll("urls").map(String).filter(Boolean)
+      : [String(formData.get("url") ?? "")].filter(Boolean);
+
+  if (urls.length === 0) return;
+
+  await prisma.galleryMedia.createMany({
+    data: urls.map((url) => ({ albumId, url, type, caption: caption || null })),
   });
 
   revalidatePath(`/admin/gallery/${albumId}`);

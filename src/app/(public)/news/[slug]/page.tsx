@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { prisma } from "@/lib/db";
 import { PageHeader } from "@/components/public/page-header";
+import { stripHtml } from "@/lib/html";
 
 export async function generateMetadata({
   params,
@@ -12,12 +13,14 @@ export async function generateMetadata({
   const post = await prisma.newsPost.findUnique({ where: { slug } });
   if (!post) return {};
 
+  const description = post.body ? stripHtml(post.body).slice(0, 160) : undefined;
+
   return {
     title: `${post.title} | Avepo News`,
-    description: post.body?.slice(0, 160),
+    description,
     openGraph: {
       title: post.title,
-      description: post.body?.slice(0, 160),
+      description,
       images: post.coverImage ? [post.coverImage] : undefined,
     },
   };
@@ -44,7 +47,12 @@ export default async function NewsDetailPage({
           <img src={post.coverImage} alt={post.title} className="w-full rounded-lg object-cover" />
         )}
         {post.category && <div className="mt-4 text-xs uppercase text-green-700">{post.category}</div>}
-        {post.body && <p className="mt-4 whitespace-pre-wrap text-neutral-800">{post.body}</p>}
+        {post.body && (
+          <div
+            className="rich-content mt-4 text-neutral-800"
+            dangerouslySetInnerHTML={{ __html: post.body }}
+          />
+        )}
 
         {post.media.length > 0 && (
           <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-3">

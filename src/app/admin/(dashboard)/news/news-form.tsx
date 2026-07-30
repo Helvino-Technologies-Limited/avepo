@@ -1,6 +1,7 @@
-import { Field, TextInput, TextArea, Select, Checkbox, SubmitButton } from "@/components/admin/ui";
+import { Field, TextInput, Select, Checkbox, SubmitButton } from "@/components/admin/ui";
 import { ImageUpload } from "@/components/admin/image-upload";
 import { MultiImageUpload } from "@/components/admin/multi-image-upload";
+import { RichTextEditor } from "@/components/admin/rich-text-editor";
 import { toDatetimeLocalValue } from "@/lib/date";
 import type { NewsPost } from "@prisma/client";
 
@@ -26,9 +27,7 @@ export function NewsForm({
         />
       </Field>
 
-      <Field label="Body" htmlFor="body">
-        <TextArea id="body" name="body" rows={8} defaultValue={post?.body ?? ""} />
-      </Field>
+      <RichTextEditor name="body" label="Body" defaultValue={post?.body} />
 
       <div className="grid gap-4 sm:grid-cols-2">
         <Field label="Status" htmlFor="status">
