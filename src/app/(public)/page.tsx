@@ -8,9 +8,9 @@ import { AddToCartButton } from "@/components/public/add-to-cart-button";
 export default async function HomePage() {
   const hero = await getSiteSetting("homepage.hero");
 
-  const [featuredProducts, featuredServices, latestNews, partners] = await Promise.all([
+  const [featuredProducts, allServices, latestNews, partners] = await Promise.all([
     prisma.product.findMany({ where: { isFeatured: true, isActive: true }, take: 4 }),
-    prisma.service.findMany({ where: { isFeatured: true, isActive: true }, take: 3 }),
+    prisma.service.findMany({ where: { isActive: true }, orderBy: { order: "asc" } }),
     prisma.newsPost.findMany({
       where: { status: "PUBLISHED" },
       orderBy: { publishAt: "desc" },
@@ -81,15 +81,15 @@ export default async function HomePage() {
 
       <section className="bg-neutral-50 px-4 py-12">
         <div className="mx-auto max-w-6xl">
-          <h2 className="text-xl font-semibold text-neutral-900">Featured Services</h2>
-          {featuredServices.length === 0 ? (
+          <h2 className="text-xl font-semibold text-neutral-900">Our Services</h2>
+          {allServices.length === 0 ? (
             <p className="mt-2 text-sm text-neutral-500">
               Explore our full range of agricultural and veterinary services.
             </p>
           ) : (
             <div className="mt-4">
               <Carousel>
-                {featuredServices.map((service) => (
+                {allServices.map((service) => (
                   <CarouselItem key={service.id}>
                     <a
                       href={`/contact?service=${encodeURIComponent(service.title)}`}
