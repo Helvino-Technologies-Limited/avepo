@@ -7,6 +7,8 @@ import { prisma } from "@/lib/db";
 import { requireRole } from "@/lib/rbac";
 import { slugify } from "@/lib/slug";
 import { deleteBlob } from "@/lib/blob";
+import { notifySubscribers } from "@/lib/email";
+import { SITE_URL } from "@/lib/site";
 
 const schema = z.object({
   title: z.string().min(1),
@@ -44,7 +46,7 @@ export async function createEvent(formData: FormData) {
   await requireRole("create");
   const data = parse(formData);
 
-  await prisma.event.create({
+  const event = await prisma.event.create({
     data: {
       title: data.title,
       slug: `${slugify(data.title)}-${Math.random().toString(36).slice(2, 7)}`,
@@ -61,6 +63,15 @@ export async function createEvent(formData: FormData) {
       isActive: data.isActive === "on",
     },
   });
+
+  if (event.isActive) {
+    await notifySubscribers(
+      `New Event: ${event.title}`,
+      `<p>${event.venue ? `<strong>Venue:</strong> ${event.venue}<br/>` : ""}${
+        event.description?.slice(0, 300) ?? ""
+      }</p><p><a href="${SITE_URL}/events/${event.slug}">View Event</a></p>`
+    );
+  }
 
   revalidatePath("/admin/events");
   revalidatePath("/events");

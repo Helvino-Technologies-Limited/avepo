@@ -7,6 +7,8 @@ import { prisma } from "@/lib/db";
 import { requireRole } from "@/lib/rbac";
 import { slugify } from "@/lib/slug";
 import { deleteBlob } from "@/lib/blob";
+import { notifySubscribers } from "@/lib/email";
+import { SITE_URL } from "@/lib/site";
 
 const schema = z.object({
   title: z.string().min(1),
@@ -36,7 +38,7 @@ export async function createNewsPost(formData: FormData) {
   const session = await requireRole("create");
   const data = parse(formData);
 
-  await prisma.newsPost.create({
+  const post = await prisma.newsPost.create({
     data: {
       title: data.title,
       slug: `${slugify(data.title)}-${Math.random().toString(36).slice(2, 7)}`,
@@ -50,6 +52,15 @@ export async function createNewsPost(formData: FormData) {
       authorId: session.user.id,
     },
   });
+
+  if (post.status === "PUBLISHED") {
+    await notifySubscribers(
+      `New from Avepo: ${post.title}`,
+      `<p>${post.category ? `<strong>${post.category}</strong><br/>` : ""}${
+        post.body?.slice(0, 300) ?? ""
+      }</p><p><a href="${SITE_URL}/news/${post.slug}">Read more</a></p>`
+    );
+  }
 
   revalidatePath("/admin/news");
   revalidatePath("/news");

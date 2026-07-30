@@ -7,6 +7,8 @@ import { prisma } from "@/lib/db";
 import { requireRole } from "@/lib/rbac";
 import { slugify } from "@/lib/slug";
 import { deleteBlob } from "@/lib/blob";
+import { notifySubscribers } from "@/lib/email";
+import { SITE_URL } from "@/lib/site";
 
 const productSchema = z.object({
   name: z.string().min(1),
@@ -42,7 +44,7 @@ export async function createProduct(formData: FormData) {
   await requireRole("create");
   const data = parseProductForm(formData);
 
-  await prisma.product.create({
+  const product = await prisma.product.create({
     data: {
       name: data.name,
       slug: `${slugify(data.name)}-${Math.random().toString(36).slice(2, 7)}`,
@@ -58,6 +60,13 @@ export async function createProduct(formData: FormData) {
       isActive: data.isActive === "on",
     },
   });
+
+  if (product.isActive) {
+    await notifySubscribers(
+      `New Product: ${product.name}`,
+      `<p>${product.description?.slice(0, 300) ?? ""}</p><p><a href="${SITE_URL}/products/${product.slug}">View Product</a></p>`
+    );
+  }
 
   revalidatePath("/admin/products");
   revalidatePath("/products");
