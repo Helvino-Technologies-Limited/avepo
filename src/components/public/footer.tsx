@@ -1,6 +1,7 @@
 import { prisma } from "@/lib/db";
 import { getSiteSetting } from "@/lib/settings";
 import { NewsletterForm } from "@/components/public/newsletter-form";
+import { SOCIAL_ICONS, socialHref } from "@/components/public/social-icons";
 
 export async function Footer() {
   const [branches, contact, social] = await Promise.all([
@@ -47,16 +48,28 @@ export async function Footer() {
 
           <div>
             <div className="text-sm font-semibold text-white">Follow us</div>
-            <ul className="mt-2 space-y-1 text-sm">
-              {socialEntries.length === 0 && <li className="text-neutral-500">Coming soon</li>}
-              {socialEntries.map(([platform, url]) => (
-                <li key={platform}>
-                  <a href={url} className="capitalize hover:text-white">
-                    {platform}
-                  </a>
-                </li>
-              ))}
-            </ul>
+            {socialEntries.length === 0 ? (
+              <p className="mt-2 text-sm text-neutral-500">Coming soon</p>
+            ) : (
+              <div className="mt-3 flex flex-wrap gap-3">
+                {socialEntries.map(([platform, value]) => {
+                  const Icon = SOCIAL_ICONS[platform];
+                  if (!Icon) return null;
+                  return (
+                    <a
+                      key={platform}
+                      href={socialHref(platform, value)}
+                      target="_blank"
+                      rel="noreferrer"
+                      aria-label={platform}
+                      className="flex h-9 w-9 items-center justify-center rounded-full bg-neutral-800 text-neutral-300 transition hover:bg-[var(--brand-primary)] hover:text-white"
+                    >
+                      <Icon className="h-4 w-4" />
+                    </a>
+                  );
+                })}
+              </div>
+            )}
           </div>
         </div>
 
