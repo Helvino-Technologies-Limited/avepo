@@ -2,6 +2,7 @@ import { Header } from "@/components/public/header";
 import { Footer } from "@/components/public/footer";
 import { FloatingWhatsApp } from "@/components/public/floating-whatsapp";
 import { GoogleAnalytics } from "@/components/public/google-analytics";
+import { CookieConsent } from "@/components/public/cookie-consent";
 import { CartProvider } from "@/lib/cart-context";
 import { getSiteSetting } from "@/lib/settings";
 
@@ -30,6 +31,7 @@ export default async function PublicLayout({ children }: { children: React.React
         <Footer />
         <FloatingWhatsApp />
         <GoogleAnalytics />
+        <CookieConsent />
       </div>
     </CartProvider>
   );
