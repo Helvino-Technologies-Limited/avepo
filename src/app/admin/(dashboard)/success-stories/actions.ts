@@ -78,3 +78,53 @@ export async function deleteSuccessStory(id: string) {
   await prisma.successStory.delete({ where: { id } });
   revalidatePath("/admin/success-stories");
 }
+
+export async function toggleSuccessStoryActive(id: string, isActive: boolean) {
+  await requireRole("update");
+  await prisma.successStory.update({ where: { id }, data: { isActive: !isActive } });
+  revalidatePath("/admin/success-stories");
+}
+
+const publicSchema = z.object({
+  title: z.string().min(1).max(150),
+  farmerName: z.string().min(1).max(100),
+  body: z.string().max(2000).optional().or(z.literal("")),
+  beforeImage: z.string().optional().or(z.literal("")),
+  afterImage: z.string().optional().or(z.literal("")),
+  video: z.string().optional().or(z.literal("")),
+});
+
+export type SubmitSuccessStoryState = { success: boolean; error?: string };
+
+export async function submitSuccessStory(
+  _prev: SubmitSuccessStoryState,
+  formData: FormData
+): Promise<SubmitSuccessStoryState> {
+  const parsed = publicSchema.safeParse({
+    title: formData.get("title"),
+    farmerName: formData.get("farmerName"),
+    body: formData.get("body") ?? "",
+    beforeImage: formData.get("beforeImage") ?? "",
+    afterImage: formData.get("afterImage") ?? "",
+    video: formData.get("video") ?? "",
+  });
+
+  if (!parsed.success) {
+    return { success: false, error: "Please fill in a title and your name." };
+  }
+
+  await prisma.successStory.create({
+    data: {
+      title: parsed.data.title,
+      farmerName: parsed.data.farmerName,
+      body: parsed.data.body || null,
+      beforeImage: parsed.data.beforeImage || null,
+      afterImage: parsed.data.afterImage || null,
+      video: parsed.data.video || null,
+      isActive: false,
+    },
+  });
+
+  revalidatePath("/admin/success-stories");
+  return { success: true };
+}

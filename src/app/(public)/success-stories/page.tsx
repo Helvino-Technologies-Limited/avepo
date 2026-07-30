@@ -1,5 +1,10 @@
 import { prisma } from "@/lib/db";
 import { PageHeader, EmptyState } from "@/components/public/page-header";
+import { SuccessStorySubmitForm } from "@/components/public/success-story-form";
+
+function isRawVideoFile(url: string) {
+  return /\.(mp4|webm|ogg)$/i.test(url);
+}
 
 export default async function SuccessStoriesPage() {
   const stories = await prisma.successStory.findMany({
@@ -46,21 +51,36 @@ export default async function SuccessStoriesPage() {
                   <div className="font-medium text-neutral-900">{story.title}</div>
                   <div className="text-sm text-[var(--brand-primary)]">{story.farmerName}</div>
                   {story.body && <p className="mt-2 text-sm text-neutral-600">{story.body}</p>}
-                  {story.video && (
-                    <a
-                      href={story.video}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="mt-2 inline-block text-sm text-[var(--brand-primary)] underline"
-                    >
-                      Watch Video
-                    </a>
-                  )}
+                  {story.video &&
+                    (isRawVideoFile(story.video) ? (
+                      // eslint-disable-next-line jsx-a11y/media-has-caption
+                      <video controls className="mt-2 w-full rounded" src={story.video} />
+                    ) : (
+                      <a
+                        href={story.video}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="mt-2 inline-block text-sm text-[var(--brand-primary)] underline"
+                      >
+                        Watch Video
+                      </a>
+                    ))}
                 </div>
               </div>
             ))}
           </div>
         )}
+
+        <div className="mt-12 max-w-xl border-t border-neutral-200 pt-10">
+          <h2 className="text-lg font-semibold text-neutral-900">Share Your Success Story</h2>
+          <p className="mt-1 text-sm text-neutral-500">
+            Tell other farmers how Avepo has helped your farm. Submissions are reviewed by our
+            team before appearing publicly.
+          </p>
+          <div className="mt-4">
+            <SuccessStorySubmitForm />
+          </div>
+        </div>
       </div>
     </div>
   );

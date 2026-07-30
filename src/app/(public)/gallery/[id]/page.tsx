@@ -3,6 +3,10 @@ import type { Metadata } from "next";
 import { prisma } from "@/lib/db";
 import { PageHeader } from "@/components/public/page-header";
 
+function isRawVideoFile(url: string) {
+  return /\.(mp4|webm|ogg)$/i.test(url);
+}
+
 export async function generateMetadata({
   params,
 }: {
@@ -43,6 +47,9 @@ export default async function GalleryAlbumPage({
                   alt={item.caption ?? album.title}
                   className="h-40 w-full rounded-lg object-cover"
                 />
+              ) : isRawVideoFile(item.url) ? (
+                // eslint-disable-next-line jsx-a11y/media-has-caption
+                <video key={item.id} controls className="h-40 w-full rounded-lg bg-black object-cover" src={item.url} />
               ) : (
                 <a
                   key={item.id}

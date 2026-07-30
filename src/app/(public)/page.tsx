@@ -4,6 +4,7 @@ import { getSiteSetting } from "@/lib/settings";
 import { HeroVideo } from "@/components/public/hero-video";
 import { Carousel, CarouselItem } from "@/components/public/carousel";
 import { AddToCartButton } from "@/components/public/add-to-cart-button";
+import { TestimonialSubmitForm } from "@/components/public/testimonial-form";
 
 export default async function HomePage() {
   const hero = await getSiteSetting("homepage.hero");
@@ -169,9 +170,13 @@ export default async function HomePage() {
         )}
       </section>
 
-      {testimonials.length > 0 && (
-        <section className="mx-auto max-w-6xl px-4 py-12">
-          <h2 className="text-xl font-semibold text-neutral-900">What Farmers Say</h2>
+      <section className="mx-auto max-w-6xl px-4 py-12">
+        <h2 className="text-xl font-semibold text-neutral-900">What Farmers Say</h2>
+        {testimonials.length === 0 ? (
+          <p className="mt-2 text-sm text-neutral-500">
+            No testimonials yet — be the first to share your experience below.
+          </p>
+        ) : (
           <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-3">
             {testimonials.map((t) => (
               <div key={t.id} className="rounded-lg border border-neutral-200 bg-white p-4">
@@ -199,8 +204,18 @@ export default async function HomePage() {
               </div>
             ))}
           </div>
-        </section>
-      )}
+        )}
+
+        <div className="mt-8 max-w-lg rounded-lg border border-neutral-200 bg-neutral-50 p-4">
+          <h3 className="text-sm font-semibold text-neutral-900">Share Your Experience</h3>
+          <p className="mt-1 text-xs text-neutral-500">
+            Reviews are checked by our team before appearing publicly.
+          </p>
+          <div className="mt-3">
+            <TestimonialSubmitForm />
+          </div>
+        </div>
+      </section>
 
       {partners.length > 0 && (
         <section className="border-t border-neutral-200 bg-neutral-50 px-4 py-12">

@@ -1,9 +1,9 @@
 import Link from "next/link";
 import { prisma } from "@/lib/db";
 import { DataTable } from "@/components/admin/data-table";
-import { DeleteButton } from "@/components/admin/row-actions";
+import { DeleteButton, ToggleButton } from "@/components/admin/row-actions";
 import { SavedBanner } from "@/components/admin/saved-banner";
-import { deleteTestimonial } from "./actions";
+import { deleteTestimonial, toggleTestimonialActive } from "./actions";
 
 export default async function TestimonialsPage({
   searchParams,
@@ -35,9 +35,29 @@ export default async function TestimonialsPage({
             { header: "Name", render: (t) => t.name },
             { header: "Role", render: (t) => t.role ?? "—" },
             { header: "Rating", render: (t) => t.rating ?? "—" },
-            { header: "Active", render: (t) => (t.isActive ? "Yes" : "No") },
+            {
+              header: "Status",
+              render: (t) =>
+                t.isActive ? (
+                  <span className="rounded-full bg-green-100 px-2 py-0.5 text-xs text-green-800">
+                    Approved
+                  </span>
+                ) : (
+                  <span className="rounded-full bg-amber-100 px-2 py-0.5 text-xs text-amber-800">
+                    Pending
+                  </span>
+                ),
+            },
           ]}
-          rowActions={(t) => <DeleteButton action={deleteTestimonial.bind(null, t.id)} />}
+          rowActions={(t) => (
+            <>
+              <ToggleButton
+                isActive={t.isActive}
+                action={toggleTestimonialActive.bind(null, t.id, t.isActive)}
+              />{" "}
+              <DeleteButton action={deleteTestimonial.bind(null, t.id)} />
+            </>
+          )}
         />
       </div>
     </div>

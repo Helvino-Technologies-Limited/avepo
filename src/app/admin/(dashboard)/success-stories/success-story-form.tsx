@@ -1,5 +1,6 @@
 import { Field, TextInput, TextArea, Checkbox, SubmitButton } from "@/components/admin/ui";
 import { ImageUpload } from "@/components/admin/image-upload";
+import { VideoUpload } from "@/components/admin/video-upload";
 import type { SuccessStory } from "@prisma/client";
 
 export function SuccessStoryForm({
@@ -39,9 +40,7 @@ export function SuccessStoryForm({
         />
       </div>
 
-      <Field label="Video URL (optional)" htmlFor="video">
-        <TextInput id="video" name="video" defaultValue={story?.video ?? ""} />
-      </Field>
+      <VideoUpload name="video" label="Video (optional)" folder="success-stories" defaultValue={story?.video} />
 
       <Checkbox name="isActive" label="Active" defaultChecked={story?.isActive ?? true} />
 

@@ -1,9 +1,9 @@
 import Link from "next/link";
 import { prisma } from "@/lib/db";
 import { DataTable } from "@/components/admin/data-table";
-import { DeleteButton } from "@/components/admin/row-actions";
+import { DeleteButton, ToggleButton } from "@/components/admin/row-actions";
 import { SavedBanner } from "@/components/admin/saved-banner";
-import { deleteSuccessStory } from "./actions";
+import { deleteSuccessStory, toggleSuccessStoryActive } from "./actions";
 
 export default async function SuccessStoriesPage({
   searchParams,
@@ -34,9 +34,29 @@ export default async function SuccessStoriesPage({
           columns={[
             { header: "Title", render: (s) => s.title },
             { header: "Farmer", render: (s) => s.farmerName },
-            { header: "Active", render: (s) => (s.isActive ? "Yes" : "No") },
+            {
+              header: "Status",
+              render: (s) =>
+                s.isActive ? (
+                  <span className="rounded-full bg-green-100 px-2 py-0.5 text-xs text-green-800">
+                    Approved
+                  </span>
+                ) : (
+                  <span className="rounded-full bg-amber-100 px-2 py-0.5 text-xs text-amber-800">
+                    Pending
+                  </span>
+                ),
+            },
           ]}
-          rowActions={(s) => <DeleteButton action={deleteSuccessStory.bind(null, s.id)} />}
+          rowActions={(s) => (
+            <>
+              <ToggleButton
+                isActive={s.isActive}
+                action={toggleSuccessStoryActive.bind(null, s.id, s.isActive)}
+              />{" "}
+              <DeleteButton action={deleteSuccessStory.bind(null, s.id)} />
+            </>
+          )}
         />
       </div>
     </div>

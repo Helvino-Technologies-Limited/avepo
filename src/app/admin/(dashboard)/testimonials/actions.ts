@@ -77,3 +77,48 @@ export async function deleteTestimonial(id: string) {
   await prisma.testimonial.delete({ where: { id } });
   revalidatePath("/admin/testimonials");
 }
+
+export async function toggleTestimonialActive(id: string, isActive: boolean) {
+  await requireRole("update");
+  await prisma.testimonial.update({ where: { id }, data: { isActive: !isActive } });
+  revalidatePath("/admin/testimonials");
+  revalidatePath("/");
+}
+
+const publicSchema = z.object({
+  name: z.string().min(1).max(100),
+  role: z.string().max(150).optional().or(z.literal("")),
+  quote: z.string().min(1).max(1000),
+  rating: z.string().optional().or(z.literal("")),
+});
+
+export type SubmitTestimonialState = { success: boolean; error?: string };
+
+export async function submitTestimonial(
+  _prev: SubmitTestimonialState,
+  formData: FormData
+): Promise<SubmitTestimonialState> {
+  const parsed = publicSchema.safeParse({
+    name: formData.get("name"),
+    role: formData.get("role") ?? "",
+    quote: formData.get("quote"),
+    rating: formData.get("rating") ?? "",
+  });
+
+  if (!parsed.success) {
+    return { success: false, error: "Please fill in your name and a short quote." };
+  }
+
+  await prisma.testimonial.create({
+    data: {
+      name: parsed.data.name,
+      role: parsed.data.role || null,
+      quote: parsed.data.quote,
+      rating: parsed.data.rating ? Number(parsed.data.rating) : null,
+      isActive: false,
+    },
+  });
+
+  revalidatePath("/admin/testimonials");
+  return { success: true };
+}
