@@ -2,13 +2,20 @@ import Link from "next/link";
 import { prisma } from "@/lib/db";
 import { DataTable } from "@/components/admin/data-table";
 import { DeleteButton } from "@/components/admin/row-actions";
+import { SavedBanner } from "@/components/admin/saved-banner";
 import { deleteBranch } from "./actions";
 
-export default async function BranchesPage() {
+export default async function BranchesPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ saved?: string }>;
+}) {
+  const { saved } = await searchParams;
   const branches = await prisma.branch.findMany({ orderBy: { order: "asc" } });
 
   return (
     <div>
+      <SavedBanner show={saved === "1"} />
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-semibold text-neutral-900">Branches</h1>
         <Link

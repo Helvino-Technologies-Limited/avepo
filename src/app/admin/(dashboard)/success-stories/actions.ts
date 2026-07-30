@@ -46,7 +46,7 @@ export async function createSuccessStory(formData: FormData) {
   });
 
   revalidatePath("/admin/success-stories");
-  redirect("/admin/success-stories");
+  redirect("/admin/success-stories?saved=1");
 }
 
 export async function updateSuccessStory(id: string, formData: FormData) {
@@ -67,7 +67,7 @@ export async function updateSuccessStory(id: string, formData: FormData) {
   });
 
   revalidatePath("/admin/success-stories");
-  redirect("/admin/success-stories");
+  redirect("/admin/success-stories?saved=1");
 }
 
 export async function deleteSuccessStory(id: string) {

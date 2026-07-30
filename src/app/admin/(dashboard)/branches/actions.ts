@@ -58,7 +58,7 @@ export async function createBranch(formData: FormData) {
   revalidatePath("/admin/branches");
   revalidatePath("/contact");
   revalidatePath("/");
-  redirect("/admin/branches");
+  redirect("/admin/branches?saved=1");
 }
 
 export async function updateBranch(id: string, formData: FormData) {
@@ -84,7 +84,7 @@ export async function updateBranch(id: string, formData: FormData) {
   revalidatePath("/admin/branches");
   revalidatePath("/contact");
   revalidatePath("/");
-  redirect("/admin/branches");
+  redirect("/admin/branches?saved=1");
 }
 
 export async function deleteBranch(id: string) {

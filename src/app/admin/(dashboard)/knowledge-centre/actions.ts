@@ -61,7 +61,7 @@ export async function createArticle(formData: FormData) {
 
   revalidatePath("/admin/knowledge-centre");
   revalidatePath("/knowledge-centre");
-  redirect("/admin/knowledge-centre");
+  redirect("/admin/knowledge-centre?saved=1");
 }
 
 export async function updateArticle(id: string, formData: FormData) {
@@ -83,7 +83,7 @@ export async function updateArticle(id: string, formData: FormData) {
 
   revalidatePath("/admin/knowledge-centre");
   revalidatePath("/knowledge-centre");
-  redirect("/admin/knowledge-centre");
+  redirect("/admin/knowledge-centre?saved=1");
 }
 
 export async function deleteArticle(id: string) {

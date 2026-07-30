@@ -83,8 +83,15 @@ export async function Footer() {
           </div>
         </div>
 
-        <div className="mt-8 border-t border-neutral-800 pt-4 text-xs text-neutral-500">
-          © {new Date().getFullYear()} Avepo Enterprises Limited. All rights reserved.
+        <div className="mt-8 flex flex-col gap-1 border-t border-neutral-800 pt-4 text-xs text-neutral-500 sm:flex-row sm:items-center sm:justify-between">
+          <span>© {new Date().getFullYear()} Avepo Enterprises Limited. All rights reserved.</span>
+          <span>
+            Website by{" "}
+            <a href="https://helvino.org" target="_blank" rel="noreferrer" className="hover:text-neutral-300">
+              Helvino Technologies Limited
+            </a>{" "}
+            · <a href="mailto:info@helvino.org" className="hover:text-neutral-300">info@helvino.org</a> · 0110 421 320
+          </span>
         </div>
       </div>
     </footer>

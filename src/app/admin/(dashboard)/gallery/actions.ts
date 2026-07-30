@@ -27,7 +27,7 @@ export async function createAlbum(formData: FormData) {
 
   revalidatePath("/admin/gallery");
   revalidatePath("/gallery");
-  redirect(`/admin/gallery/${album.id}`);
+  redirect(`/admin/gallery/${album.id}?saved=1`);
 }
 
 export async function updateAlbum(id: string, formData: FormData) {
@@ -45,7 +45,7 @@ export async function updateAlbum(id: string, formData: FormData) {
 
   revalidatePath("/admin/gallery");
   revalidatePath("/gallery");
-  redirect(`/admin/gallery/${id}`);
+  redirect(`/admin/gallery/${id}?saved=1`);
 }
 
 export async function deleteAlbum(id: string) {

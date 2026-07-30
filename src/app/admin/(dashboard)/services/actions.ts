@@ -46,7 +46,7 @@ export async function createService(formData: FormData) {
 
   revalidatePath("/admin/services");
   revalidatePath("/services");
-  redirect("/admin/services");
+  redirect("/admin/services?saved=1");
 }
 
 export async function updateService(id: string, formData: FormData) {
@@ -67,7 +67,7 @@ export async function updateService(id: string, formData: FormData) {
 
   revalidatePath("/admin/services");
   revalidatePath("/services");
-  redirect("/admin/services");
+  redirect("/admin/services?saved=1");
 }
 
 export async function deleteService(id: string) {

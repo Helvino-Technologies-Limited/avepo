@@ -3,13 +3,20 @@ import { prisma } from "@/lib/db";
 import { DataTable } from "@/components/admin/data-table";
 import { DeleteButton, ToggleButton } from "@/components/admin/row-actions";
 import { getEventStatus } from "@/lib/events";
+import { SavedBanner } from "@/components/admin/saved-banner";
 import { deleteEvent, toggleEventActive } from "./actions";
 
-export default async function EventsPage() {
+export default async function EventsPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ saved?: string }>;
+}) {
+  const { saved } = await searchParams;
   const events = await prisma.event.findMany({ orderBy: { startDate: "desc" } });
 
   return (
     <div>
+      <SavedBanner show={saved === "1"} />
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-semibold text-neutral-900">Events</h1>
         <Link

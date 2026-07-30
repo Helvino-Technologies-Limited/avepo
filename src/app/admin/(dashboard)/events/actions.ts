@@ -64,7 +64,7 @@ export async function createEvent(formData: FormData) {
 
   revalidatePath("/admin/events");
   revalidatePath("/events");
-  redirect("/admin/events");
+  redirect("/admin/events?saved=1");
 }
 
 export async function updateEvent(id: string, formData: FormData) {
@@ -91,7 +91,7 @@ export async function updateEvent(id: string, formData: FormData) {
 
   revalidatePath("/admin/events");
   revalidatePath("/events");
-  redirect("/admin/events");
+  redirect("/admin/events?saved=1");
 }
 
 export async function deleteEvent(id: string) {

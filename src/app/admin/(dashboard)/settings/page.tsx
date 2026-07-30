@@ -2,13 +2,19 @@ import { getAllSiteSettings } from "@/lib/settings";
 import { Field, TextInput, TextArea, Checkbox, SubmitButton } from "@/components/admin/ui";
 import { ImageUpload } from "@/components/admin/image-upload";
 import { VideoUpload } from "@/components/admin/video-upload";
+import { SavedBanner } from "@/components/admin/saved-banner";
 import { updateSiteSettings } from "./actions";
 
-export default async function SiteSettingsPage() {
-  const settings = await getAllSiteSettings();
+export default async function SiteSettingsPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ saved?: string }>;
+}) {
+  const [settings, { saved }] = await Promise.all([getAllSiteSettings(), searchParams]);
 
   return (
     <div className="max-w-3xl">
+      <SavedBanner show={saved === "1"} />
       <h1 className="text-2xl font-semibold text-neutral-900">Site Settings</h1>
       <p className="mt-1 text-sm text-neutral-500">
         Controls branding, theme, contact info, social links, floating widgets, and the homepage

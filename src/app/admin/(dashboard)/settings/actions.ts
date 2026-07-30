@@ -1,6 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
 import { prisma } from "@/lib/db";
 import { requireRole } from "@/lib/rbac";
 
@@ -72,4 +73,5 @@ export async function updateSiteSettings(formData: FormData) {
   revalidatePath("/", "layout");
   revalidatePath("/about");
   revalidatePath("/admin/settings");
+  redirect("/admin/settings?saved=1");
 }

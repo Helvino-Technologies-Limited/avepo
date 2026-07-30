@@ -1,10 +1,14 @@
+import Link from "next/link";
 import { prisma } from "@/lib/db";
 import { PageHeader, EmptyState } from "@/components/public/page-header";
 
 export default async function GalleryPage() {
   const albums = await prisma.galleryAlbum.findMany({
     orderBy: { order: "asc" },
-    include: { _count: { select: { media: true } } },
+    include: {
+      _count: { select: { media: true } },
+      media: { take: 1, orderBy: { order: "asc" }, where: { type: "IMAGE" } },
+    },
   });
 
   return (
@@ -18,13 +22,32 @@ export default async function GalleryPage() {
           <EmptyState message="No gallery photos yet. Please check back soon." />
         ) : (
           <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
-            {albums.map((album) => (
-              <div key={album.id} className="rounded-lg border border-neutral-200 p-4">
-                <div className="text-xs uppercase text-[var(--brand-primary)]">{album.type}</div>
-                <div className="font-medium text-neutral-900">{album.title}</div>
-                <div className="text-sm text-neutral-500">{album._count.media} items</div>
-              </div>
-            ))}
+            {albums.map((album) => {
+              const cover = album.coverImage || album.media[0]?.url;
+              return (
+                <Link
+                  key={album.id}
+                  href={`/gallery/${album.id}`}
+                  className="block overflow-hidden rounded-lg border border-neutral-200 bg-white transition hover:border-[var(--brand-primary)] hover:shadow-md"
+                >
+                  {cover ? (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img src={cover} alt={album.title} className="h-32 w-full object-cover" />
+                  ) : (
+                    <div className="flex h-32 w-full items-center justify-center bg-neutral-100 text-xs text-neutral-400">
+                      No photos yet
+                    </div>
+                  )}
+                  <div className="p-3">
+                    <div className="text-xs uppercase text-[var(--brand-primary)]">
+                      {album.type.replaceAll("_", " ")}
+                    </div>
+                    <div className="font-medium text-neutral-900">{album.title}</div>
+                    <div className="text-sm text-neutral-500">{album._count.media} items</div>
+                  </div>
+                </Link>
+              );
+            })}
           </div>
         )}
       </div>

@@ -2,13 +2,20 @@ import Link from "next/link";
 import { prisma } from "@/lib/db";
 import { DataTable } from "@/components/admin/data-table";
 import { DeleteButton, ToggleButton } from "@/components/admin/row-actions";
+import { SavedBanner } from "@/components/admin/saved-banner";
 import { deletePartner, togglePartnerActive } from "./actions";
 
-export default async function PartnersPage() {
+export default async function PartnersPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ saved?: string }>;
+}) {
+  const { saved } = await searchParams;
   const partners = await prisma.partner.findMany({ orderBy: { order: "asc" } });
 
   return (
     <div>
+      <SavedBanner show={saved === "1"} />
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-semibold text-neutral-900">Partners</h1>
         <Link

@@ -3,6 +3,7 @@ import { prisma } from "@/lib/db";
 import { DataTable } from "@/components/admin/data-table";
 import { DeleteButton, ToggleButton } from "@/components/admin/row-actions";
 import { TextInput, SubmitButton } from "@/components/admin/ui";
+import { SavedBanner } from "@/components/admin/saved-banner";
 import {
   deleteProduct,
   toggleProductActive,
@@ -10,14 +11,20 @@ import {
   deleteCategory,
 } from "./actions";
 
-export default async function ProductsPage() {
-  const [products, categories] = await Promise.all([
+export default async function ProductsPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ saved?: string }>;
+}) {
+  const [{ saved }, products, categories] = await Promise.all([
+    searchParams,
     prisma.product.findMany({ include: { category: true }, orderBy: { createdAt: "desc" } }),
     prisma.productCategory.findMany({ orderBy: { order: "asc" } }),
   ]);
 
   return (
     <div>
+      <SavedBanner show={saved === "1"} />
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-semibold text-neutral-900">Products</h1>
         <Link

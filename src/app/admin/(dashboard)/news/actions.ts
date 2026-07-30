@@ -54,7 +54,7 @@ export async function createNewsPost(formData: FormData) {
   revalidatePath("/admin/news");
   revalidatePath("/news");
   revalidatePath("/");
-  redirect("/admin/news");
+  redirect("/admin/news?saved=1");
 }
 
 export async function updateNewsPost(id: string, formData: FormData) {
@@ -78,7 +78,7 @@ export async function updateNewsPost(id: string, formData: FormData) {
   revalidatePath("/admin/news");
   revalidatePath("/news");
   revalidatePath("/");
-  redirect("/admin/news");
+  redirect("/admin/news?saved=1");
 }
 
 export async function deleteNewsPost(id: string) {

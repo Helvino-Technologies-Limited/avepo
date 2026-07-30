@@ -47,7 +47,7 @@ export async function createSmartFarmSection(formData: FormData) {
 
   revalidatePath("/admin/smart-farm");
   revalidatePath("/smart-farm");
-  redirect("/admin/smart-farm");
+  redirect("/admin/smart-farm?saved=1");
 }
 
 export async function updateSmartFarmSection(id: string, formData: FormData) {
@@ -68,7 +68,7 @@ export async function updateSmartFarmSection(id: string, formData: FormData) {
 
   revalidatePath("/admin/smart-farm");
   revalidatePath("/smart-farm");
-  redirect("/admin/smart-farm");
+  redirect("/admin/smart-farm?saved=1");
 }
 
 export async function deleteSmartFarmSection(id: string) {

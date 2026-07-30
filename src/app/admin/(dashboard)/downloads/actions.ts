@@ -40,7 +40,7 @@ export async function createDownload(formData: FormData) {
   });
 
   revalidatePath("/admin/downloads");
-  redirect("/admin/downloads");
+  redirect("/admin/downloads?saved=1");
 }
 
 export async function deleteDownload(id: string) {

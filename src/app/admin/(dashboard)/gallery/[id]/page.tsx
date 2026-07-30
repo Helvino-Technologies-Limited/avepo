@@ -4,13 +4,17 @@ import { AlbumForm } from "../album-form";
 import { AddMediaForm } from "../add-media-form";
 import { updateAlbum, addMedia, deleteMedia } from "../actions";
 import { DeleteButton } from "@/components/admin/row-actions";
+import { SavedBanner } from "@/components/admin/saved-banner";
 
 export default async function AlbumDetailPage({
   params,
+  searchParams,
 }: {
   params: Promise<{ id: string }>;
+  searchParams: Promise<{ saved?: string }>;
 }) {
   const { id } = await params;
+  const { saved } = await searchParams;
   const album = await prisma.galleryAlbum.findUnique({
     where: { id },
     include: { media: { orderBy: { order: "asc" } } },
@@ -19,6 +23,7 @@ export default async function AlbumDetailPage({
 
   return (
     <div className="max-w-3xl space-y-8">
+      <SavedBanner show={saved === "1"} />
       <div>
         <h1 className="text-2xl font-semibold text-neutral-900">Edit Album: {album.title}</h1>
         <div className="mt-6">

@@ -6,18 +6,25 @@ import { can } from "@/lib/rbac";
 import type { Role } from "@prisma/client";
 import { DataTable } from "@/components/admin/data-table";
 import { DeleteButton } from "@/components/admin/row-actions";
+import { SavedBanner } from "@/components/admin/saved-banner";
 import { deleteUser } from "./actions";
 
-export default async function UsersPage() {
+export default async function UsersPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ saved?: string }>;
+}) {
   const session = await auth();
   if (!session?.user?.role || !can(session.user.role as Role, "manageUsers")) {
     redirect("/admin/dashboard");
   }
 
+  const { saved } = await searchParams;
   const users = await prisma.user.findMany({ orderBy: { createdAt: "asc" } });
 
   return (
     <div>
+      <SavedBanner show={saved === "1"} />
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-semibold text-neutral-900">Users</h1>
         <Link

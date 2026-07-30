@@ -8,7 +8,7 @@ import { AddToCartButton } from "@/components/public/add-to-cart-button";
 export default async function HomePage() {
   const hero = await getSiteSetting("homepage.hero");
 
-  const [featuredProducts, allServices, latestNews, partners] = await Promise.all([
+  const [featuredProducts, allServices, latestNews, partners, testimonials] = await Promise.all([
     prisma.product.findMany({ where: { isFeatured: true, isActive: true }, take: 4 }),
     prisma.service.findMany({ where: { isActive: true }, orderBy: { order: "asc" } }),
     prisma.newsPost.findMany({
@@ -17,6 +17,11 @@ export default async function HomePage() {
       take: 3,
     }),
     prisma.partner.findMany({ where: { isActive: true }, orderBy: { order: "asc" } }),
+    prisma.testimonial.findMany({
+      where: { isActive: true },
+      orderBy: [{ isFeatured: "desc" }, { createdAt: "desc" }],
+      take: 6,
+    }),
   ]);
 
   return (
@@ -134,6 +139,39 @@ export default async function HomePage() {
           </div>
         )}
       </section>
+
+      {testimonials.length > 0 && (
+        <section className="mx-auto max-w-6xl px-4 py-12">
+          <h2 className="text-xl font-semibold text-neutral-900">What Farmers Say</h2>
+          <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-3">
+            {testimonials.map((t) => (
+              <div key={t.id} className="rounded-lg border border-neutral-200 bg-white p-4">
+                {t.rating && (
+                  <div className="text-xs text-[var(--brand-accent)]">
+                    {"★".repeat(t.rating)}
+                    {"☆".repeat(5 - t.rating)}
+                  </div>
+                )}
+                <p className="mt-2 text-sm text-neutral-700">&ldquo;{t.quote}&rdquo;</p>
+                <div className="mt-3 flex items-center gap-2">
+                  {t.photo ? (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img src={t.photo} alt={t.name} className="h-8 w-8 rounded-full object-cover" />
+                  ) : (
+                    <div className="flex h-8 w-8 items-center justify-center rounded-full bg-neutral-100 text-xs text-neutral-500">
+                      {t.name.charAt(0)}
+                    </div>
+                  )}
+                  <div>
+                    <div className="text-sm font-medium text-neutral-900">{t.name}</div>
+                    {t.role && <div className="text-xs text-neutral-500">{t.role}</div>}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
 
       {partners.length > 0 && (
         <section className="border-t border-neutral-200 bg-neutral-50 px-4 py-12">

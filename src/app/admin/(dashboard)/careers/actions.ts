@@ -43,7 +43,7 @@ export async function createJob(formData: FormData) {
 
   revalidatePath("/admin/careers");
   revalidatePath("/careers");
-  redirect("/admin/careers");
+  redirect("/admin/careers?saved=1");
 }
 
 export async function updateJob(id: string, formData: FormData) {
@@ -64,7 +64,7 @@ export async function updateJob(id: string, formData: FormData) {
 
   revalidatePath("/admin/careers");
   revalidatePath("/careers");
-  redirect("/admin/careers");
+  redirect("/admin/careers?saved=1");
 }
 
 export async function deleteJob(id: string) {

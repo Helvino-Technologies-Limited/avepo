@@ -55,7 +55,7 @@ export async function createUser(formData: FormData) {
   });
 
   revalidatePath("/admin/users");
-  redirect("/admin/users");
+  redirect("/admin/users?saved=1");
 }
 
 export async function updateUser(id: string, formData: FormData) {
@@ -87,7 +87,7 @@ export async function updateUser(id: string, formData: FormData) {
   });
 
   revalidatePath("/admin/users");
-  redirect("/admin/users");
+  redirect("/admin/users?saved=1");
 }
 
 export async function deleteUser(id: string) {
