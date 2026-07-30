@@ -126,6 +126,15 @@ export default async function SiteSettingsPage({
               defaultChecked={settings["widgets.floating"].liveChat}
             />
           </div>
+          <div className="mt-3">
+            <Field label="Default WhatsApp Message" htmlFor="whatsappMessage">
+              <TextArea
+                id="whatsappMessage"
+                name="whatsappMessage"
+                defaultValue={settings["widgets.floating"].whatsappMessage}
+              />
+            </Field>
+          </div>
         </section>
 
         <section>

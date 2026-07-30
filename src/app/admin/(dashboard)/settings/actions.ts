@@ -46,6 +46,7 @@ export async function updateSiteSettings(formData: FormData) {
     messenger: formData.get("widgetMessenger") === "on",
     backToTop: formData.get("widgetBackToTop") === "on",
     liveChat: formData.get("widgetLiveChat") === "on",
+    whatsappMessage: String(formData.get("whatsappMessage") ?? ""),
   });
 
   await upsert("homepage.hero", {

@@ -6,6 +6,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { prisma } from "@/lib/db";
 import { requireRole } from "@/lib/rbac";
+import { auth } from "@/auth";
 
 const ROLES = [
   "SUPER_ADMIN",
@@ -59,7 +60,21 @@ export async function createUser(formData: FormData) {
 }
 
 export async function updateUser(id: string, formData: FormData) {
-  const session = await requireRole("manageUsers");
+  const session = await auth();
+  if (!session?.user) {
+    throw new Error("Not authorized to perform this action.");
+  }
+
+  const isEditingSelf = id === session.user.id;
+  // Editing your own name/email/password only requires being logged in.
+  // Editing someone else's account (or changing role/active status) requires manageUsers.
+  if (!isEditingSelf) {
+    const { can } = await import("@/lib/rbac");
+    if (!can(session.user.role as never, "manageUsers")) {
+      throw new Error("Not authorized to perform this action.");
+    }
+  }
+
   const data = updateSchema.parse({
     name: formData.get("name"),
     email: formData.get("email"),
@@ -68,8 +83,7 @@ export async function updateUser(id: string, formData: FormData) {
     isActive: formData.get("isActive") ?? undefined,
   });
 
-  const isEditingSelf = id === session.user.id;
-  // Don't let an admin lock themselves out or de-privilege their own account
+  // Don't let a user lock themselves out or de-privilege their own account
   // through this form — role/active-status changes to yourself are no-ops.
   const existing = isEditingSelf ? await prisma.user.findUniqueOrThrow({ where: { id } }) : null;
   const role = isEditingSelf ? existing!.role : data.role;
@@ -87,7 +101,8 @@ export async function updateUser(id: string, formData: FormData) {
   });
 
   revalidatePath("/admin/users");
-  redirect("/admin/users?saved=1");
+  revalidatePath("/admin/account");
+  redirect(isEditingSelf ? "/admin/account?saved=1" : "/admin/users?saved=1");
 }
 
 export async function deleteUser(id: string) {

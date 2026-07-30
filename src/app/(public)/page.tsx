@@ -14,7 +14,7 @@ export default async function HomePage() {
     prisma.newsPost.findMany({
       where: { status: "PUBLISHED" },
       orderBy: { publishAt: "desc" },
-      take: 3,
+      take: 12,
     }),
     prisma.partner.findMany({ where: { isActive: true }, orderBy: { order: "asc" } }),
     prisma.testimonial.findMany({
@@ -130,12 +130,41 @@ export default async function HomePage() {
             Stay tuned — farming tips, weather alerts, and updates from Avepo are coming soon.
           </p>
         ) : (
-          <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-3">
-            {latestNews.map((post) => (
-              <div key={post.id} className="rounded-lg border border-neutral-200 p-4">
-                {post.title}
-              </div>
-            ))}
+          <div className="mt-4">
+            <Carousel>
+              {latestNews.map((post) => (
+                <CarouselItem key={post.id}>
+                  <a
+                    href={`/news/${post.slug}`}
+                    className="block h-full rounded-lg border border-neutral-200 bg-white p-4 transition hover:border-[var(--brand-primary)] hover:shadow-md"
+                  >
+                    {post.coverImage ? (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img
+                        src={post.coverImage}
+                        alt={post.title}
+                        className="h-28 w-full rounded object-cover"
+                      />
+                    ) : (
+                      <div className="flex h-28 w-full items-center justify-center rounded bg-neutral-100 text-2xl">
+                        📰
+                      </div>
+                    )}
+                    {post.category && (
+                      <div className="mt-2 text-xs uppercase text-[var(--brand-primary)]">
+                        {post.category}
+                      </div>
+                    )}
+                    <div className="mt-1 font-medium text-neutral-900">{post.title}</div>
+                    {post.publishAt && (
+                      <div className="mt-1 text-xs text-neutral-500">
+                        {post.publishAt.toLocaleDateString()}
+                      </div>
+                    )}
+                  </a>
+                </CarouselItem>
+              ))}
+            </Carousel>
           </div>
         )}
       </section>

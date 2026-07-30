@@ -27,6 +27,7 @@ export type FloatingWidgets = {
   messenger: boolean;
   backToTop: boolean;
   liveChat: boolean;
+  whatsappMessage: string;
 };
 export type AnalyticsSettings = { gaMeasurementId: string };
 export type AboutContent = {
@@ -66,6 +67,7 @@ const DEFAULTS = {
     messenger: false,
     backToTop: true,
     liveChat: false,
+    whatsappMessage: "Hi Avepo, I'd like to know more about your products and services.",
   } as FloatingWidgets,
   "analytics.ga": { gaMeasurementId: "" } as AnalyticsSettings,
   "about.content": {

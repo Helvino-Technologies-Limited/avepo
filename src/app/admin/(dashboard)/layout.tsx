@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { auth } from "@/auth";
 import type { Role } from "@prisma/client";
 import { Sidebar } from "@/components/admin/sidebar";
@@ -24,6 +25,12 @@ export default async function DashboardLayout({
             </span>
           </div>
           <div className="flex items-center gap-2">
+            <Link
+              href="/admin/account"
+              className="rounded-md border border-neutral-300 px-2 py-1 text-xs text-neutral-600 hover:bg-neutral-50"
+            >
+              My Account
+            </Link>
             <VoiceAlerts />
             <SignOutButton />
           </div>

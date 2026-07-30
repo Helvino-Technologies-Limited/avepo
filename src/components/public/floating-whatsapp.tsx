@@ -9,9 +9,11 @@ export async function FloatingWhatsApp() {
   const digits = social.whatsapp.replace(/\D/g, "");
   if (!widgets.whatsapp || !digits) return null;
 
+  const prefilledText = encodeURIComponent(widgets.whatsappMessage || "");
+
   return (
     <a
-      href={`https://wa.me/${digits}`}
+      href={`https://wa.me/${digits}${prefilledText ? `?text=${prefilledText}` : ""}`}
       target="_blank"
       rel="noreferrer"
       aria-label="Chat with us on WhatsApp"
