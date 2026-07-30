@@ -11,10 +11,10 @@ export default async function DashboardLayout({
   const session = await auth();
 
   return (
-    <div className="flex min-h-screen bg-neutral-50">
+    <div className="flex min-h-screen flex-col bg-neutral-50 md:flex-row">
       <Sidebar role={(session?.user?.role as Role) ?? "READ_ONLY"} />
-      <div className="flex-1">
-        <header className="flex items-center justify-between border-b border-neutral-200 bg-white px-6 py-3">
+      <div className="min-w-0 flex-1">
+        <header className="flex flex-wrap items-center justify-between gap-2 border-b border-neutral-200 bg-white px-4 py-3 sm:px-6">
           <div className="text-sm text-neutral-500">
             Signed in as{" "}
             <span className="font-medium text-neutral-800">{session?.user?.email}</span>{" "}
@@ -24,7 +24,7 @@ export default async function DashboardLayout({
           </div>
           <SignOutButton />
         </header>
-        <main className="p-6">{children}</main>
+        <main className="overflow-x-auto p-4 sm:p-6">{children}</main>
       </div>
     </div>
   );
