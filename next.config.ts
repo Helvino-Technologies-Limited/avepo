@@ -1,6 +1,14 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  // Next.js Server Actions default to a 1MB request body limit — far below
+  // our 50MB video / 15MB PDF / 5MB image ceilings in src/lib/blob.ts, so
+  // every upload above ~1MB would otherwise fail silently.
+  experimental: {
+    serverActions: {
+      bodySizeLimit: "60mb",
+    },
+  },
   async headers() {
     return [
       {
