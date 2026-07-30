@@ -1,0 +1,372 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ---------- Enums ----------
+
+enum Role {
+  SUPER_ADMIN
+  ADMIN
+  EDITOR
+  CONTENT_CREATOR
+  BRANCH_MANAGER
+  READ_ONLY
+}
+
+enum StockStatus {
+  IN_STOCK
+  LOW_STOCK
+  OUT_OF_STOCK
+}
+
+enum NewsStatus {
+  DRAFT
+  PUBLISHED
+  SCHEDULED
+}
+
+enum MediaType {
+  IMAGE
+  VIDEO
+}
+
+enum GalleryAlbumType {
+  EVENTS
+  PRODUCTS
+  SMART_FARM
+  BRANCHES
+  FARMERS
+}
+
+enum SmartFarmSectionType {
+  DEMO_FARM
+  GREENHOUSE
+  DAIRY
+  POULTRY
+}
+
+enum KnowledgeCategory {
+  CROP_PRODUCTION
+  LIVESTOCK
+  POULTRY
+  SOIL_HEALTH
+  FERTILIZERS
+  PEST_MANAGEMENT
+  DISEASE_MANAGEMENT
+  CLIMATE_SMART_AGRICULTURE
+  AI_IN_FARMING
+}
+
+enum JobType {
+  JOB
+  INTERNSHIP
+  ATTACHMENT
+}
+
+// ---------- Core / Auth ----------
+
+model User {
+  id           String    @id @default(cuid())
+  name         String
+  email        String    @unique
+  passwordHash String
+  role         Role      @default(EDITOR)
+  isActive     Boolean   @default(true)
+  lastLoginAt  DateTime?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  newsPosts    NewsPost[]
+  activityLogs ActivityLog[]
+}
+
+model ActivityLog {
+  id         String   @id @default(cuid())
+  userId     String?
+  user       User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  action     String
+  entityType String
+  entityId   String?
+  metadata   Json?
+  createdAt  DateTime @default(now())
+
+  @@index([entityType, entityId])
+  @@index([createdAt])
+}
+
+// ---------- Branches ----------
+
+model Branch {
+  id        String   @id @default(cuid())
+  name      String
+  slug      String   @unique
+  address   String?
+  lat       Float?
+  lng       Float?
+  phone     String?
+  whatsapp  String?
+  email     String?
+  hours     String?
+  order     Int      @default(0)
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// ---------- Products ----------
+
+model ProductCategory {
+  id       String            @id @default(cuid())
+  name     String
+  slug     String            @unique
+  parentId String?
+  parent   ProductCategory?  @relation("CategoryToSub", fields: [parentId], references: [id], onDelete: SetNull)
+  children ProductCategory[] @relation("CategoryToSub")
+  order    Int               @default(0)
+  products Product[]
+}
+
+model Product {
+  id                String          @id @default(cuid())
+  name              String
+  slug              String          @unique
+  categoryId        String?
+  category          ProductCategory? @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  images            String[]
+  description       String?
+  price             Decimal?        @db.Decimal(12, 2)
+  manufacturer      String?
+  usageInstructions String?
+  brochureUrl       String?
+  stockStatus       StockStatus     @default(IN_STOCK)
+  isFeatured        Boolean         @default(false)
+  isActive          Boolean         @default(true)
+  createdAt         DateTime        @default(now())
+  updatedAt         DateTime        @updatedAt
+
+  @@index([categoryId])
+}
+
+// ---------- Services ----------
+
+model Service {
+  id          String   @id @default(cuid())
+  title       String
+  slug        String   @unique
+  description String?
+  icon        String?
+  image       String?
+  isFeatured  Boolean  @default(false)
+  isActive    Boolean  @default(true)
+  order       Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+// ---------- Smart Farm ----------
+
+model SmartFarmSection {
+  id          String               @id @default(cuid())
+  title       String
+  type        SmartFarmSectionType
+  description String?
+  images      String[]
+  videos      String[]
+  order       Int                  @default(0)
+  isActive    Boolean              @default(true)
+  createdAt   DateTime             @default(now())
+  updatedAt   DateTime             @updatedAt
+}
+
+// ---------- Knowledge Centre ----------
+
+model KnowledgeArticle {
+  id          String            @id @default(cuid())
+  title       String
+  slug        String            @unique
+  category    KnowledgeCategory
+  body        String?
+  coverImage  String?
+  pdfUrl      String?
+  videoUrl    String?
+  isPublished Boolean           @default(false)
+  createdAt   DateTime          @default(now())
+  updatedAt   DateTime          @updatedAt
+}
+
+// ---------- Events ----------
+// Status (Upcoming/Ongoing/Past) is intentionally NOT stored — it's derived
+// at query time from startDate/endDate vs now(), so there is nothing to
+// keep in sync and no cron job required.
+
+model Event {
+  id                String   @id @default(cuid())
+  title             String
+  slug              String   @unique
+  description       String?
+  venue             String?
+  startDate         DateTime
+  endDate           DateTime
+  coverImage        String?
+  gallery           String[]
+  videoUrl          String?
+  registrationLink  String?
+  organizer         String?
+  category          String?
+  isActive          Boolean  @default(true)
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  @@index([startDate, endDate])
+}
+
+// ---------- News ----------
+
+model NewsPost {
+  id          String     @id @default(cuid())
+  title       String
+  slug        String     @unique
+  category    String?
+  body        String?
+  coverImage  String?
+  media       String[]
+  status      NewsStatus @default(DRAFT)
+  publishAt   DateTime?
+  isFeatured  Boolean    @default(false)
+  authorId    String?
+  author      User?      @relation(fields: [authorId], references: [id], onDelete: SetNull)
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+
+  @@index([status, publishAt])
+}
+
+// ---------- Gallery ----------
+
+model GalleryAlbum {
+  id         String           @id @default(cuid())
+  title      String
+  type       GalleryAlbumType
+  coverImage String?
+  order      Int              @default(0)
+  createdAt  DateTime         @default(now())
+  updatedAt  DateTime         @updatedAt
+  media      GalleryMedia[]
+}
+
+model GalleryMedia {
+  id      String       @id @default(cuid())
+  albumId String
+  album   GalleryAlbum @relation(fields: [albumId], references: [id], onDelete: Cascade)
+  url     String
+  type    MediaType    @default(IMAGE)
+  caption String?
+  order   Int          @default(0)
+
+  @@index([albumId])
+}
+
+// ---------- Testimonials & Success Stories ----------
+
+model Testimonial {
+  id         String   @id @default(cuid())
+  name       String
+  role       String?
+  photo      String?
+  quote      String
+  rating     Int?
+  isFeatured Boolean  @default(false)
+  isActive   Boolean  @default(true)
+  createdAt  DateTime @default(now())
+}
+
+model SuccessStory {
+  id           String   @id @default(cuid())
+  title        String
+  farmerName   String
+  beforeImage  String?
+  afterImage   String?
+  video        String?
+  body         String?
+  isActive     Boolean  @default(true)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+// ---------- Careers ----------
+
+model JobPosting {
+  id          String            @id @default(cuid())
+  title       String
+  type        JobType
+  description String?
+  location    String?
+  deadline    DateTime?
+  isActive    Boolean           @default(true)
+  createdAt   DateTime          @default(now())
+  updatedAt   DateTime          @updatedAt
+  applications JobApplication[]
+}
+
+model JobApplication {
+  id             String     @id @default(cuid())
+  jobId          String
+  job            JobPosting @relation(fields: [jobId], references: [id], onDelete: Cascade)
+  applicantName  String
+  email          String
+  phone          String?
+  resumeUrl      String?
+  coverLetter    String?
+  submittedAt    DateTime   @default(now())
+
+  @@index([jobId])
+}
+
+// ---------- Downloads ----------
+
+model Download {
+  id        String   @id @default(cuid())
+  title     String
+  category  String?
+  fileUrl   String
+  fileType  String?
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+}
+
+// ---------- Newsletter & Contact ----------
+
+model Subscriber {
+  id            String   @id @default(cuid())
+  email         String   @unique
+  isActive      Boolean  @default(true)
+  subscribedAt  DateTime @default(now())
+}
+
+model ContactMessage {
+  id        String   @id @default(cuid())
+  name      String
+  email     String
+  phone     String?
+  subject   String?
+  message   String
+  branchId  String?
+  isRead    Boolean  @default(false)
+  createdAt DateTime @default(now())
+}
+
+// ---------- Site Settings ----------
+// Generic key/value JSON store backing homepage sections, theme, logos,
+// social links, contact info, floating widgets, SEO defaults, analytics IDs
+// so admins can edit "every page" without a bespoke table per setting.
+
+model SiteSetting {
+  key       String   @id
+  value     Json
+  updatedAt DateTime @updatedAt
+}
