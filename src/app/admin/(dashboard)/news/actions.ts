@@ -9,6 +9,7 @@ import { slugify } from "@/lib/slug";
 import { deleteBlob } from "@/lib/blob";
 import { notifySubscribers } from "@/lib/email";
 import { SITE_URL } from "@/lib/site";
+import { sanitizeHtml } from "@/lib/sanitize";
 
 const schema = z.object({
   title: z.string().min(1),
@@ -43,7 +44,7 @@ export async function createNewsPost(formData: FormData) {
       title: data.title,
       slug: `${slugify(data.title)}-${Math.random().toString(36).slice(2, 7)}`,
       category: data.category || null,
-      body: data.body || null,
+      body: data.body ? sanitizeHtml(data.body) : null,
       coverImage: data.coverImage || null,
       media: data.media ?? [],
       status: data.status,
@@ -77,7 +78,7 @@ export async function updateNewsPost(id: string, formData: FormData) {
     data: {
       title: data.title,
       category: data.category || null,
-      body: data.body || null,
+      body: data.body ? sanitizeHtml(data.body) : null,
       coverImage: data.coverImage || null,
       media: data.media ?? [],
       status: data.status,

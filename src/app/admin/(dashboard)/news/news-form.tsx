@@ -3,6 +3,7 @@ import { ImageUpload } from "@/components/admin/image-upload";
 import { MultiImageUpload } from "@/components/admin/multi-image-upload";
 import { RichTextEditor } from "@/components/admin/rich-text-editor";
 import { toDatetimeLocalValue } from "@/lib/date";
+import { sanitizeHtml } from "@/lib/sanitize";
 import type { NewsPost } from "@prisma/client";
 
 export function NewsForm({
@@ -27,7 +28,11 @@ export function NewsForm({
         />
       </Field>
 
-      <RichTextEditor name="body" label="Body" defaultValue={post?.body} />
+      <RichTextEditor
+        name="body"
+        label="Body"
+        defaultValue={post?.body ? sanitizeHtml(post.body) : post?.body}
+      />
 
       <div className="grid gap-4 sm:grid-cols-2">
         <Field label="Status" htmlFor="status">

@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { prisma } from "@/lib/db";
 import { PageHeader } from "@/components/public/page-header";
 import { stripHtml } from "@/lib/html";
+import { sanitizeHtml } from "@/lib/sanitize";
 
 export async function generateMetadata({
   params,
@@ -50,7 +51,7 @@ export default async function NewsDetailPage({
         {post.body && (
           <div
             className="rich-content mt-4 text-neutral-800"
-            dangerouslySetInnerHTML={{ __html: post.body }}
+            dangerouslySetInnerHTML={{ __html: sanitizeHtml(post.body) }}
           />
         )}
 

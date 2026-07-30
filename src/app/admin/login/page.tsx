@@ -4,10 +4,21 @@ import { useState, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { signIn } from "next-auth/react";
 
+// Only ever redirect to a same-app relative path — callbackUrl comes from a
+// URL query param an attacker can craft, so an unchecked value here would be
+// an open-redirect (e.g. ?callbackUrl=https://evil.com after a real login).
+function safeCallbackUrl(value: string | null): string {
+  if (!value) return "/admin/dashboard";
+  if (!value.startsWith("/") || value.startsWith("//") || value.includes("://")) {
+    return "/admin/dashboard";
+  }
+  return value;
+}
+
 function LoginForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const callbackUrl = searchParams.get("callbackUrl") || "/admin/dashboard";
+  const callbackUrl = safeCallbackUrl(searchParams.get("callbackUrl"));
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
