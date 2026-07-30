@@ -21,7 +21,7 @@ export default async function HomePage() {
 
   return (
     <div>
-      <section className="relative overflow-hidden bg-green-800 px-4 py-28 text-center text-white">
+      <section className="relative overflow-hidden bg-[var(--brand-primary-dark)] px-4 py-28 text-center text-white">
         <HeroVideo videoUrl={hero.videoUrl} posterImage={hero.posterImage} />
         <div className="absolute inset-0 bg-green-900/60" />
         <div className="relative">
@@ -33,7 +33,7 @@ export default async function HomePage() {
           </p>
           <Link
             href={hero.ctaHref}
-            className="animate-fade-in-up-delay mt-6 inline-block rounded-md bg-white px-5 py-2.5 text-sm font-semibold text-green-800 hover:bg-green-50"
+            className="animate-fade-in-up-delay mt-6 inline-block rounded-md bg-white px-5 py-2.5 text-sm font-semibold text-[var(--brand-primary-dark)] hover:bg-green-50"
           >
             {hero.ctaLabel}
           </Link>
@@ -44,7 +44,7 @@ export default async function HomePage() {
         <h2 className="text-xl font-semibold text-neutral-900">Featured Products</h2>
         {featuredProducts.length === 0 ? (
           <p className="mt-2 text-sm text-neutral-500">
-            Featured products will appear here once added in the Admin Portal.
+            New products are on their way — check back soon, or browse our full range.
           </p>
         ) : (
           <div className="mt-4 grid grid-cols-2 gap-4 sm:grid-cols-4">
@@ -84,7 +84,7 @@ export default async function HomePage() {
           <h2 className="text-xl font-semibold text-neutral-900">Featured Services</h2>
           {featuredServices.length === 0 ? (
             <p className="mt-2 text-sm text-neutral-500">
-              Featured services will appear here once added in the Admin Portal.
+              Explore our full range of agricultural and veterinary services.
             </p>
           ) : (
             <div className="mt-4">
@@ -118,7 +118,7 @@ export default async function HomePage() {
         <h2 className="text-xl font-semibold text-neutral-900">Latest News</h2>
         {latestNews.length === 0 ? (
           <p className="mt-2 text-sm text-neutral-500">
-            Published news will appear here once posted in the Admin Portal.
+            Stay tuned — farming tips, weather alerts, and updates from Avepo are coming soon.
           </p>
         ) : (
           <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-3">

@@ -44,7 +44,7 @@ export default async function EventsPage() {
                     className="mb-3 h-32 w-full rounded object-cover"
                   />
                 )}
-                <div className="text-xs uppercase text-green-700">
+                <div className="text-xs uppercase text-[var(--brand-primary)]">
                   {STATUS_LABEL[getEventStatus(event)]}
                 </div>
                 <div className="font-medium text-neutral-900">{event.title}</div>

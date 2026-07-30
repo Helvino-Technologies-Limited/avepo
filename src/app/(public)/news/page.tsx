@@ -16,7 +16,7 @@ export default async function NewsPage() {
       />
       <div className="mx-auto max-w-6xl px-4 py-12">
         {posts.length === 0 ? (
-          <EmptyState message="No news published yet. Publish news from the Admin Portal." />
+          <EmptyState message="No news published yet. Please check back soon." />
         ) : (
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
             {posts.map((post) => (
@@ -34,7 +34,7 @@ export default async function NewsPage() {
                   />
                 )}
                 {post.category && (
-                  <div className="text-xs uppercase text-green-700">{post.category}</div>
+                  <div className="text-xs uppercase text-[var(--brand-primary)]">{post.category}</div>
                 )}
                 <div className="font-medium text-neutral-900">{post.title}</div>
               </Link>

@@ -46,7 +46,7 @@ export default async function NewsDetailPage({
           // eslint-disable-next-line @next/next/no-img-element
           <img src={post.coverImage} alt={post.title} className="w-full rounded-lg object-cover" />
         )}
-        {post.category && <div className="mt-4 text-xs uppercase text-green-700">{post.category}</div>}
+        {post.category && <div className="mt-4 text-xs uppercase text-[var(--brand-primary)]">{post.category}</div>}
         {post.body && (
           <div
             className="rich-content mt-4 text-neutral-800"

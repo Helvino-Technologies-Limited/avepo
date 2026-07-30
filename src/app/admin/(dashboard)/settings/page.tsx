@@ -159,6 +159,32 @@ export default async function SiteSettingsPage() {
         </section>
 
         <section>
+          <h2 className="text-sm font-semibold text-neutral-900">About Page Content</h2>
+          <div className="mt-3 space-y-4">
+            <Field label="Our Vision" htmlFor="aboutVision">
+              <TextArea id="aboutVision" name="aboutVision" defaultValue={settings["about.content"].vision} />
+            </Field>
+            <Field label="Our Mission" htmlFor="aboutMission">
+              <TextArea id="aboutMission" name="aboutMission" defaultValue={settings["about.content"].mission} />
+            </Field>
+            <Field label="Our Commitment" htmlFor="aboutCoreValues">
+              <TextArea
+                id="aboutCoreValues"
+                name="aboutCoreValues"
+                defaultValue={settings["about.content"].coreValues}
+              />
+            </Field>
+            <Field label="Why Choose Avepo" htmlFor="aboutWhyChooseUs">
+              <TextArea
+                id="aboutWhyChooseUs"
+                name="aboutWhyChooseUs"
+                defaultValue={settings["about.content"].whyChooseUs}
+              />
+            </Field>
+          </div>
+        </section>
+
+        <section>
           <h2 className="text-sm font-semibold text-neutral-900">Analytics</h2>
           <p className="text-xs text-neutral-500">
             Paste your Google Analytics Measurement ID (e.g. G-XXXXXXXXXX) to enable tracking.

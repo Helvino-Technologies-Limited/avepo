@@ -16,7 +16,7 @@ export default async function ServicesPage() {
       />
       <div className="mx-auto max-w-6xl px-4 py-12">
         {services.length === 0 ? (
-          <EmptyState message="No services published yet. Add services from the Admin Portal." />
+          <EmptyState message="No services published yet. Please check back soon." />
         ) : (
           <Carousel>
             {services.map((service) => (

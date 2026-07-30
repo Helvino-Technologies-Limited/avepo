@@ -7,10 +7,10 @@ export function CartBadge() {
   const { totalCount } = useCart();
 
   return (
-    <Link href="/cart" className="relative hover:text-green-800">
+    <Link href="/cart" className="relative hover:text-[var(--brand-primary-dark)]">
       Order Cart
       {totalCount > 0 && (
-        <span className="ml-1 rounded-full bg-green-700 px-1.5 py-0.5 text-xs text-white">
+        <span className="ml-1 rounded-full bg-[var(--brand-primary)] px-1.5 py-0.5 text-xs text-white">
           {totalCount}
         </span>
       )}

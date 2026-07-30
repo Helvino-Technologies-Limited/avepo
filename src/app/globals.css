@@ -12,12 +12,10 @@
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
+/* Dark mode isn't implemented as a real feature yet (site-wide theming
+   would need every component audited) — following the OS preference here
+   made text unreadable in places like form inputs that assume a light
+   background, so the site stays a consistent light theme for now. */
 
 body {
   background: var(--background);

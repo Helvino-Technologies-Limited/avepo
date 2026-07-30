@@ -23,7 +23,7 @@ export async function Header() {
   return (
     <header className="relative border-b border-neutral-200 bg-white">
       <div className="mx-auto flex max-w-6xl items-center justify-between gap-2 px-4 py-3">
-        <Link href="/" className="flex shrink-0 items-center gap-2 text-lg font-bold text-green-800">
+        <Link href="/" className="flex shrink-0 items-center gap-2 text-lg font-bold text-[var(--brand-primary-dark)]">
           {logo.url ? (
             // eslint-disable-next-line @next/next/no-img-element
             <img src={logo.url} alt="Avepo Enterprises" className="h-9 w-auto object-contain" />
@@ -34,7 +34,7 @@ export async function Header() {
 
         <nav className="hidden flex-wrap items-center gap-x-4 gap-y-1 text-sm text-neutral-700 md:flex">
           {NAV_ITEMS.map((item) => (
-            <Link key={item.href} href={item.href} className="hover:text-green-800">
+            <Link key={item.href} href={item.href} className="hover:text-[var(--brand-primary-dark)]">
               {item.label}
             </Link>
           ))}

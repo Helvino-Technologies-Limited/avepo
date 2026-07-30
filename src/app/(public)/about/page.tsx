@@ -1,11 +1,12 @@
 import { prisma } from "@/lib/db";
+import { getSiteSetting } from "@/lib/settings";
 import { PageHeader } from "@/components/public/page-header";
 
 export default async function AboutPage() {
-  const partners = await prisma.partner.findMany({
-    where: { isActive: true },
-    orderBy: { order: "asc" },
-  });
+  const [partners, about] = await Promise.all([
+    prisma.partner.findMany({ where: { isActive: true }, orderBy: { order: "asc" } }),
+    getSiteSetting("about.content"),
+  ]);
 
   return (
     <div>
@@ -17,19 +18,19 @@ export default async function AboutPage() {
         <div className="grid gap-8 sm:grid-cols-2">
           <div>
             <h2 className="text-lg font-semibold text-neutral-900">Our Vision</h2>
-            <p className="mt-2 text-sm text-neutral-600">Editable from the Admin Portal.</p>
+            <p className="mt-2 text-sm text-neutral-600">{about.vision}</p>
           </div>
           <div>
             <h2 className="text-lg font-semibold text-neutral-900">Our Mission</h2>
-            <p className="mt-2 text-sm text-neutral-600">Editable from the Admin Portal.</p>
+            <p className="mt-2 text-sm text-neutral-600">{about.mission}</p>
           </div>
           <div>
-            <h2 className="text-lg font-semibold text-neutral-900">Core Values</h2>
-            <p className="mt-2 text-sm text-neutral-600">Editable from the Admin Portal.</p>
+            <h2 className="text-lg font-semibold text-neutral-900">Our Commitment</h2>
+            <p className="mt-2 text-sm text-neutral-600">{about.coreValues}</p>
           </div>
           <div>
             <h2 className="text-lg font-semibold text-neutral-900">Why Choose Avepo</h2>
-            <p className="mt-2 text-sm text-neutral-600">Editable from the Admin Portal.</p>
+            <p className="mt-2 text-sm text-neutral-600">{about.whyChooseUs}</p>
           </div>
         </div>
 

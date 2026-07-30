@@ -60,8 +60,16 @@ export async function updateSiteSettings(formData: FormData) {
     gaMeasurementId: String(formData.get("gaMeasurementId") ?? ""),
   });
 
+  await upsert("about.content", {
+    vision: String(formData.get("aboutVision") ?? ""),
+    mission: String(formData.get("aboutMission") ?? ""),
+    coreValues: String(formData.get("aboutCoreValues") ?? ""),
+    whyChooseUs: String(formData.get("aboutWhyChooseUs") ?? ""),
+  });
+
   // Site settings back every public page (header/footer/hero/widgets),
   // so revalidate broadly rather than trying to enumerate every route.
   revalidatePath("/", "layout");
+  revalidatePath("/about");
   revalidatePath("/admin/settings");
 }

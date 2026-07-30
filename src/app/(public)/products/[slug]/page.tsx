@@ -82,7 +82,7 @@ export default async function ProductDetailPage({
 
         <div>
           {product.category && (
-            <div className="text-sm text-green-700">{product.category.name}</div>
+            <div className="text-sm text-[var(--brand-primary)]">{product.category.name}</div>
           )}
           <h1 className="mt-1 text-2xl font-bold text-neutral-900">{product.name}</h1>
 
@@ -95,7 +95,7 @@ export default async function ProductDetailPage({
           )}
 
           {product.price && (
-            <div className="mt-3 text-xl font-semibold text-green-800">
+            <div className="mt-3 text-xl font-semibold text-[var(--brand-primary-dark)]">
               KES {product.price.toString()}
             </div>
           )}

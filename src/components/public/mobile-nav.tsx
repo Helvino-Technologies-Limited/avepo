@@ -48,7 +48,7 @@ export function MobileNav() {
               key={item.href}
               href={item.href}
               onClick={() => setIsOpen(false)}
-              className="rounded-md px-2 py-2 text-sm text-neutral-700 hover:bg-green-50 hover:text-green-800"
+              className="rounded-md px-2 py-2 text-sm text-neutral-700 hover:bg-green-50 hover:text-[var(--brand-primary-dark)]"
             >
               {item.label}
             </Link>
@@ -56,11 +56,11 @@ export function MobileNav() {
           <Link
             href="/cart"
             onClick={() => setIsOpen(false)}
-            className="flex items-center gap-2 rounded-md px-2 py-2 text-sm text-neutral-700 hover:bg-green-50 hover:text-green-800"
+            className="flex items-center gap-2 rounded-md px-2 py-2 text-sm text-neutral-700 hover:bg-green-50 hover:text-[var(--brand-primary-dark)]"
           >
             Order Cart
             {totalCount > 0 && (
-              <span className="rounded-full bg-green-700 px-1.5 py-0.5 text-xs text-white">
+              <span className="rounded-full bg-[var(--brand-primary)] px-1.5 py-0.5 text-xs text-white">
                 {totalCount}
               </span>
             )}

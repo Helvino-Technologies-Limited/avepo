@@ -29,6 +29,12 @@ export type FloatingWidgets = {
   liveChat: boolean;
 };
 export type AnalyticsSettings = { gaMeasurementId: string };
+export type AboutContent = {
+  vision: string;
+  mission: string;
+  coreValues: string;
+  whyChooseUs: string;
+};
 
 const DEFAULTS = {
   "contact.general": { phone: "0722976171", email: "avepoent@gmail.com" } as ContactSettings,
@@ -51,7 +57,9 @@ const DEFAULTS = {
     posterImage: "",
   } as HomepageHero,
   "branding.logo": { url: "" } as BrandingLogo,
-  "theme.colors": { primary: "#16a34a", secondary: "#166534", accent: "#f59e0b" } as ThemeColors,
+  // A muted, "faded" farming green rather than a bright saturated green —
+  // admin can always change this from Site Settings.
+  "theme.colors": { primary: "#5b8c5a", secondary: "#3f6b47", accent: "#c99a3d" } as ThemeColors,
   "widgets.floating": {
     whatsapp: true,
     call: true,
@@ -60,6 +68,14 @@ const DEFAULTS = {
     liveChat: false,
   } as FloatingWidgets,
   "analytics.ga": { gaMeasurementId: "" } as AnalyticsSettings,
+  "about.content": {
+    vision: "Technology dissemination and affordable farm input access in rural areas.",
+    mission: "Agriculture for Livelihood — helping every farmer in Siaya County farm smarter and more profitably.",
+    coreValues:
+      "We're committed to making modern farming technology and quality agro-inputs accessible and affordable for every farmer in our community.",
+    whyChooseUs:
+      "With over 15 years of experience serving farmers across Siaya County, Avepo combines genuine agro-input supply, animal health services, and Smart Farm expertise — all from branches close to home.",
+  } as AboutContent,
 };
 
 export type SettingKey = keyof typeof DEFAULTS;

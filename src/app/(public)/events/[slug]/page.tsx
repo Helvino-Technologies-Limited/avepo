@@ -49,7 +49,7 @@ export default async function EventDetailPage({
         )}
 
         <div className="mt-4 flex flex-wrap gap-4 text-sm text-neutral-600">
-          <span className="rounded-full bg-green-100 px-3 py-1 text-green-800">
+          <span className="rounded-full bg-green-100 px-3 py-1 text-[var(--brand-primary-dark)]">
             {STATUS_LABEL[getEventStatus(event)]}
           </span>
           <span>{event.startDate.toLocaleString()} — {event.endDate.toLocaleString()}</span>
@@ -63,7 +63,7 @@ export default async function EventDetailPage({
             href={event.registrationLink}
             target="_blank"
             rel="noreferrer"
-            className="mt-6 inline-block rounded-md bg-green-700 px-5 py-2.5 text-sm font-semibold text-white hover:bg-green-800"
+            className="mt-6 inline-block rounded-md bg-[var(--brand-primary)] px-5 py-2.5 text-sm font-semibold text-white hover:bg-[var(--brand-primary-dark)]"
           >
             Register for this Event
           </a>

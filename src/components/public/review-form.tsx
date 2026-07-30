@@ -10,7 +10,7 @@ export function ReviewForm({ productId }: { productId: string }) {
 
   if (state.success) {
     return (
-      <p className="rounded-md border border-green-200 bg-green-50 p-3 text-sm text-green-800">
+      <p className="rounded-md border border-green-200 bg-green-50 p-3 text-sm text-[var(--brand-primary-dark)]">
         Thanks for your review — it will appear once approved by our team.
       </p>
     );
@@ -24,9 +24,9 @@ export function ReviewForm({ productId }: { productId: string }) {
           name="authorName"
           placeholder="Your name"
           required
-          className="rounded-md border border-neutral-300 px-3 py-2 text-sm"
+          className="rounded-md border border-neutral-300 bg-white px-3 py-2 text-sm text-neutral-900"
         />
-        <select name="rating" required defaultValue="5" className="rounded-md border border-neutral-300 px-3 py-2 text-sm">
+        <select name="rating" required defaultValue="5" className="rounded-md border border-neutral-300 bg-white px-3 py-2 text-sm text-neutral-900">
           <option value="5">★★★★★ (5)</option>
           <option value="4">★★★★☆ (4)</option>
           <option value="3">★★★☆☆ (3)</option>
@@ -39,13 +39,13 @@ export function ReviewForm({ productId }: { productId: string }) {
         placeholder="Share your experience with this product..."
         required
         rows={3}
-        className="w-full rounded-md border border-neutral-300 px-3 py-2 text-sm"
+        className="w-full rounded-md border border-neutral-300 bg-white px-3 py-2 text-sm text-neutral-900"
       />
       {state.error && <p className="text-sm text-red-600">{state.error}</p>}
       <button
         type="submit"
         disabled={isPending}
-        className="rounded-md bg-green-700 px-4 py-2 text-sm font-medium text-white hover:bg-green-800 disabled:opacity-60"
+        className="rounded-md bg-[var(--brand-primary)] px-4 py-2 text-sm font-medium text-white hover:bg-[var(--brand-primary-dark)] disabled:opacity-60"
       >
         {isPending ? "Submitting..." : "Submit Review"}
       </button>

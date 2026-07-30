@@ -18,7 +18,7 @@ export default async function ProductsPage() {
       />
       <div className="mx-auto max-w-6xl px-4 py-12">
         {products.length === 0 ? (
-          <EmptyState message="No products published yet. Add products from the Admin Portal." />
+          <EmptyState message="No products published yet. Please check back soon." />
         ) : (
           <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
             {products.map((product) => (
@@ -37,12 +37,12 @@ export default async function ProductsPage() {
                     </div>
                   )}
                   <div className="mt-2 text-xs text-neutral-500">{product.category?.name}</div>
-                  <div className="font-medium text-neutral-900 hover:text-green-800">
+                  <div className="font-medium text-neutral-900 hover:text-[var(--brand-primary-dark)]">
                     {product.name}
                   </div>
                 </Link>
                 {product.price && (
-                  <div className="mt-1 text-sm font-semibold text-green-800">
+                  <div className="mt-1 text-sm font-semibold text-[var(--brand-primary-dark)]">
                     KES {product.price.toString()}
                   </div>
                 )}

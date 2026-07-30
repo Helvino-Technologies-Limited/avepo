@@ -53,13 +53,13 @@ export function CartView({ branches }: { branches: Branch[] }) {
 
   if (orderId) {
     return (
-      <div className="rounded-lg border border-green-200 bg-green-50 p-6 text-sm text-green-800">
+      <div className="rounded-lg border border-green-200 bg-green-50 p-6 text-sm text-[var(--brand-primary-dark)]">
         <p className="font-medium">Order received — thank you!</p>
         <p className="mt-1">
           Our team will contact you shortly to confirm availability and pricing. Your reference
           number is <span className="font-mono">{orderId}</span>.
         </p>
-        <Link href="/products" className="mt-4 inline-block text-green-700 underline">
+        <Link href="/products" className="mt-4 inline-block text-[var(--brand-primary)] underline">
           Continue browsing products
         </Link>
       </div>
@@ -70,7 +70,7 @@ export function CartView({ branches }: { branches: Branch[] }) {
     return (
       <div className="rounded-lg border border-dashed border-neutral-300 p-8 text-center text-sm text-neutral-500">
         Your order cart is empty.{" "}
-        <Link href="/products" className="text-green-700 underline">
+        <Link href="/products" className="text-[var(--brand-primary)] underline">
           Browse products
         </Link>
         .
@@ -101,7 +101,7 @@ export function CartView({ branches }: { branches: Branch[] }) {
                 min={1}
                 value={item.quantity}
                 onChange={(e) => updateQuantity(item.productId, Number(e.target.value))}
-                className="w-16 rounded-md border border-neutral-300 px-2 py-1 text-sm"
+                className="w-16 rounded-md border border-neutral-300 bg-white px-2 py-1 text-sm text-neutral-900"
               />
               <button
                 type="button"
@@ -127,26 +127,26 @@ export function CartView({ branches }: { branches: Branch[] }) {
           required
           value={customerName}
           onChange={(e) => setCustomerName(e.target.value)}
-          className="w-full rounded-md border border-neutral-300 px-3 py-2 text-sm"
+          className="w-full rounded-md border border-neutral-300 bg-white px-3 py-2 text-sm text-neutral-900"
         />
         <input
           placeholder="Phone Number"
           required
           value={phone}
           onChange={(e) => setPhone(e.target.value)}
-          className="w-full rounded-md border border-neutral-300 px-3 py-2 text-sm"
+          className="w-full rounded-md border border-neutral-300 bg-white px-3 py-2 text-sm text-neutral-900"
         />
         <input
           placeholder="Email (optional)"
           type="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          className="w-full rounded-md border border-neutral-300 px-3 py-2 text-sm"
+          className="w-full rounded-md border border-neutral-300 bg-white px-3 py-2 text-sm text-neutral-900"
         />
         <select
           value={branchId}
           onChange={(e) => setBranchId(e.target.value)}
-          className="w-full rounded-md border border-neutral-300 px-3 py-2 text-sm"
+          className="w-full rounded-md border border-neutral-300 bg-white px-3 py-2 text-sm text-neutral-900"
         >
           <option value="">Preferred pickup branch (optional)</option>
           {branches.map((b) => (
@@ -160,7 +160,7 @@ export function CartView({ branches }: { branches: Branch[] }) {
           rows={3}
           value={notes}
           onChange={(e) => setNotes(e.target.value)}
-          className="w-full rounded-md border border-neutral-300 px-3 py-2 text-sm"
+          className="w-full rounded-md border border-neutral-300 bg-white px-3 py-2 text-sm text-neutral-900"
         />
 
         {error && <p className="text-sm text-red-600">{error}</p>}
@@ -168,7 +168,7 @@ export function CartView({ branches }: { branches: Branch[] }) {
         <button
           type="submit"
           disabled={isSubmitting}
-          className="rounded-md bg-green-700 px-5 py-2.5 text-sm font-semibold text-white hover:bg-green-800 disabled:opacity-60"
+          className="rounded-md bg-[var(--brand-primary)] px-5 py-2.5 text-sm font-semibold text-white hover:bg-[var(--brand-primary-dark)] disabled:opacity-60"
         >
           {isSubmitting ? "Submitting..." : "Submit Order Request"}
         </button>

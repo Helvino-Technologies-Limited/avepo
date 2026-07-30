@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { prisma } from "@/lib/db";
 
 async function getCounts() {
@@ -14,6 +15,10 @@ async function getCounts() {
     jobs,
     pendingOrders,
     pendingReviews,
+    testimonials,
+    successStories,
+    knowledgeArticles,
+    downloads,
   ] = await Promise.all([
     prisma.product.count(),
     prisma.service.count(),
@@ -27,6 +32,10 @@ async function getCounts() {
     prisma.jobPosting.count({ where: { isActive: true } }),
     prisma.order.count({ where: { status: "PENDING" } }),
     prisma.review.count({ where: { isApproved: false } }),
+    prisma.testimonial.count(),
+    prisma.successStory.count(),
+    prisma.knowledgeArticle.count(),
+    prisma.download.count(),
   ]);
 
   return {
@@ -42,6 +51,10 @@ async function getCounts() {
     jobs,
     pendingOrders,
     pendingReviews,
+    testimonials,
+    successStories,
+    knowledgeArticles,
+    downloads,
   };
 }
 
@@ -63,10 +76,38 @@ export default async function DashboardPage() {
     { label: "Open Job Postings", value: counts.jobs },
   ];
 
+  const gettingStarted = [
+    { label: "Add your first products", count: counts.products, href: "/admin/products" },
+    { label: "Publish a news post", count: counts.news, href: "/admin/news" },
+    { label: "Add an upcoming event", count: counts.events, href: "/admin/events" },
+    { label: "Add farmer testimonials", count: counts.testimonials, href: "/admin/testimonials" },
+    { label: "Add a success story", count: counts.successStories, href: "/admin/success-stories" },
+    { label: "Publish a knowledge article", count: counts.knowledgeArticles, href: "/admin/knowledge-centre" },
+    { label: "Upload a downloadable brochure/price list", count: counts.downloads, href: "/admin/downloads" },
+    { label: "Post a job opening", count: counts.jobs, href: "/admin/careers" },
+  ].filter((item) => item.count === 0);
+
   return (
     <div>
       <h1 className="text-2xl font-semibold text-neutral-900">Dashboard</h1>
       <p className="mt-1 text-sm text-neutral-500">Overview of your website content.</p>
+
+      {gettingStarted.length > 0 && (
+        <div className="mt-6 rounded-xl border border-amber-200 bg-amber-50 p-4">
+          <h2 className="text-sm font-semibold text-amber-900">
+            Getting Started — these sections are empty on the public site
+          </h2>
+          <ul className="mt-2 space-y-1">
+            {gettingStarted.map((item) => (
+              <li key={item.href}>
+                <Link href={item.href} className="text-sm text-amber-800 underline hover:text-amber-900">
+                  {item.label}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
 
       <div className="mt-6 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
         {stats.map((stat) => (

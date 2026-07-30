@@ -16,7 +16,7 @@ export default async function KnowledgeCentrePage() {
       />
       <div className="mx-auto max-w-6xl px-4 py-12">
         {articles.length === 0 ? (
-          <EmptyState message="No articles published yet. Add articles from the Admin Portal." />
+          <EmptyState message="No articles published yet. Please check back soon." />
         ) : (
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
             {articles.map((article) => (
@@ -33,7 +33,7 @@ export default async function KnowledgeCentrePage() {
                     className="mb-3 h-32 w-full rounded object-cover"
                   />
                 )}
-                <div className="text-xs uppercase text-green-700">
+                <div className="text-xs uppercase text-[var(--brand-primary)]">
                   {article.category.replaceAll("_", " ")}
                 </div>
                 <div className="font-medium text-neutral-900">{article.title}</div>

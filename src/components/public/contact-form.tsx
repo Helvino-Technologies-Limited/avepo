@@ -10,7 +10,7 @@ export function ContactForm() {
 
   if (state.success) {
     return (
-      <div className="rounded-lg border border-green-200 bg-green-50 p-4 text-sm text-green-800">
+      <div className="rounded-lg border border-green-200 bg-green-50 p-4 text-sm text-[var(--brand-primary-dark)]">
         Thank you — your message has been received. We&apos;ll get back to you shortly.
       </div>
     );
@@ -27,7 +27,7 @@ export function ContactForm() {
             id="name"
             name="name"
             required
-            className="mt-1 w-full rounded-md border border-neutral-300 px-3 py-2 text-sm"
+            className="mt-1 w-full rounded-md border border-neutral-300 bg-white px-3 py-2 text-sm text-neutral-900"
           />
         </div>
         <div>
@@ -39,7 +39,7 @@ export function ContactForm() {
             name="email"
             type="email"
             required
-            className="mt-1 w-full rounded-md border border-neutral-300 px-3 py-2 text-sm"
+            className="mt-1 w-full rounded-md border border-neutral-300 bg-white px-3 py-2 text-sm text-neutral-900"
           />
         </div>
         <div>
@@ -49,7 +49,7 @@ export function ContactForm() {
           <input
             id="phone"
             name="phone"
-            className="mt-1 w-full rounded-md border border-neutral-300 px-3 py-2 text-sm"
+            className="mt-1 w-full rounded-md border border-neutral-300 bg-white px-3 py-2 text-sm text-neutral-900"
           />
         </div>
         <div>
@@ -59,7 +59,7 @@ export function ContactForm() {
           <input
             id="subject"
             name="subject"
-            className="mt-1 w-full rounded-md border border-neutral-300 px-3 py-2 text-sm"
+            className="mt-1 w-full rounded-md border border-neutral-300 bg-white px-3 py-2 text-sm text-neutral-900"
           />
         </div>
       </div>
@@ -73,7 +73,7 @@ export function ContactForm() {
           name="message"
           required
           rows={4}
-          className="mt-1 w-full rounded-md border border-neutral-300 px-3 py-2 text-sm"
+          className="mt-1 w-full rounded-md border border-neutral-300 bg-white px-3 py-2 text-sm text-neutral-900"
         />
       </div>
 
@@ -82,7 +82,7 @@ export function ContactForm() {
       <button
         type="submit"
         disabled={isPending}
-        className="rounded-md bg-green-700 px-5 py-2.5 text-sm font-semibold text-white hover:bg-green-800 disabled:opacity-60"
+        className="rounded-md bg-[var(--brand-primary)] px-5 py-2.5 text-sm font-semibold text-white hover:bg-[var(--brand-primary-dark)] disabled:opacity-60"
       >
         {isPending ? "Sending..." : "Send Message"}
       </button>
