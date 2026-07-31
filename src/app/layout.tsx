@@ -48,6 +48,12 @@ export async function generateMetadata(): Promise<Metadata> {
       follow: true,
       googleBot: { index: true, follow: true },
     },
+    // Paste the verification code Google Search Console gives you into the
+    // GOOGLE_SITE_VERIFICATION env var (Vercel → Settings → Environment
+    // Variables) once you add avepo.org as a property — no code change needed.
+    ...(process.env.GOOGLE_SITE_VERIFICATION
+      ? { verification: { google: process.env.GOOGLE_SITE_VERIFICATION } }
+      : {}),
     openGraph: {
       title: SITE_TITLE,
       description: SITE_DESCRIPTION,

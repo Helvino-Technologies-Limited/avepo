@@ -24,17 +24,18 @@ export async function Header() {
   return (
     <header className="sticky top-0 z-50 border-b border-neutral-200 bg-white/95 shadow-sm backdrop-blur">
       <div className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-2">
-        <Link href="/" className="flex shrink-0 items-center gap-2 text-lg font-bold text-[var(--brand-primary-dark)]">
+        <Link href="/" className="flex min-w-0 shrink-0 items-center gap-2">
           {logo.url ? (
             // eslint-disable-next-line @next/next/no-img-element
             <img
               src={logo.url}
               alt="Avepo Enterprises Limited"
-              className="h-12 w-auto object-contain sm:h-16"
+              className="h-10 w-auto shrink-0 object-contain sm:h-16"
             />
-          ) : (
-            "Avepo Enterprises Limited"
-          )}
+          ) : null}
+          <span className="max-w-[8.5rem] truncate text-sm font-extrabold tracking-tight text-[#A8670B] sm:max-w-none sm:text-xl">
+            Avepo Enterprises Limited
+          </span>
         </Link>
 
         <nav className="hidden flex-wrap items-center gap-x-4 gap-y-1 text-sm text-neutral-700 md:flex">
@@ -46,13 +47,13 @@ export async function Header() {
           <CartBadge />
         </nav>
 
-        <div className="flex shrink-0 items-center gap-3">
+        <div className="flex shrink-0 items-center gap-2 sm:gap-3">
           {logo.secondaryUrl && (
             // eslint-disable-next-line @next/next/no-img-element
             <img
               src={logo.secondaryUrl}
-              alt=""
-              className="hidden h-11 w-auto object-contain sm:block sm:h-14"
+              alt="Avepo Enterprises Limited partner badge"
+              className="h-8 w-auto object-contain sm:h-14"
             />
           )}
           <MobileNav />
