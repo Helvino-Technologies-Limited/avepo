@@ -50,7 +50,7 @@ const DEFAULT_SETTINGS: { key: string; value: unknown }[] = [
   },
   {
     key: "theme.colors",
-    value: { primary: "#16a34a", secondary: "#166534", accent: "#f59e0b" },
+    value: { primary: "#EA9E27", secondary: "#073C42", accent: "#07586B" },
   },
   {
     key: "widgets.floating",
@@ -59,8 +59,9 @@ const DEFAULT_SETTINGS: { key: string; value: unknown }[] = [
   {
     key: "homepage.hero",
     value: {
-      headline: "Growing Siaya County, One Farm at a Time",
-      subheadline: "Agro-inputs, animal health, and Smart Farm expertise from Avepo Enterprises.",
+      headline: "Welcome to Avepo Enterprises Limited",
+      subheadline:
+        "Our Farms, Our Future — agro-inputs, animal health, and Smart Farm expertise for farmers across Kenya.",
       ctaLabel: "Explore Products",
       ctaHref: "/products",
     },

@@ -53,7 +53,7 @@ export function CartView({ branches }: { branches: Branch[] }) {
 
   if (orderId) {
     return (
-      <div className="rounded-lg border border-green-200 bg-green-50 p-6 text-sm text-[var(--brand-primary-dark)]">
+      <div className="rounded-lg border border-[var(--brand-accent)]/30 bg-[var(--brand-accent)]/10 p-6 text-sm text-[var(--brand-primary-dark)]">
         <p className="font-medium">Order received — thank you!</p>
         <p className="mt-1">
           Our team will contact you shortly to confirm availability and pricing. Your reference

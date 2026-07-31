@@ -15,7 +15,7 @@ export function SuccessStorySubmitForm() {
 
   if (state.success) {
     return (
-      <p className="rounded-md border border-green-200 bg-green-50 p-4 text-sm text-green-800">
+      <p className="rounded-md border border-[var(--brand-accent)]/30 bg-[var(--brand-accent)]/10 p-4 text-sm text-[var(--brand-primary-dark)]">
         Thank you for sharing your story — it will appear here once our team reviews it.
       </p>
     );

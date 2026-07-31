@@ -1,5 +1,12 @@
+import type { Metadata } from "next";
 import { PageHeader } from "@/components/public/page-header";
 import { unsubscribe } from "./actions";
+
+export const metadata: Metadata = {
+  title: "Unsubscribed",
+  description: "Manage your Avepo Enterprises Limited email subscription preferences.",
+  robots: { index: false, follow: true },
+};
 
 export default async function UnsubscribePage({
   searchParams,

@@ -1,6 +1,19 @@
+import type { Metadata } from "next";
 import { prisma } from "@/lib/db";
 import { PageHeader, EmptyState } from "@/components/public/page-header";
 import { ExpandableCard } from "@/components/public/expandable-card";
+import { SITE_URL } from "@/lib/site";
+
+const TITLE = "Smart Farm";
+const DESCRIPTION =
+  "Explore Avepo Enterprises Limited's Demonstration Farm, Greenhouse, Dairy Unit, Poultry, and modern Smart Farm techniques in action.";
+
+export const metadata: Metadata = {
+  title: TITLE,
+  description: DESCRIPTION,
+  alternates: { canonical: `${SITE_URL}/smart-farm` },
+  openGraph: { title: TITLE, description: DESCRIPTION, url: `${SITE_URL}/smart-farm` },
+};
 
 export default async function SmartFarmPage() {
   const sections = await prisma.smartFarmSection.findMany({

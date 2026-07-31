@@ -44,7 +44,7 @@ export function PublicVideoUpload({
       />
       {isPending && <p className="text-xs text-neutral-500">Uploading (this may take a moment)...</p>}
       {error && <p className="text-xs text-red-600">{error}</p>}
-      {url && <p className="mt-1 text-xs text-green-700">Video uploaded ✓</p>}
+      {url && <p className="mt-1 text-xs text-[var(--brand-primary-dark)]">Video uploaded ✓</p>}
     </div>
   );
 }

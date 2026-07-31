@@ -4,6 +4,9 @@ import { prisma } from "@/lib/db";
 import { PageHeader } from "@/components/public/page-header";
 import { stripHtml } from "@/lib/html";
 import { sanitizeHtml } from "@/lib/sanitize";
+import { ArticleSchema } from "@/components/public/article-schema";
+import { BreadcrumbSchema } from "@/components/public/breadcrumb-schema";
+import { SITE_URL } from "@/lib/site";
 
 export async function generateMetadata({
   params,
@@ -15,14 +18,25 @@ export async function generateMetadata({
   if (!post) return {};
 
   const description = post.body ? stripHtml(post.body).slice(0, 160) : undefined;
+  const url = `${SITE_URL}/news/${post.slug}`;
+  const images = post.coverImage ? [post.coverImage] : undefined;
 
   return {
     title: `${post.title} | Avepo News`,
     description,
+    alternates: { canonical: url },
     openGraph: {
       title: post.title,
       description,
-      images: post.coverImage ? [post.coverImage] : undefined,
+      url,
+      type: "article",
+      images,
+    },
+    twitter: {
+      card: images ? "summary_large_image" : "summary",
+      title: post.title,
+      description,
+      images,
     },
   };
 }
@@ -33,11 +47,25 @@ export default async function NewsDetailPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const post = await prisma.newsPost.findUnique({ where: { slug } });
+  const post = await prisma.newsPost.findUnique({
+    where: { slug },
+    include: { author: { select: { name: true } } },
+  });
   if (!post || post.status !== "PUBLISHED") notFound();
 
   return (
     <div>
+      <ArticleSchema
+        post={post}
+        description={post.body ? stripHtml(post.body).slice(0, 160) : undefined}
+      />
+      <BreadcrumbSchema
+        items={[
+          { name: "Home", url: SITE_URL },
+          { name: "News", url: `${SITE_URL}/news` },
+          { name: post.title, url: `${SITE_URL}/news/${post.slug}` },
+        ]}
+      />
       <PageHeader
         title={post.title}
         subtitle={post.publishAt ? post.publishAt.toLocaleDateString() : undefined}

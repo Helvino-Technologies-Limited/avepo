@@ -10,7 +10,7 @@ export function ReviewForm({ productId }: { productId: string }) {
 
   if (state.success) {
     return (
-      <p className="rounded-md border border-green-200 bg-green-50 p-3 text-sm text-[var(--brand-primary-dark)]">
+      <p className="rounded-md border border-[var(--brand-accent)]/30 bg-[var(--brand-accent)]/10 p-3 text-sm text-[var(--brand-primary-dark)]">
         Thanks for your review — it will appear once approved by our team.
       </p>
     );

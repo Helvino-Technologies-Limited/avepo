@@ -22,9 +22,9 @@ export async function updateSiteSettings(formData: FormData) {
   });
 
   await upsert("theme.colors", {
-    primary: String(formData.get("primaryColor") ?? "#16a34a"),
-    secondary: String(formData.get("secondaryColor") ?? "#166534"),
-    accent: String(formData.get("accentColor") ?? "#f59e0b"),
+    primary: String(formData.get("primaryColor") ?? "#EA9E27"),
+    secondary: String(formData.get("secondaryColor") ?? "#073C42"),
+    accent: String(formData.get("accentColor") ?? "#07586B"),
   });
 
   await upsert("contact.general", {

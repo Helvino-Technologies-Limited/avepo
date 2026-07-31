@@ -10,7 +10,7 @@ export function TestimonialSubmitForm() {
 
   if (state.success) {
     return (
-      <p className="rounded-md border border-green-200 bg-green-50 p-3 text-sm text-green-800">
+      <p className="rounded-md border border-[var(--brand-accent)]/30 bg-[var(--brand-accent)]/10 p-3 text-sm text-[var(--brand-primary-dark)]">
         Thank you for sharing your experience — it will appear here once our team reviews it.
       </p>
     );

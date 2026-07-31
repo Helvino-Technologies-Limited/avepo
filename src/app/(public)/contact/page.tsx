@@ -1,9 +1,22 @@
 import { Suspense } from "react";
+import type { Metadata } from "next";
 import { prisma } from "@/lib/db";
 import { getSiteSetting } from "@/lib/settings";
 import { PageHeader } from "@/components/public/page-header";
 import { ContactForm } from "@/components/public/contact-form";
 import { BranchCard } from "@/components/public/branch-card";
+import { SITE_URL } from "@/lib/site";
+
+const TITLE = "Contact Us";
+const DESCRIPTION =
+  "Get in touch with Avepo Enterprises Limited — reach our head office or any branch across Siaya County, Kenya.";
+
+export const metadata: Metadata = {
+  title: TITLE,
+  description: DESCRIPTION,
+  alternates: { canonical: `${SITE_URL}/contact` },
+  openGraph: { title: TITLE, description: DESCRIPTION, url: `${SITE_URL}/contact` },
+};
 
 export default async function ContactPage() {
   const [branches, contact] = await Promise.all([

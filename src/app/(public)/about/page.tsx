@@ -1,6 +1,19 @@
+import type { Metadata } from "next";
 import { prisma } from "@/lib/db";
 import { getSiteSetting } from "@/lib/settings";
 import { PageHeader } from "@/components/public/page-header";
+import { SITE_URL } from "@/lib/site";
+
+const TITLE = "About Us";
+const DESCRIPTION =
+  "About Avepo Enterprises Limited — Our Farms, Our Future. Serving farmers across Siaya County, Kenya with agro-inputs, animal health, and Smart Farm expertise for over 15 years.";
+
+export const metadata: Metadata = {
+  title: TITLE,
+  description: DESCRIPTION,
+  alternates: { canonical: `${SITE_URL}/about` },
+  openGraph: { title: TITLE, description: DESCRIPTION, url: `${SITE_URL}/about` },
+};
 
 export default async function AboutPage() {
   const [partners, about] = await Promise.all([

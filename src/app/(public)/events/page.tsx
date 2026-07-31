@@ -1,7 +1,21 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { prisma } from "@/lib/db";
 import { PageHeader, EmptyState } from "@/components/public/page-header";
 import { getEventStatus } from "@/lib/events";
+import { BreadcrumbSchema } from "@/components/public/breadcrumb-schema";
+import { SITE_URL } from "@/lib/site";
+
+const TITLE = "Events";
+const DESCRIPTION =
+  "Agricultural exhibitions, field days, and farmer training sessions hosted by Avepo Enterprises Limited across Kenya.";
+
+export const metadata: Metadata = {
+  title: TITLE,
+  description: DESCRIPTION,
+  alternates: { canonical: `${SITE_URL}/events` },
+  openGraph: { title: TITLE, description: DESCRIPTION, url: `${SITE_URL}/events` },
+};
 
 const STATUS_LABEL: Record<string, string> = {
   UPCOMING: "Upcoming",
@@ -21,6 +35,7 @@ export default async function EventsPage() {
 
   return (
     <div>
+      <BreadcrumbSchema items={[{ name: "Home", url: SITE_URL }, { name: "Events", url: `${SITE_URL}/events` }]} />
       <PageHeader
         title="Events"
         subtitle="Agricultural exhibitions, field days, and farmer training sessions."
@@ -34,7 +49,7 @@ export default async function EventsPage() {
               <Link
                 key={event.id}
                 href={`/events/${event.slug}`}
-                className="block rounded-lg border border-neutral-200 p-4 hover:border-green-300"
+                className="block rounded-lg border border-neutral-200 p-4 hover:border-[var(--brand-primary)]"
               >
                 {event.coverImage && (
                   // eslint-disable-next-line @next/next/no-img-element

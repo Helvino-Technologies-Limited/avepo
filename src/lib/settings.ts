@@ -50,17 +50,18 @@ const DEFAULTS = {
     telegram: "",
   } as SocialLinks,
   "homepage.hero": {
-    headline: "Growing Siaya County, One Farm at a Time",
-    subheadline: "Agro-inputs, animal health, and Smart Farm expertise from Avepo Enterprises.",
+    headline: "Welcome to Avepo Enterprises Limited",
+    subheadline:
+      "Our Farms, Our Future — agro-inputs, animal health, and Smart Farm expertise for farmers across Kenya.",
     ctaLabel: "Explore Products",
     ctaHref: "/products",
     videoUrl: "",
     posterImage: "",
   } as HomepageHero,
   "branding.logo": { url: "", secondaryUrl: "" } as BrandingLogo,
-  // A muted, "faded" farming green rather than a bright saturated green —
-  // admin can always change this from Site Settings.
-  "theme.colors": { primary: "#5b8c5a", secondary: "#3f6b47", accent: "#c99a3d" } as ThemeColors,
+  // Gold, deep navy-teal, and teal — sampled directly from the Avepo logo
+  // (src/app/icon.jpg). Admin can always change this from Site Settings.
+  "theme.colors": { primary: "#EA9E27", secondary: "#073C42", accent: "#07586B" } as ThemeColors,
   "widgets.floating": {
     whatsapp: true,
     call: true,

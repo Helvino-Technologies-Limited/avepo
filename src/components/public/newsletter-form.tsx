@@ -9,7 +9,7 @@ export function NewsletterForm() {
   const [state, formAction, isPending] = useActionState(subscribeToNewsletter, initialState);
 
   if (state.success) {
-    return <p className="text-sm text-green-300">Thanks for subscribing!</p>;
+    return <p className="text-sm text-[var(--brand-primary)]">Thanks for subscribing!</p>;
   }
 
   return (

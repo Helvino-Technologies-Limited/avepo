@@ -1,7 +1,21 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { prisma } from "@/lib/db";
 import { PageHeader, EmptyState } from "@/components/public/page-header";
 import { AddToCartButton } from "@/components/public/add-to-cart-button";
+import { BreadcrumbSchema } from "@/components/public/breadcrumb-schema";
+import { SITE_URL } from "@/lib/site";
+
+const TITLE = "Products";
+const DESCRIPTION =
+  "Browse our full range of fertilizers, seeds, herbicides, farm tools, veterinary products, and animal feeds — all from Avepo Enterprises Limited.";
+
+export const metadata: Metadata = {
+  title: TITLE,
+  description: DESCRIPTION,
+  alternates: { canonical: `${SITE_URL}/products` },
+  openGraph: { title: TITLE, description: DESCRIPTION, url: `${SITE_URL}/products` },
+};
 
 export default async function ProductsPage() {
   const products = await prisma.product.findMany({
@@ -12,6 +26,12 @@ export default async function ProductsPage() {
 
   return (
     <div>
+      <BreadcrumbSchema
+        items={[
+          { name: "Home", url: SITE_URL },
+          { name: "Products", url: `${SITE_URL}/products` },
+        ]}
+      />
       <PageHeader
         title="Products"
         subtitle="Fertilizers, seeds, herbicides, farm tools, veterinary products, and animal feeds."

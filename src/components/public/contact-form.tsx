@@ -13,7 +13,7 @@ export function ContactForm() {
 
   if (state.success) {
     return (
-      <div className="rounded-lg border border-green-200 bg-green-50 p-4 text-sm text-[var(--brand-primary-dark)]">
+      <div className="rounded-lg border border-[var(--brand-accent)]/30 bg-[var(--brand-accent)]/10 p-4 text-sm text-[var(--brand-primary-dark)]">
         Thank you — your message has been received. We&apos;ll get back to you shortly.
       </div>
     );

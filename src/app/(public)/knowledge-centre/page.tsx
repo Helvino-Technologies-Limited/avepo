@@ -1,6 +1,20 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { prisma } from "@/lib/db";
 import { PageHeader, EmptyState } from "@/components/public/page-header";
+import { BreadcrumbSchema } from "@/components/public/breadcrumb-schema";
+import { SITE_URL } from "@/lib/site";
+
+const TITLE = "Knowledge Centre";
+const DESCRIPTION =
+  "Crop production, livestock, soil health, pest management, and climate-smart agriculture articles from Avepo Enterprises Limited.";
+
+export const metadata: Metadata = {
+  title: TITLE,
+  description: DESCRIPTION,
+  alternates: { canonical: `${SITE_URL}/knowledge-centre` },
+  openGraph: { title: TITLE, description: DESCRIPTION, url: `${SITE_URL}/knowledge-centre` },
+};
 
 export default async function KnowledgeCentrePage() {
   const articles = await prisma.knowledgeArticle.findMany({
@@ -10,6 +24,12 @@ export default async function KnowledgeCentrePage() {
 
   return (
     <div>
+      <BreadcrumbSchema
+        items={[
+          { name: "Home", url: SITE_URL },
+          { name: "Knowledge Centre", url: `${SITE_URL}/knowledge-centre` },
+        ]}
+      />
       <PageHeader
         title="Agricultural Knowledge Centre"
         subtitle="Crop production, livestock, soil health, pest management, and climate-smart agriculture."
@@ -23,7 +43,7 @@ export default async function KnowledgeCentrePage() {
               <Link
                 key={article.id}
                 href={`/knowledge-centre/${article.slug}`}
-                className="block rounded-lg border border-neutral-200 p-4 hover:border-green-300"
+                className="block rounded-lg border border-neutral-200 p-4 hover:border-[var(--brand-primary)]"
               >
                 {article.coverImage && (
                   // eslint-disable-next-line @next/next/no-img-element

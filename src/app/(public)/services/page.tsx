@@ -1,6 +1,19 @@
+import type { Metadata } from "next";
 import { prisma } from "@/lib/db";
 import { PageHeader, EmptyState } from "@/components/public/page-header";
 import { Carousel, CarouselItem } from "@/components/public/carousel";
+import { SITE_URL } from "@/lib/site";
+
+const TITLE = "Services";
+const DESCRIPTION =
+  "Farm consultancy, soil testing, animal health, artificial insemination, training, and more from Avepo Enterprises Limited.";
+
+export const metadata: Metadata = {
+  title: TITLE,
+  description: DESCRIPTION,
+  alternates: { canonical: `${SITE_URL}/services` },
+  openGraph: { title: TITLE, description: DESCRIPTION, url: `${SITE_URL}/services` },
+};
 
 export default async function ServicesPage() {
   const services = await prisma.service.findMany({

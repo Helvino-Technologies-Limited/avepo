@@ -1,6 +1,19 @@
+import type { Metadata } from "next";
 import { prisma } from "@/lib/db";
 import { PageHeader, EmptyState } from "@/components/public/page-header";
 import { SuccessStorySubmitForm } from "@/components/public/success-story-form";
+import { SITE_URL } from "@/lib/site";
+
+const TITLE = "Success Stories";
+const DESCRIPTION =
+  "Real before-and-after results from farmers who've worked with Avepo Enterprises Limited across Siaya County, Kenya.";
+
+export const metadata: Metadata = {
+  title: TITLE,
+  description: DESCRIPTION,
+  alternates: { canonical: `${SITE_URL}/success-stories` },
+  openGraph: { title: TITLE, description: DESCRIPTION, url: `${SITE_URL}/success-stories` },
+};
 
 function isRawVideoFile(url: string) {
   return /\.(mp4|webm|ogg)$/i.test(url);

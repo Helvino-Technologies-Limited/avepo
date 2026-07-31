@@ -1,6 +1,20 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { prisma } from "@/lib/db";
 import { PageHeader, EmptyState } from "@/components/public/page-header";
+import { BreadcrumbSchema } from "@/components/public/breadcrumb-schema";
+import { SITE_URL } from "@/lib/site";
+
+const TITLE = "Gallery";
+const DESCRIPTION =
+  "Browse photos and videos from Avepo Enterprises Limited events, products, Smart Farm demonstrations, branches, and the farmers we serve.";
+
+export const metadata: Metadata = {
+  title: TITLE,
+  description: DESCRIPTION,
+  alternates: { canonical: `${SITE_URL}/gallery` },
+  openGraph: { title: TITLE, description: DESCRIPTION, url: `${SITE_URL}/gallery` },
+};
 
 export default async function GalleryPage() {
   const albums = await prisma.galleryAlbum.findMany({
@@ -13,6 +27,7 @@ export default async function GalleryPage() {
 
   return (
     <div>
+      <BreadcrumbSchema items={[{ name: "Home", url: SITE_URL }, { name: "Gallery", url: `${SITE_URL}/gallery` }]} />
       <PageHeader
         title="Gallery"
         subtitle="Photos and videos from our events, products, Smart Farm, branches, and farmers."

@@ -6,10 +6,27 @@ import { Carousel, CarouselItem } from "@/components/public/carousel";
 import { AddToCartButton } from "@/components/public/add-to-cart-button";
 import { TestimonialSubmitForm } from "@/components/public/testimonial-form";
 
+function SectionHeading({ children }: { children: React.ReactNode }) {
+  return (
+    <div>
+      <h2 className="text-xl font-semibold text-neutral-900">{children}</h2>
+      <span className="mt-2 block h-1 w-12 rounded-full bg-[var(--brand-primary)]" />
+    </div>
+  );
+}
+
 export default async function HomePage() {
   const hero = await getSiteSetting("homepage.hero");
 
-  const [featuredProducts, allServices, latestNews, partners, testimonials] = await Promise.all([
+  const [
+    featuredProducts,
+    allServices,
+    latestNews,
+    partners,
+    testimonials,
+    branchCount,
+    productCount,
+  ] = await Promise.all([
     prisma.product.findMany({ where: { isFeatured: true, isActive: true }, take: 4 }),
     prisma.service.findMany({ where: { isActive: true }, orderBy: { order: "asc" } }),
     prisma.newsPost.findMany({
@@ -23,31 +40,59 @@ export default async function HomePage() {
       orderBy: [{ isFeatured: "desc" }, { createdAt: "desc" }],
       take: 6,
     }),
+    prisma.branch.count({ where: { isActive: true } }),
+    prisma.product.count({ where: { isActive: true } }),
   ]);
+
+  const stats = [
+    { value: "15+", label: "Years of Experience" },
+    { value: `${branchCount}+`, label: "Branches Serving Farmers" },
+    { value: `${productCount}+`, label: "Products Stocked" },
+    { value: `${allServices.length}+`, label: "Services Offered" },
+  ];
 
   return (
     <div>
       <section className="relative overflow-hidden bg-[var(--brand-primary-dark)] px-4 py-28 text-center text-white">
         <HeroVideo videoUrl={hero.videoUrl} posterImage={hero.posterImage} />
-        <div className="absolute inset-0 bg-green-900/60" />
+        <div className="absolute inset-0 bg-[var(--brand-primary-dark)]/75" />
         <div className="relative">
-          <h1 className="mx-auto max-w-2xl animate-fade-in-up text-3xl font-bold sm:text-4xl">
+          <p className="animate-fade-in-up text-xs font-semibold uppercase tracking-[0.2em] text-[var(--brand-primary)]">
+            Avepo Enterprises Limited
+          </p>
+          <h1 className="mx-auto mt-3 max-w-2xl animate-fade-in-up text-3xl font-bold sm:text-4xl">
             {hero.headline}
           </h1>
-          <p className="animate-fade-in-up-delay mx-auto mt-4 max-w-xl text-green-100">
+          <p className="animate-fade-in-up-delay mx-auto mt-3 max-w-xl text-sm font-medium italic text-[var(--brand-primary)]">
+            Our Farms, Our Future
+          </p>
+          <p className="animate-fade-in-up-delay mx-auto mt-4 max-w-xl text-white/85">
             {hero.subheadline}
           </p>
           <Link
             href={hero.ctaHref}
-            className="animate-fade-in-up-delay mt-6 inline-block rounded-md bg-white px-5 py-2.5 text-sm font-semibold text-[var(--brand-primary-dark)] hover:bg-green-50"
+            className="animate-fade-in-up-delay mt-6 inline-block rounded-md bg-[var(--brand-primary)] px-6 py-3 text-sm font-semibold text-[var(--brand-primary-dark)] shadow-lg transition hover:brightness-95"
           >
             {hero.ctaLabel}
           </Link>
         </div>
       </section>
 
+      <section className="border-b border-neutral-200 bg-white px-4 py-8">
+        <div className="mx-auto grid max-w-6xl grid-cols-2 gap-6 sm:grid-cols-4">
+          {stats.map((stat) => (
+            <div key={stat.label} className="border-l-2 border-[var(--brand-primary)] pl-4 text-left">
+              <div className="text-2xl font-bold text-[var(--brand-primary-dark)] sm:text-3xl">
+                {stat.value}
+              </div>
+              <div className="mt-1 text-xs text-neutral-500 sm:text-sm">{stat.label}</div>
+            </div>
+          ))}
+        </div>
+      </section>
+
       <section className="mx-auto max-w-6xl px-4 py-12">
-        <h2 className="text-xl font-semibold text-neutral-900">Featured Products</h2>
+        <SectionHeading>Featured Products</SectionHeading>
         {featuredProducts.length === 0 ? (
           <p className="mt-2 text-sm text-neutral-500">
             New products are on their way — check back soon, or browse our full range.
@@ -87,7 +132,7 @@ export default async function HomePage() {
 
       <section className="bg-neutral-50 px-4 py-12">
         <div className="mx-auto max-w-6xl">
-          <h2 className="text-xl font-semibold text-neutral-900">Our Services</h2>
+          <SectionHeading>Our Services</SectionHeading>
           {allServices.length === 0 ? (
             <p className="mt-2 text-sm text-neutral-500">
               Explore our full range of agricultural and veterinary services.
@@ -125,7 +170,7 @@ export default async function HomePage() {
       </section>
 
       <section className="mx-auto max-w-6xl px-4 py-12">
-        <h2 className="text-xl font-semibold text-neutral-900">Latest News</h2>
+        <SectionHeading>Latest News</SectionHeading>
         {latestNews.length === 0 ? (
           <p className="mt-2 text-sm text-neutral-500">
             Stay tuned — farming tips, weather alerts, and updates from Avepo are coming soon.
@@ -171,7 +216,7 @@ export default async function HomePage() {
       </section>
 
       <section className="mx-auto max-w-6xl px-4 py-12">
-        <h2 className="text-xl font-semibold text-neutral-900">What Farmers Say</h2>
+        <SectionHeading>What Farmers Say</SectionHeading>
         {testimonials.length === 0 ? (
           <p className="mt-2 text-sm text-neutral-500">
             No testimonials yet — be the first to share your experience below.
@@ -221,6 +266,7 @@ export default async function HomePage() {
         <section className="border-t border-neutral-200 bg-neutral-50 px-4 py-12">
           <div className="mx-auto max-w-6xl">
             <h2 className="text-center text-xl font-semibold text-neutral-900">Our Partners</h2>
+            <span className="mx-auto mt-2 block h-1 w-12 rounded-full bg-[var(--brand-primary)]" />
             <div className="mt-6 grid grid-cols-3 items-center gap-6 sm:grid-cols-5 md:grid-cols-6">
               {partners.map((partner) => (
                 <div key={partner.id} className="flex items-center justify-center" title={partner.name}>

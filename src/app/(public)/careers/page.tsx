@@ -1,5 +1,18 @@
+import type { Metadata } from "next";
 import { prisma } from "@/lib/db";
 import { PageHeader, EmptyState } from "@/components/public/page-header";
+import { SITE_URL } from "@/lib/site";
+
+const TITLE = "Careers";
+const DESCRIPTION =
+  "Explore job openings, internships, and attachments at Avepo Enterprises Limited — build your career in Kenya's agricultural sector.";
+
+export const metadata: Metadata = {
+  title: TITLE,
+  description: DESCRIPTION,
+  alternates: { canonical: `${SITE_URL}/careers` },
+  openGraph: { title: TITLE, description: DESCRIPTION, url: `${SITE_URL}/careers` },
+};
 
 export default async function CareersPage() {
   const jobs = await prisma.jobPosting.findMany({

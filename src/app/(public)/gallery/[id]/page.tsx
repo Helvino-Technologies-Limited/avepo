@@ -2,6 +2,8 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { prisma } from "@/lib/db";
 import { PageHeader } from "@/components/public/page-header";
+import { BreadcrumbSchema } from "@/components/public/breadcrumb-schema";
+import { SITE_URL } from "@/lib/site";
 
 function isRawVideoFile(url: string) {
   return /\.(mp4|webm|ogg)$/i.test(url);
@@ -13,9 +15,24 @@ export async function generateMetadata({
   params: Promise<{ id: string }>;
 }): Promise<Metadata> {
   const { id } = await params;
-  const album = await prisma.galleryAlbum.findUnique({ where: { id } });
+  const album = await prisma.galleryAlbum.findUnique({
+    where: { id },
+    include: { media: { take: 1, orderBy: { order: "asc" }, where: { type: "IMAGE" } } },
+  });
   if (!album) return {};
-  return { title: `${album.title} | Avepo Gallery` };
+
+  const url = `${SITE_URL}/gallery/${album.id}`;
+  const description = `${album.type.replaceAll("_", " ")} gallery from Avepo Enterprises Limited.`;
+  const image = album.coverImage || album.media[0]?.url;
+  const images = image ? [image] : undefined;
+
+  return {
+    title: `${album.title} | Avepo Gallery`,
+    description,
+    alternates: { canonical: url },
+    openGraph: { title: album.title, description, url, images },
+    twitter: { card: images ? "summary_large_image" : "summary", title: album.title, description, images },
+  };
 }
 
 export default async function GalleryAlbumPage({
@@ -32,6 +49,13 @@ export default async function GalleryAlbumPage({
 
   return (
     <div>
+      <BreadcrumbSchema
+        items={[
+          { name: "Home", url: SITE_URL },
+          { name: "Gallery", url: `${SITE_URL}/gallery` },
+          { name: album.title, url: `${SITE_URL}/gallery/${album.id}` },
+        ]}
+      />
       <PageHeader title={album.title} subtitle={album.type.replaceAll("_", " ")} />
       <div className="mx-auto max-w-6xl px-4 py-12">
         {album.media.length === 0 ? (

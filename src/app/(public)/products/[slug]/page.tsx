@@ -3,6 +3,9 @@ import type { Metadata } from "next";
 import { prisma } from "@/lib/db";
 import { AddToCartButton } from "@/components/public/add-to-cart-button";
 import { ReviewForm } from "@/components/public/review-form";
+import { ProductSchema } from "@/components/public/product-schema";
+import { BreadcrumbSchema } from "@/components/public/breadcrumb-schema";
+import { SITE_URL } from "@/lib/site";
 
 export async function generateMetadata({
   params,
@@ -13,13 +16,24 @@ export async function generateMetadata({
   const product = await prisma.product.findUnique({ where: { slug } });
   if (!product) return {};
 
+  const url = `${SITE_URL}/products/${product.slug}`;
+  const images = product.images[0] ? [product.images[0]] : undefined;
+
   return {
     title: `${product.name} | Avepo Enterprises`,
     description: product.description ?? undefined,
+    alternates: { canonical: url },
     openGraph: {
       title: product.name,
       description: product.description ?? undefined,
-      images: product.images[0] ? [product.images[0]] : undefined,
+      url,
+      images,
+    },
+    twitter: {
+      card: images ? "summary_large_image" : "summary",
+      title: product.name,
+      description: product.description ?? undefined,
+      images,
     },
   };
 }
@@ -60,6 +74,26 @@ export default async function ProductDetailPage({
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-12">
+      <ProductSchema
+        product={{
+          slug: product.slug,
+          name: product.name,
+          description: product.description,
+          images: product.images,
+          price: product.price ? Number(product.price) : null,
+          manufacturer: product.manufacturer,
+          stockStatus: product.stockStatus,
+        }}
+        avgRating={avgRating}
+        reviewCount={reviews.length}
+      />
+      <BreadcrumbSchema
+        items={[
+          { name: "Home", url: SITE_URL },
+          { name: "Products", url: `${SITE_URL}/products` },
+          { name: product.name, url: `${SITE_URL}/products/${product.slug}` },
+        ]}
+      />
       <div className="grid gap-8 sm:grid-cols-2">
         <div>
           {product.images[0] ? (

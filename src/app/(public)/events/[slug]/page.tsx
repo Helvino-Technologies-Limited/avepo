@@ -3,6 +3,9 @@ import type { Metadata } from "next";
 import { prisma } from "@/lib/db";
 import { PageHeader } from "@/components/public/page-header";
 import { getEventStatus } from "@/lib/events";
+import { EventSchema } from "@/components/public/event-schema";
+import { BreadcrumbSchema } from "@/components/public/breadcrumb-schema";
+import { SITE_URL } from "@/lib/site";
 
 export async function generateMetadata({
   params,
@@ -13,13 +16,26 @@ export async function generateMetadata({
   const event = await prisma.event.findUnique({ where: { slug } });
   if (!event) return {};
 
+  const description = event.description?.slice(0, 160);
+  const url = `${SITE_URL}/events/${event.slug}`;
+  const images = event.coverImage ? [event.coverImage] : undefined;
+
   return {
     title: `${event.title} | Avepo Events`,
-    description: event.description?.slice(0, 160),
+    description,
+    alternates: { canonical: url },
     openGraph: {
       title: event.title,
-      description: event.description?.slice(0, 160),
-      images: event.coverImage ? [event.coverImage] : undefined,
+      description,
+      url,
+      type: "article",
+      images,
+    },
+    twitter: {
+      card: images ? "summary_large_image" : "summary",
+      title: event.title,
+      description,
+      images,
     },
   };
 }
@@ -41,6 +57,14 @@ export default async function EventDetailPage({
 
   return (
     <div>
+      <EventSchema event={event} />
+      <BreadcrumbSchema
+        items={[
+          { name: "Home", url: SITE_URL },
+          { name: "Events", url: `${SITE_URL}/events` },
+          { name: event.title, url: `${SITE_URL}/events/${event.slug}` },
+        ]}
+      />
       <PageHeader title={event.title} subtitle={event.venue ?? undefined} />
       <div className="mx-auto max-w-3xl px-4 py-12">
         {event.coverImage && (
@@ -49,7 +73,7 @@ export default async function EventDetailPage({
         )}
 
         <div className="mt-4 flex flex-wrap gap-4 text-sm text-neutral-600">
-          <span className="rounded-full bg-green-100 px-3 py-1 text-[var(--brand-primary-dark)]">
+          <span className="rounded-full bg-[var(--brand-accent)]/15 px-3 py-1 text-[var(--brand-primary-dark)]">
             {STATUS_LABEL[getEventStatus(event)]}
           </span>
           <span>{event.startDate.toLocaleString()} — {event.endDate.toLocaleString()}</span>
