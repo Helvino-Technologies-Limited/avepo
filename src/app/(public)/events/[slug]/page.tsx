@@ -21,7 +21,7 @@ export async function generateMetadata({
   const images = event.coverImage ? [event.coverImage] : undefined;
 
   return {
-    title: `${event.title} | Avepo Events`,
+    title: event.title,
     description,
     alternates: { canonical: url },
     openGraph: {

@@ -20,7 +20,8 @@ export type HomepageHero = {
   posterImage: string;
 };
 export type BrandingLogo = { url: string; secondaryUrl: string };
-export type ThemeColors = { primary: string; secondary: string; accent: string };
+export type ThemeColors = { primary: string; secondary: string; accent: string; background: string };
+export type ThemeTypography = { fontFamily: "sans" | "serif" | "classic"; textColor: string };
 export type FloatingWidgets = {
   whatsapp: boolean;
   call: boolean;
@@ -59,9 +60,16 @@ const DEFAULTS = {
     posterImage: "",
   } as HomepageHero,
   "branding.logo": { url: "", secondaryUrl: "" } as BrandingLogo,
-  // Gold, deep navy-teal, and teal — sampled directly from the Avepo logo
-  // (src/app/icon.jpg). Admin can always change this from Site Settings.
-  "theme.colors": { primary: "#EA9E27", secondary: "#073C42", accent: "#07586B" } as ThemeColors,
+  // Gold, deep navy-teal, teal, and a gold page background — sampled directly
+  // from the Avepo logo (src/app/icon.jpg). Admin can always change this from
+  // Site Settings.
+  "theme.colors": {
+    primary: "#EA9E27",
+    secondary: "#073C42",
+    accent: "#07586B",
+    background: "#EA9E27",
+  } as ThemeColors,
+  "theme.typography": { fontFamily: "sans", textColor: "#171717" } as ThemeTypography,
   "widgets.floating": {
     whatsapp: true,
     call: true,

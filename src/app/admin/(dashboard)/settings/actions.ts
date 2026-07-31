@@ -25,6 +25,12 @@ export async function updateSiteSettings(formData: FormData) {
     primary: String(formData.get("primaryColor") ?? "#EA9E27"),
     secondary: String(formData.get("secondaryColor") ?? "#073C42"),
     accent: String(formData.get("accentColor") ?? "#07586B"),
+    background: String(formData.get("backgroundColor") ?? "#EA9E27"),
+  });
+
+  await upsert("theme.typography", {
+    fontFamily: String(formData.get("fontFamily") ?? "sans"),
+    textColor: String(formData.get("textColor") ?? "#171717"),
   });
 
   await upsert("contact.general", {

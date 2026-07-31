@@ -5,6 +5,7 @@ import { GoogleAnalytics } from "@/components/public/google-analytics";
 import { CookieConsent } from "@/components/public/cookie-consent";
 import { CartProvider } from "@/lib/cart-context";
 import { getSiteSetting } from "@/lib/settings";
+import { FONT_STACKS } from "@/lib/fonts";
 
 // Content here comes from the admin-editable database (branches, products,
 // news, events, settings), so every public route must render fresh on each
@@ -12,7 +13,10 @@ import { getSiteSetting } from "@/lib/settings";
 export const dynamic = "force-dynamic";
 
 export default async function PublicLayout({ children }: { children: React.ReactNode }) {
-  const theme = await getSiteSetting("theme.colors");
+  const [theme, typography] = await Promise.all([
+    getSiteSetting("theme.colors"),
+    getSiteSetting("theme.typography"),
+  ]);
 
   return (
     <CartProvider>
@@ -23,6 +27,9 @@ export default async function PublicLayout({ children }: { children: React.React
             "--brand-primary": theme.primary,
             "--brand-primary-dark": theme.secondary,
             "--brand-accent": theme.accent,
+            backgroundColor: theme.background,
+            color: typography.textColor,
+            fontFamily: FONT_STACKS[typography.fontFamily] ?? FONT_STACKS.sans,
           } as React.CSSProperties
         }
       >

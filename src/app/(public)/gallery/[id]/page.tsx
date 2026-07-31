@@ -27,7 +27,7 @@ export async function generateMetadata({
   const images = image ? [image] : undefined;
 
   return {
-    title: `${album.title} | Avepo Gallery`,
+    title: album.title,
     description,
     alternates: { canonical: url },
     openGraph: { title: album.title, description, url, images },

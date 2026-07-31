@@ -50,7 +50,11 @@ const DEFAULT_SETTINGS: { key: string; value: unknown }[] = [
   },
   {
     key: "theme.colors",
-    value: { primary: "#EA9E27", secondary: "#073C42", accent: "#07586B" },
+    value: { primary: "#EA9E27", secondary: "#073C42", accent: "#07586B", background: "#EA9E27" },
+  },
+  {
+    key: "theme.typography",
+    value: { fontFamily: "sans", textColor: "#171717" },
   },
   {
     key: "widgets.floating",

@@ -11,7 +11,7 @@ export function PageHeader({ title, subtitle }: { title: string; subtitle?: stri
 
 export function EmptyState({ message }: { message: string }) {
   return (
-    <div className="rounded-lg border border-dashed border-neutral-300 p-8 text-center text-sm text-neutral-500">
+    <div className="rounded-lg border border-dashed border-neutral-300 bg-white p-8 text-center text-sm text-neutral-600">
       {message}
     </div>
   );

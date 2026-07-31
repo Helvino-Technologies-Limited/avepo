@@ -68,7 +68,7 @@ export function CartView({ branches }: { branches: Branch[] }) {
 
   if (items.length === 0) {
     return (
-      <div className="rounded-lg border border-dashed border-neutral-300 p-8 text-center text-sm text-neutral-500">
+      <div className="rounded-lg border border-dashed border-neutral-300 bg-white p-8 text-center text-sm text-neutral-600">
         Your order cart is empty.{" "}
         <Link href="/products" className="text-[var(--brand-primary)] underline">
           Browse products

@@ -94,7 +94,7 @@ export default async function HomePage() {
       <section className="mx-auto max-w-6xl px-4 py-12">
         <SectionHeading>Featured Products</SectionHeading>
         {featuredProducts.length === 0 ? (
-          <p className="mt-2 text-sm text-neutral-500">
+          <p className="mt-2 text-sm text-neutral-700">
             New products are on their way — check back soon, or browse our full range.
           </p>
         ) : (
@@ -172,7 +172,7 @@ export default async function HomePage() {
       <section className="mx-auto max-w-6xl px-4 py-12">
         <SectionHeading>Latest News</SectionHeading>
         {latestNews.length === 0 ? (
-          <p className="mt-2 text-sm text-neutral-500">
+          <p className="mt-2 text-sm text-neutral-700">
             Stay tuned — farming tips, weather alerts, and updates from Avepo are coming soon.
           </p>
         ) : (
@@ -218,7 +218,7 @@ export default async function HomePage() {
       <section className="mx-auto max-w-6xl px-4 py-12">
         <SectionHeading>What Farmers Say</SectionHeading>
         {testimonials.length === 0 ? (
-          <p className="mt-2 text-sm text-neutral-500">
+          <p className="mt-2 text-sm text-neutral-700">
             No testimonials yet — be the first to share your experience below.
           </p>
         ) : (

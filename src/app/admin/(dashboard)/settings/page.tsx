@@ -1,5 +1,6 @@
 import { getAllSiteSettings } from "@/lib/settings";
-import { Field, TextInput, TextArea, Checkbox, SubmitButton } from "@/components/admin/ui";
+import { Field, TextInput, TextArea, Select, Checkbox, SubmitButton } from "@/components/admin/ui";
+import { FONT_OPTIONS } from "@/lib/fonts";
 import { ImageUpload } from "@/components/admin/image-upload";
 import { VideoUpload } from "@/components/admin/video-upload";
 import { SavedBanner } from "@/components/admin/saved-banner";
@@ -46,7 +47,11 @@ export default async function SiteSettingsPage({
 
         <section>
           <h2 className="text-sm font-semibold text-neutral-900">Theme Colors</h2>
-          <div className="mt-3 grid gap-4 sm:grid-cols-3">
+          <p className="text-xs text-neutral-500">
+            Background is the page background behind all content — defaults to the Avepo brand
+            gold. Choose a lighter shade here if you want a calmer look.
+          </p>
+          <div className="mt-3 grid gap-4 sm:grid-cols-4">
             <Field label="Primary" htmlFor="primaryColor">
               <TextInput
                 id="primaryColor"
@@ -69,6 +74,41 @@ export default async function SiteSettingsPage({
                 name="accentColor"
                 type="color"
                 defaultValue={settings["theme.colors"].accent}
+              />
+            </Field>
+            <Field label="Page Background" htmlFor="backgroundColor">
+              <TextInput
+                id="backgroundColor"
+                name="backgroundColor"
+                type="color"
+                defaultValue={settings["theme.colors"].background}
+              />
+            </Field>
+          </div>
+        </section>
+
+        <section>
+          <h2 className="text-sm font-semibold text-neutral-900">Typography</h2>
+          <div className="mt-3 grid gap-4 sm:grid-cols-2">
+            <Field label="Font Style" htmlFor="fontFamily">
+              <Select
+                id="fontFamily"
+                name="fontFamily"
+                defaultValue={settings["theme.typography"].fontFamily}
+              >
+                {FONT_OPTIONS.map((opt) => (
+                  <option key={opt.value} value={opt.value}>
+                    {opt.label}
+                  </option>
+                ))}
+              </Select>
+            </Field>
+            <Field label="Body Text Color" htmlFor="textColor">
+              <TextInput
+                id="textColor"
+                name="textColor"
+                type="color"
+                defaultValue={settings["theme.typography"].textColor}
               />
             </Field>
           </div>

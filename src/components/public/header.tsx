@@ -22,14 +22,18 @@ export async function Header() {
   const logo = await getSiteSetting("branding.logo");
 
   return (
-    <header className="relative border-b border-neutral-200 bg-white">
-      <div className="mx-auto flex max-w-6xl items-center justify-between gap-2 px-4 py-3">
+    <header className="sticky top-0 z-50 border-b border-neutral-200 bg-white/95 shadow-sm backdrop-blur">
+      <div className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-2">
         <Link href="/" className="flex shrink-0 items-center gap-2 text-lg font-bold text-[var(--brand-primary-dark)]">
           {logo.url ? (
             // eslint-disable-next-line @next/next/no-img-element
-            <img src={logo.url} alt="Avepo Enterprises" className="h-9 w-auto object-contain" />
+            <img
+              src={logo.url}
+              alt="Avepo Enterprises Limited"
+              className="h-12 w-auto object-contain sm:h-16"
+            />
           ) : (
-            "Avepo"
+            "Avepo Enterprises Limited"
           )}
         </Link>
 
@@ -48,7 +52,7 @@ export async function Header() {
             <img
               src={logo.secondaryUrl}
               alt=""
-              className="hidden h-9 w-auto object-contain sm:block"
+              className="hidden h-11 w-auto object-contain sm:block sm:h-14"
             />
           )}
           <MobileNav />

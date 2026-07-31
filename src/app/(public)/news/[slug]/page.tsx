@@ -22,7 +22,7 @@ export async function generateMetadata({
   const images = post.coverImage ? [post.coverImage] : undefined;
 
   return {
-    title: `${post.title} | Avepo News`,
+    title: post.title,
     description,
     alternates: { canonical: url },
     openGraph: {

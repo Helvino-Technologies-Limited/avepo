@@ -20,7 +20,7 @@ export async function generateMetadata({
   const images = product.images[0] ? [product.images[0]] : undefined;
 
   return {
-    title: `${product.name} | Avepo Enterprises`,
+    title: product.name,
     description: product.description ?? undefined,
     alternates: { canonical: url },
     openGraph: {

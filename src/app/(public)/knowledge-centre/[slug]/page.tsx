@@ -19,7 +19,7 @@ export async function generateMetadata({
   const images = article.coverImage ? [article.coverImage] : undefined;
 
   return {
-    title: `${article.title} | Avepo Knowledge Centre`,
+    title: article.title,
     description,
     alternates: { canonical: url },
     openGraph: {
