@@ -3,6 +3,7 @@ import { Field, TextInput, TextArea, Select, Checkbox, SubmitButton } from "@/co
 import { MultiImageUpload } from "@/components/admin/multi-image-upload";
 import { FileUpload } from "@/components/admin/file-upload";
 import type { Product } from "@prisma/client";
+import { UploadPendingProvider } from "@/components/upload-pending-context";
 
 export async function ProductForm({
   action,
@@ -14,7 +15,8 @@ export async function ProductForm({
   const categories = await prisma.productCategory.findMany({ orderBy: { order: "asc" } });
 
   return (
-    <form action={action} className="space-y-4">
+    <UploadPendingProvider>
+        <form action={action} className="space-y-4">
       <Field label="Name" htmlFor="name">
         <TextInput id="name" name="name" required defaultValue={product?.name} />
       </Field>
@@ -94,5 +96,6 @@ export async function ProductForm({
 
       <SubmitButton>{product ? "Save Changes" : "Create Product"}</SubmitButton>
     </form>
+    </UploadPendingProvider>
   );
 }

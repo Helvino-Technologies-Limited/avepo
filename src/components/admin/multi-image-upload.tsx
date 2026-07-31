@@ -1,7 +1,8 @@
 "use client";
 
 import { useState, useTransition } from "react";
-import { uploadImage } from "@/lib/blob";
+import { uploadToBlob } from "@/lib/upload-client";
+import { useRegisterUploadPending } from "@/components/upload-pending-context";
 
 export function MultiImageUpload({
   name,
@@ -17,6 +18,7 @@ export function MultiImageUpload({
   const [urls, setUrls] = useState<string[]>(defaultValue ?? []);
   const [error, setError] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
+  useRegisterUploadPending(isPending);
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     const files = Array.from(e.target.files ?? []);
@@ -26,12 +28,7 @@ export function MultiImageUpload({
 
     startTransition(async () => {
       const results = await Promise.all(
-        files.map((file) => {
-          const formData = new FormData();
-          formData.set("file", file);
-          formData.set("folder", folder);
-          return uploadImage(formData);
-        })
+        files.map((file) => uploadToBlob(file, { folder, kind: "image" }))
       );
 
       const errors = results.filter((r) => r.error).map((r) => r.error!);

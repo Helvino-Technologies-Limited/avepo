@@ -2,6 +2,7 @@ import { Field, TextInput, TextArea, Select, Checkbox, SubmitButton } from "@/co
 import { ImageUpload } from "@/components/admin/image-upload";
 import { FileUpload } from "@/components/admin/file-upload";
 import type { KnowledgeArticle } from "@prisma/client";
+import { UploadPendingProvider } from "@/components/upload-pending-context";
 
 const CATEGORY_LABELS: Record<string, string> = {
   CROP_PRODUCTION: "Crop Production",
@@ -23,7 +24,8 @@ export function ArticleForm({
   article?: KnowledgeArticle;
 }) {
   return (
-    <form action={action} className="space-y-4">
+    <UploadPendingProvider>
+        <form action={action} className="space-y-4">
       <Field label="Title" htmlFor="title">
         <TextInput id="title" name="title" required defaultValue={article?.title} />
       </Field>
@@ -64,5 +66,6 @@ export function ArticleForm({
 
       <SubmitButton>{article ? "Save Changes" : "Create Article"}</SubmitButton>
     </form>
+    </UploadPendingProvider>
   );
 }

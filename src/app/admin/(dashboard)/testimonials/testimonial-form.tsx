@@ -1,6 +1,7 @@
 import { Field, TextInput, TextArea, Checkbox, SubmitButton } from "@/components/admin/ui";
 import { ImageUpload } from "@/components/admin/image-upload";
 import type { Testimonial } from "@prisma/client";
+import { UploadPendingProvider } from "@/components/upload-pending-context";
 
 export function TestimonialForm({
   action,
@@ -10,7 +11,8 @@ export function TestimonialForm({
   testimonial?: Testimonial;
 }) {
   return (
-    <form action={action} className="space-y-4">
+    <UploadPendingProvider>
+        <form action={action} className="space-y-4">
       <div className="grid gap-4 sm:grid-cols-2">
         <Field label="Name" htmlFor="name">
           <TextInput id="name" name="name" required defaultValue={testimonial?.name} />
@@ -44,5 +46,6 @@ export function TestimonialForm({
 
       <SubmitButton>{testimonial ? "Save Changes" : "Create Testimonial"}</SubmitButton>
     </form>
+    </UploadPendingProvider>
   );
 }

@@ -1,7 +1,8 @@
 "use client";
 
 import { useRef, useState, useTransition } from "react";
-import { uploadImage } from "@/lib/blob";
+import { uploadToBlob } from "@/lib/upload-client";
+import { useRegisterUploadPending } from "@/components/upload-pending-context";
 
 export function ImageUpload({
   name,
@@ -18,18 +19,16 @@ export function ImageUpload({
   const [error, setError] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
   const inputRef = useRef<HTMLInputElement>(null);
+  useRegisterUploadPending(isPending);
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
     if (!file) return;
 
     setError(null);
-    const formData = new FormData();
-    formData.set("file", file);
-    formData.set("folder", folder);
 
     startTransition(async () => {
-      const result = await uploadImage(formData);
+      const result = await uploadToBlob(file, { folder, kind: "image" });
       if (result.error) {
         setError(result.error);
         return;

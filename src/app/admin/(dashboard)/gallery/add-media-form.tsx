@@ -4,13 +4,15 @@ import { useState } from "react";
 import { Field, TextInput, Select, SubmitButton } from "@/components/admin/ui";
 import { MultiImageUpload } from "@/components/admin/multi-image-upload";
 import { VideoUpload } from "@/components/admin/video-upload";
+import { UploadPendingProvider } from "@/components/upload-pending-context";
 
 export function AddMediaForm({ action }: { action: (formData: FormData) => Promise<void> }) {
   const [type, setType] = useState<"IMAGE" | "VIDEO">("IMAGE");
   const [videoSource, setVideoSource] = useState<"upload" | "link">("upload");
 
   return (
-    <form action={action} className="space-y-3 rounded-lg border border-neutral-200 bg-white p-4">
+    <UploadPendingProvider>
+        <form action={action} className="space-y-3 rounded-lg border border-neutral-200 bg-white p-4">
       <Field label="Media Type" htmlFor="type">
         <Select
           id="type"
@@ -53,5 +55,6 @@ export function AddMediaForm({ action }: { action: (formData: FormData) => Promi
 
       <SubmitButton>Add to Album</SubmitButton>
     </form>
+    </UploadPendingProvider>
   );
 }

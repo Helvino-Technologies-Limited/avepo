@@ -4,6 +4,7 @@ import { FONT_OPTIONS } from "@/lib/fonts";
 import { ImageUpload } from "@/components/admin/image-upload";
 import { VideoUpload } from "@/components/admin/video-upload";
 import { SavedBanner } from "@/components/admin/saved-banner";
+import { UploadPendingProvider } from "@/components/upload-pending-context";
 import { updateSiteSettings } from "./actions";
 
 export default async function SiteSettingsPage({
@@ -22,6 +23,7 @@ export default async function SiteSettingsPage({
         hero — reflected across the public site immediately after saving.
       </p>
 
+      <UploadPendingProvider>
       <form action={updateSiteSettings} className="mt-6 space-y-8">
         <section>
           <h2 className="text-sm font-semibold text-neutral-900">Branding</h2>
@@ -269,6 +271,7 @@ export default async function SiteSettingsPage({
 
         <SubmitButton>Save Settings</SubmitButton>
       </form>
+      </UploadPendingProvider>
     </div>
   );
 }

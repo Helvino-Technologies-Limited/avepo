@@ -1,6 +1,7 @@
 import { Field, TextInput, TextArea, Checkbox, SubmitButton } from "@/components/admin/ui";
 import { ImageUpload } from "@/components/admin/image-upload";
 import type { Service } from "@prisma/client";
+import { UploadPendingProvider } from "@/components/upload-pending-context";
 
 export function ServiceForm({
   action,
@@ -10,7 +11,8 @@ export function ServiceForm({
   service?: Service;
 }) {
   return (
-    <form action={action} className="space-y-4">
+    <UploadPendingProvider>
+        <form action={action} className="space-y-4">
       <Field label="Title" htmlFor="title">
         <TextInput id="title" name="title" required defaultValue={service?.title} />
       </Field>
@@ -40,5 +42,6 @@ export function ServiceForm({
 
       <SubmitButton>{service ? "Save Changes" : "Create Service"}</SubmitButton>
     </form>
+    </UploadPendingProvider>
   );
 }

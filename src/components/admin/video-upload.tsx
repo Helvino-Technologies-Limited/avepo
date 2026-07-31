@@ -1,7 +1,8 @@
 "use client";
 
 import { useState, useTransition } from "react";
-import { uploadVideo } from "@/lib/blob";
+import { uploadToBlob } from "@/lib/upload-client";
+import { useRegisterUploadPending } from "@/components/upload-pending-context";
 
 export function VideoUpload({
   name,
@@ -17,18 +18,16 @@ export function VideoUpload({
   const [url, setUrl] = useState(defaultValue ?? "");
   const [error, setError] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
+  useRegisterUploadPending(isPending);
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
     if (!file) return;
 
     setError(null);
-    const formData = new FormData();
-    formData.set("file", file);
-    formData.set("folder", folder);
 
     startTransition(async () => {
-      const result = await uploadVideo(formData);
+      const result = await uploadToBlob(file, { folder, kind: "video" });
       if (result.error) {
         setError(result.error);
         return;

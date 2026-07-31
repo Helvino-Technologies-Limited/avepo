@@ -1,6 +1,7 @@
 import { Field, TextInput, Checkbox, SubmitButton } from "@/components/admin/ui";
 import { ImageUpload } from "@/components/admin/image-upload";
 import type { Partner } from "@prisma/client";
+import { UploadPendingProvider } from "@/components/upload-pending-context";
 
 export function PartnerForm({
   action,
@@ -10,7 +11,8 @@ export function PartnerForm({
   partner?: Partner;
 }) {
   return (
-    <form action={action} className="space-y-4">
+    <UploadPendingProvider>
+        <form action={action} className="space-y-4">
       <Field label="Name" htmlFor="name">
         <TextInput id="name" name="name" required defaultValue={partner?.name} />
       </Field>
@@ -25,5 +27,6 @@ export function PartnerForm({
 
       <SubmitButton>{partner ? "Save Changes" : "Create Partner"}</SubmitButton>
     </form>
+    </UploadPendingProvider>
   );
 }

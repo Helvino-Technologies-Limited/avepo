@@ -1,6 +1,7 @@
 import { Field, TextInput, Checkbox, SubmitButton } from "@/components/admin/ui";
 import { ImageUpload } from "@/components/admin/image-upload";
 import type { Branch } from "@prisma/client";
+import { UploadPendingProvider } from "@/components/upload-pending-context";
 
 export function BranchForm({
   action,
@@ -10,7 +11,8 @@ export function BranchForm({
   branch?: Branch;
 }) {
   return (
-    <form action={action} className="space-y-4">
+    <UploadPendingProvider>
+        <form action={action} className="space-y-4">
       <Field label="Name" htmlFor="name">
         <TextInput id="name" name="name" required defaultValue={branch?.name} />
       </Field>
@@ -57,5 +59,6 @@ export function BranchForm({
 
       <SubmitButton>{branch ? "Save Changes" : "Create Branch"}</SubmitButton>
     </form>
+    </UploadPendingProvider>
   );
 }

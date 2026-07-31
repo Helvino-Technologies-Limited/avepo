@@ -1,6 +1,7 @@
 import { Field, TextInput, Select, SubmitButton } from "@/components/admin/ui";
 import { ImageUpload } from "@/components/admin/image-upload";
 import type { GalleryAlbum } from "@prisma/client";
+import { UploadPendingProvider } from "@/components/upload-pending-context";
 
 export function AlbumForm({
   action,
@@ -10,7 +11,8 @@ export function AlbumForm({
   album?: GalleryAlbum;
 }) {
   return (
-    <form action={action} className="space-y-4">
+    <UploadPendingProvider>
+        <form action={action} className="space-y-4">
       <Field label="Album Title" htmlFor="title">
         <TextInput id="title" name="title" required defaultValue={album?.title} />
       </Field>
@@ -34,5 +36,6 @@ export function AlbumForm({
 
       <SubmitButton>{album ? "Save Changes" : "Create Album"}</SubmitButton>
     </form>
+    </UploadPendingProvider>
   );
 }

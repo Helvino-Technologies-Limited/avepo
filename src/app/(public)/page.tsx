@@ -53,25 +53,29 @@ export default async function HomePage() {
 
   return (
     <div>
-      <section className="relative overflow-hidden bg-[var(--brand-primary-dark)] px-4 py-28 text-center text-white">
+      <section className="relative overflow-hidden bg-[var(--brand-primary)] px-4 py-28 text-center text-[var(--brand-primary-dark)]">
         <HeroVideo videoUrl={hero.videoUrl} posterImage={hero.posterImage} />
-        <div className="absolute inset-0 bg-[var(--brand-primary-dark)]/75" />
+        {/* A dark scrim first keeps text readable regardless of the video's own
+            brightness, with a faded gold wash on top so the brand color still
+            reads through rather than the video showing plain black/green. */}
+        <div className="absolute inset-0 bg-black/35" />
+        <div className="absolute inset-0 bg-[var(--brand-primary)]/55" />
         <div className="relative">
-          <p className="animate-fade-in-up text-xs font-semibold uppercase tracking-[0.2em] text-[var(--brand-primary)]">
+          <p className="animate-fade-in-up text-xs font-semibold uppercase tracking-[0.2em] text-[var(--brand-primary-dark)]">
             Avepo Enterprises Limited
           </p>
           <h1 className="mx-auto mt-3 max-w-2xl animate-fade-in-up text-3xl font-bold sm:text-4xl">
             {hero.headline}
           </h1>
-          <p className="animate-fade-in-up-delay mx-auto mt-3 max-w-xl text-sm font-medium italic text-[var(--brand-primary)]">
+          <p className="animate-fade-in-up-delay mx-auto mt-3 max-w-xl text-sm font-medium italic text-[var(--brand-primary-dark)]/90">
             Our Farms, Our Future
           </p>
-          <p className="animate-fade-in-up-delay mx-auto mt-4 max-w-xl text-white/85">
+          <p className="animate-fade-in-up-delay mx-auto mt-4 max-w-xl text-[var(--brand-primary-dark)]/80">
             {hero.subheadline}
           </p>
           <Link
             href={hero.ctaHref}
-            className="animate-fade-in-up-delay mt-6 inline-block rounded-md bg-[var(--brand-primary)] px-6 py-3 text-sm font-semibold text-[var(--brand-primary-dark)] shadow-lg transition hover:brightness-95"
+            className="animate-fade-in-up-delay mt-6 inline-block rounded-md bg-[var(--brand-primary-dark)] px-6 py-3 text-sm font-semibold text-[var(--brand-primary)] shadow-lg transition hover:brightness-125"
           >
             {hero.ctaLabel}
           </Link>

@@ -1,4 +1,7 @@
+"use client";
+
 import type { ReactNode } from "react";
+import { useAnyUploadPending } from "@/components/upload-pending-context";
 
 export function Field({
   label,
@@ -47,12 +50,16 @@ export function Checkbox({
 }
 
 export function SubmitButton({ children }: { children: ReactNode }) {
+  const uploading = useAnyUploadPending();
+
   return (
     <button
       type="submit"
-      className="rounded-md bg-green-700 px-5 py-2.5 text-sm font-semibold text-white hover:bg-green-800"
+      disabled={uploading}
+      title={uploading ? "Please wait for uploads to finish before saving." : undefined}
+      className="rounded-md bg-green-700 px-5 py-2.5 text-sm font-semibold text-white hover:bg-green-800 disabled:cursor-not-allowed disabled:opacity-60"
     >
-      {children}
+      {uploading ? "Waiting for uploads to finish…" : children}
     </button>
   );
 }

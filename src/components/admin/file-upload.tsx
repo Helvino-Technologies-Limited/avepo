@@ -1,7 +1,8 @@
 "use client";
 
 import { useState, useTransition } from "react";
-import { uploadFile } from "@/lib/blob";
+import { uploadToBlob } from "@/lib/upload-client";
+import { useRegisterUploadPending } from "@/components/upload-pending-context";
 
 export function FileUpload({
   name,
@@ -17,18 +18,16 @@ export function FileUpload({
   const [url, setUrl] = useState(defaultValue ?? "");
   const [error, setError] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
+  useRegisterUploadPending(isPending);
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
     if (!file) return;
 
     setError(null);
-    const formData = new FormData();
-    formData.set("file", file);
-    formData.set("folder", folder);
 
     startTransition(async () => {
-      const result = await uploadFile(formData);
+      const result = await uploadToBlob(file, { folder, kind: "file" });
       if (result.error) {
         setError(result.error);
         return;

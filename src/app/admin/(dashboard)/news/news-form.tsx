@@ -5,6 +5,7 @@ import { RichTextEditor } from "@/components/admin/rich-text-editor";
 import { toDatetimeLocalValue } from "@/lib/date";
 import { sanitizeHtml } from "@/lib/sanitize";
 import type { NewsPost } from "@prisma/client";
+import { UploadPendingProvider } from "@/components/upload-pending-context";
 
 export function NewsForm({
   action,
@@ -14,7 +15,8 @@ export function NewsForm({
   post?: NewsPost;
 }) {
   return (
-    <form action={action} className="space-y-4">
+    <UploadPendingProvider>
+        <form action={action} className="space-y-4">
       <Field label="Title" htmlFor="title">
         <TextInput id="title" name="title" required defaultValue={post?.title} />
       </Field>
@@ -60,5 +62,6 @@ export function NewsForm({
 
       <SubmitButton>{post ? "Save Changes" : "Create Post"}</SubmitButton>
     </form>
+    </UploadPendingProvider>
   );
 }

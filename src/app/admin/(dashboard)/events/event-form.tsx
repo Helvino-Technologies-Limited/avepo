@@ -3,6 +3,7 @@ import { ImageUpload } from "@/components/admin/image-upload";
 import { MultiImageUpload } from "@/components/admin/multi-image-upload";
 import { toDatetimeLocalValue } from "@/lib/date";
 import type { Event } from "@prisma/client";
+import { UploadPendingProvider } from "@/components/upload-pending-context";
 
 export function EventForm({
   action,
@@ -12,7 +13,8 @@ export function EventForm({
   event?: Event;
 }) {
   return (
-    <form action={action} className="space-y-4">
+    <UploadPendingProvider>
+        <form action={action} className="space-y-4">
       <Field label="Title" htmlFor="title">
         <TextInput id="title" name="title" required defaultValue={event?.title} />
       </Field>
@@ -81,5 +83,6 @@ export function EventForm({
 
       <SubmitButton>{event ? "Save Changes" : "Create Event"}</SubmitButton>
     </form>
+    </UploadPendingProvider>
   );
 }

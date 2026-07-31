@@ -1,6 +1,7 @@
 import { Field, TextInput, TextArea, Select, Checkbox, SubmitButton } from "@/components/admin/ui";
 import { MultiImageUpload } from "@/components/admin/multi-image-upload";
 import type { SmartFarmSection } from "@prisma/client";
+import { UploadPendingProvider } from "@/components/upload-pending-context";
 
 export function SectionForm({
   action,
@@ -10,7 +11,8 @@ export function SectionForm({
   section?: SmartFarmSection;
 }) {
   return (
-    <form action={action} className="space-y-4">
+    <UploadPendingProvider>
+        <form action={action} className="space-y-4">
       <Field label="Title" htmlFor="title">
         <TextInput id="title" name="title" required defaultValue={section?.title} />
       </Field>
@@ -43,5 +45,6 @@ export function SectionForm({
 
       <SubmitButton>{section ? "Save Changes" : "Create Section"}</SubmitButton>
     </form>
+    </UploadPendingProvider>
   );
 }

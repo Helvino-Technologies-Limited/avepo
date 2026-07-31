@@ -7,11 +7,24 @@ import {
 } from "@/app/admin/(dashboard)/success-stories/actions";
 import { PublicImageUpload } from "@/components/public/public-image-upload";
 import { PublicVideoUpload } from "@/components/public/public-video-upload";
+import {
+  UploadPendingProvider,
+  useAnyUploadPending,
+} from "@/components/upload-pending-context";
 
 const initialState: SubmitSuccessStoryState = { success: false };
 
 export function SuccessStorySubmitForm() {
+  return (
+    <UploadPendingProvider>
+      <SuccessStoryFormFields />
+    </UploadPendingProvider>
+  );
+}
+
+function SuccessStoryFormFields() {
   const [state, formAction, isPending] = useActionState(submitSuccessStory, initialState);
+  const uploading = useAnyUploadPending();
 
   if (state.success) {
     return (
@@ -52,10 +65,10 @@ export function SuccessStorySubmitForm() {
       {state.error && <p className="text-sm text-red-600">{state.error}</p>}
       <button
         type="submit"
-        disabled={isPending}
+        disabled={isPending || uploading}
         className="rounded-md bg-[var(--brand-primary)] px-5 py-2.5 text-sm font-semibold text-white hover:bg-[var(--brand-primary-dark)] disabled:opacity-60"
       >
-        {isPending ? "Submitting..." : "Share Your Story"}
+        {uploading ? "Waiting for uploads to finish…" : isPending ? "Submitting..." : "Share Your Story"}
       </button>
     </form>
   );
