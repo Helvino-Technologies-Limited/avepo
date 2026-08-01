@@ -19,6 +19,7 @@ export type HomepageHero = {
   videoUrl: string;
   posterImage: string;
 };
+export type SmartFarmHero = { videoUrl: string; posterImage: string };
 export type BrandingLogo = { url: string; secondaryUrl: string };
 export type ThemeColors = { primary: string; secondary: string; accent: string; background: string };
 export type ThemeTypography = { fontFamily: "sans" | "serif" | "classic"; textColor: string };
@@ -56,18 +57,19 @@ const DEFAULTS = {
       "Our Farms, Our Future — agro-inputs, animal health, and Smart Farm expertise for farmers across Kenya.",
     ctaLabel: "Explore Products",
     ctaHref: "/products",
-    videoUrl: "",
+    videoUrl: "https://youtu.be/jcVg33tKpM8?si=KLHptPsUb1sGinhS",
     posterImage: "",
   } as HomepageHero,
+  "smartfarm.hero": { videoUrl: "", posterImage: "" } as SmartFarmHero,
   "branding.logo": { url: "", secondaryUrl: "" } as BrandingLogo,
-  // Gold, deep navy-teal, teal, and a gold page background — sampled directly
-  // from the Avepo logo (src/app/icon.jpg). Admin can always change this from
-  // Site Settings.
+  // Gold and deep navy-teal sampled directly from the Avepo logo
+  // (src/app/icon.jpg); a muted farm green for the page background. Admin
+  // can always change this from Site Settings.
   "theme.colors": {
     primary: "#EA9E27",
     secondary: "#073C42",
     accent: "#07586B",
-    background: "#EA9E27",
+    background: "#5B8C5A",
   } as ThemeColors,
   "theme.typography": { fontFamily: "sans", textColor: "#171717" } as ThemeTypography,
   "widgets.floating": {

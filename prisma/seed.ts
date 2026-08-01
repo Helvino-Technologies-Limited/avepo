@@ -50,7 +50,7 @@ const DEFAULT_SETTINGS: { key: string; value: unknown }[] = [
   },
   {
     key: "theme.colors",
-    value: { primary: "#EA9E27", secondary: "#073C42", accent: "#07586B", background: "#EA9E27" },
+    value: { primary: "#EA9E27", secondary: "#073C42", accent: "#07586B", background: "#5B8C5A" },
   },
   {
     key: "theme.typography",
@@ -68,7 +68,13 @@ const DEFAULT_SETTINGS: { key: string; value: unknown }[] = [
         "Our Farms, Our Future — agro-inputs, animal health, and Smart Farm expertise for farmers across Kenya.",
       ctaLabel: "Explore Products",
       ctaHref: "/products",
+      videoUrl: "https://youtu.be/jcVg33tKpM8?si=KLHptPsUb1sGinhS",
+      posterImage: "",
     },
+  },
+  {
+    key: "smartfarm.hero",
+    value: { videoUrl: "", posterImage: "" },
   },
 ];
 

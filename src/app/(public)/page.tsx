@@ -2,6 +2,7 @@ import Link from "next/link";
 import { prisma } from "@/lib/db";
 import { getSiteSetting } from "@/lib/settings";
 import { HeroVideo } from "@/components/public/hero-video";
+import { SiteNav } from "@/components/public/site-nav";
 import { Carousel, CarouselItem } from "@/components/public/carousel";
 import { AddToCartButton } from "@/components/public/add-to-cart-button";
 import { TestimonialSubmitForm } from "@/components/public/testimonial-form";
@@ -21,7 +22,6 @@ export default async function HomePage() {
   const [
     featuredProducts,
     allServices,
-    latestNews,
     partners,
     testimonials,
     branchCount,
@@ -29,11 +29,6 @@ export default async function HomePage() {
   ] = await Promise.all([
     prisma.product.findMany({ where: { isFeatured: true, isActive: true }, take: 4 }),
     prisma.service.findMany({ where: { isActive: true }, orderBy: { order: "asc" } }),
-    prisma.newsPost.findMany({
-      where: { status: "PUBLISHED" },
-      orderBy: { publishAt: "desc" },
-      take: 12,
-    }),
     prisma.partner.findMany({ where: { isActive: true }, orderBy: { order: "asc" } }),
     prisma.testimonial.findMany({
       where: { isActive: true },
@@ -53,30 +48,33 @@ export default async function HomePage() {
 
   return (
     <div>
-      <section className="relative overflow-hidden bg-[var(--brand-primary-dark)] px-4 py-28 text-center text-white">
+      <section className="relative overflow-hidden bg-[var(--brand-primary-dark)] text-center text-white">
         <HeroVideo videoUrl={hero.videoUrl} posterImage={hero.posterImage} />
         {/* Just enough of a dark scrim to keep text legible — the video stays
             natural/clear rather than being washed out in a solid brand color. */}
         <div className="absolute inset-0 bg-black/40" />
         <div className="relative">
-          <p className="animate-fade-in-up text-xs font-semibold uppercase tracking-[0.2em] text-[var(--brand-primary)]">
-            Avepo Agrovets Limited
-          </p>
-          <h1 className="mx-auto mt-3 max-w-2xl animate-fade-in-up text-3xl font-bold sm:text-4xl">
-            {hero.headline}
-          </h1>
-          <p className="animate-fade-in-up-delay mx-auto mt-3 max-w-xl text-sm font-medium italic text-[var(--brand-primary)]">
-            Our Farms, Our Future
-          </p>
-          <p className="animate-fade-in-up-delay mx-auto mt-4 max-w-xl text-white/85">
-            {hero.subheadline}
-          </p>
-          <Link
-            href={hero.ctaHref}
-            className="animate-fade-in-up-delay mt-6 inline-block rounded-md bg-[var(--brand-primary)] px-6 py-3 text-sm font-semibold text-[var(--brand-primary-dark)] shadow-lg transition hover:brightness-95"
-          >
-            {hero.ctaLabel}
-          </Link>
+          <SiteNav variant="overlay" />
+          <div className="px-4 py-28">
+            <p className="animate-fade-in-up text-xs font-semibold uppercase tracking-[0.2em] text-[var(--brand-primary)]">
+              Avepo Agrovets Limited
+            </p>
+            <h1 className="mx-auto mt-3 max-w-2xl animate-fade-in-up text-3xl font-bold sm:text-4xl">
+              {hero.headline}
+            </h1>
+            <p className="animate-fade-in-up-delay mx-auto mt-3 max-w-xl text-sm font-medium italic text-[var(--brand-primary)]">
+              Our Farms, Our Future
+            </p>
+            <p className="animate-fade-in-up-delay mx-auto mt-4 max-w-xl text-white/85">
+              {hero.subheadline}
+            </p>
+            <Link
+              href={hero.ctaHref}
+              className="animate-fade-in-up-delay mt-6 inline-block rounded-md bg-[var(--brand-primary)] px-6 py-3 text-sm font-semibold text-[var(--brand-primary-dark)] shadow-lg transition hover:brightness-95"
+            >
+              {hero.ctaLabel}
+            </Link>
+          </div>
         </div>
       </section>
 
@@ -169,52 +167,6 @@ export default async function HomePage() {
             </div>
           )}
         </div>
-      </section>
-
-      <section className="mx-auto max-w-6xl px-4 py-12">
-        <SectionHeading>Latest News</SectionHeading>
-        {latestNews.length === 0 ? (
-          <p className="mt-2 text-sm text-neutral-700">
-            Stay tuned — farming tips, weather alerts, and updates from Avepo are coming soon.
-          </p>
-        ) : (
-          <div className="mt-4">
-            <Carousel>
-              {latestNews.map((post) => (
-                <CarouselItem key={post.id}>
-                  <a
-                    href={`/news/${post.slug}`}
-                    className="block h-full rounded-lg border border-neutral-200 bg-white p-4 transition hover:border-[var(--brand-primary)] hover:shadow-md"
-                  >
-                    {post.coverImage ? (
-                      // eslint-disable-next-line @next/next/no-img-element
-                      <img
-                        src={post.coverImage}
-                        alt={post.title}
-                        className="h-28 w-full rounded object-cover"
-                      />
-                    ) : (
-                      <div className="flex h-28 w-full items-center justify-center rounded bg-neutral-100 text-2xl">
-                        📰
-                      </div>
-                    )}
-                    {post.category && (
-                      <div className="mt-2 text-xs uppercase text-[var(--brand-primary)]">
-                        {post.category}
-                      </div>
-                    )}
-                    <div className="mt-1 font-medium text-neutral-900">{post.title}</div>
-                    {post.publishAt && (
-                      <div className="mt-1 text-xs text-neutral-500">
-                        {post.publishAt.toLocaleDateString()}
-                      </div>
-                    )}
-                  </a>
-                </CarouselItem>
-              ))}
-            </Carousel>
-          </div>
-        )}
       </section>
 
       <section className="mx-auto max-w-6xl px-4 py-12">

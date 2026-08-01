@@ -1,7 +1,10 @@
 import type { Metadata } from "next";
 import { prisma } from "@/lib/db";
-import { PageHeader, EmptyState } from "@/components/public/page-header";
+import { getSiteSetting } from "@/lib/settings";
+import { EmptyState } from "@/components/public/page-header";
 import { ExpandableCard } from "@/components/public/expandable-card";
+import { HeroVideo } from "@/components/public/hero-video";
+import { SiteNav } from "@/components/public/site-nav";
 import { SITE_URL } from "@/lib/site";
 
 const TITLE = "Smart Farm";
@@ -16,17 +19,32 @@ export const metadata: Metadata = {
 };
 
 export default async function SmartFarmPage() {
-  const sections = await prisma.smartFarmSection.findMany({
-    where: { isActive: true },
-    orderBy: { order: "asc" },
-  });
+  const [sections, hero] = await Promise.all([
+    prisma.smartFarmSection.findMany({
+      where: { isActive: true },
+      orderBy: { order: "asc" },
+    }),
+    getSiteSetting("smartfarm.hero"),
+  ]);
 
   return (
     <div>
-      <PageHeader
-        title="Smart Farm"
-        subtitle="Demonstration Farm, Greenhouse, Dairy Unit, Poultry, and modern farming techniques."
-      />
+      <section className="relative overflow-hidden bg-[var(--brand-primary-dark)] text-center text-white">
+        <HeroVideo videoUrl={hero.videoUrl} posterImage={hero.posterImage} />
+        <div className="absolute inset-0 bg-black/40" />
+        <div className="relative">
+          <SiteNav variant="overlay" />
+          <div className="px-4 py-20">
+            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[var(--brand-primary)]">
+              Avepo Agrovets Limited
+            </p>
+            <h1 className="mx-auto mt-3 max-w-2xl text-3xl font-bold sm:text-4xl">Smart Farm</h1>
+            <p className="mx-auto mt-4 max-w-xl text-white/85">
+              Demonstration Farm, Greenhouse, Dairy Unit, Poultry, and modern farming techniques.
+            </p>
+          </div>
+        </div>
+      </section>
       <div className="mx-auto max-w-6xl px-4 py-12">
         {sections.length === 0 ? (
           <EmptyState message="Smart Farm content is coming soon. Please check back." />

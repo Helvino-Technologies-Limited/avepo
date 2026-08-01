@@ -47,12 +47,15 @@ export function VideoUpload({
     <div>
       <label className="block text-sm font-medium text-neutral-700">{label}</label>
       <input type="hidden" name={name} value={url} />
-      <div className="mt-1 flex items-center gap-3">
-        {url && (
-          <a href={url} target="_blank" rel="noreferrer" className="text-sm text-green-700 underline">
-            View current video
-          </a>
-        )}
+      <input
+        type="text"
+        placeholder="Paste a YouTube link (e.g. https://youtu.be/xxxxxxxxxxx) or an MP4 URL"
+        value={url}
+        onChange={(e) => setUrl(e.target.value)}
+        className="w-full rounded-md border border-neutral-300 bg-white px-3 py-2 text-sm text-neutral-900"
+      />
+      <div className="mt-2 flex items-center gap-3">
+        <span className="text-xs text-neutral-500">...or upload a video file:</span>
         <input type="file" accept="video/mp4,video/webm,video/ogg" onChange={handleChange} className="text-sm" />
       </div>
       {isPending && (

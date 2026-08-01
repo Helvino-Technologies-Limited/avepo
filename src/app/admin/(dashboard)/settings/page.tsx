@@ -212,7 +212,7 @@ export default async function SiteSettingsPage({
             </div>
             <VideoUpload
               name="heroVideoUrl"
-              label="Hero Background Video (MP4, optional)"
+              label="Hero Background Video (YouTube link, MP4 URL, or file upload)"
               folder="hero"
               defaultValue={settings["homepage.hero"].videoUrl}
             />
@@ -221,6 +221,27 @@ export default async function SiteSettingsPage({
               label="Hero Fallback Image (shown if video doesn't load)"
               folder="hero"
               defaultValue={settings["homepage.hero"].posterImage}
+            />
+          </div>
+        </section>
+
+        <section>
+          <h2 className="text-sm font-semibold text-neutral-900">Smart Farm Page Hero</h2>
+          <p className="text-xs text-neutral-500">
+            Shown at the top of the Smart Farm page, same as the homepage hero.
+          </p>
+          <div className="mt-3 space-y-4">
+            <VideoUpload
+              name="smartFarmHeroVideoUrl"
+              label="Hero Background Video (YouTube link, MP4 URL, or file upload)"
+              folder="smart-farm-hero"
+              defaultValue={settings["smartfarm.hero"].videoUrl}
+            />
+            <ImageUpload
+              name="smartFarmHeroPosterImage"
+              label="Hero Fallback Image (shown if video doesn't load)"
+              folder="smart-farm-hero"
+              defaultValue={settings["smartfarm.hero"].posterImage}
             />
           </div>
         </section>

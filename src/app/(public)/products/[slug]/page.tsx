@@ -228,6 +228,7 @@ export default async function ProductDetailPage({
           </div>
         </div>
       </div>
+      </div>
     </div>
   );
 }

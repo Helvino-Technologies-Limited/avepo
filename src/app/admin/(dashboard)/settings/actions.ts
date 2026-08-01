@@ -25,7 +25,7 @@ export async function updateSiteSettings(formData: FormData) {
     primary: String(formData.get("primaryColor") ?? "#EA9E27"),
     secondary: String(formData.get("secondaryColor") ?? "#073C42"),
     accent: String(formData.get("accentColor") ?? "#07586B"),
-    background: String(formData.get("backgroundColor") ?? "#EA9E27"),
+    background: String(formData.get("backgroundColor") ?? "#5B8C5A"),
   });
 
   await upsert("theme.typography", {
@@ -65,6 +65,11 @@ export async function updateSiteSettings(formData: FormData) {
     ctaHref: String(formData.get("heroCtaHref") ?? ""),
     videoUrl: String(formData.get("heroVideoUrl") ?? ""),
     posterImage: String(formData.get("heroPosterImage") ?? ""),
+  });
+
+  await upsert("smartfarm.hero", {
+    videoUrl: String(formData.get("smartFarmHeroVideoUrl") ?? ""),
+    posterImage: String(formData.get("smartFarmHeroPosterImage") ?? ""),
   });
 
   await upsert("analytics.ga", {

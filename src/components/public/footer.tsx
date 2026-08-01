@@ -9,9 +9,8 @@ const QUICK_LINKS = [
   { href: "/products", label: "Products" },
   { href: "/services", label: "Services" },
   { href: "/smart-farm", label: "Smart Farm" },
-  { href: "/knowledge-centre", label: "Knowledge Centre" },
+  { href: "/events", label: "Events" },
   { href: "/success-stories", label: "Success Stories" },
-  { href: "/careers", label: "Careers" },
   { href: "/contact", label: "Contact Us" },
 ];
 
