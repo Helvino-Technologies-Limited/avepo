@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useCallback, useContext, useEffect, useId, useState } from "react";
+import { createContext, useCallback, useContext, useEffect, useId, useMemo, useRef, useState } from "react";
 
 type UploadPendingContextValue = {
   anyPending: boolean;
@@ -8,6 +8,11 @@ type UploadPendingContextValue = {
 };
 
 const UploadPendingContext = createContext<UploadPendingContextValue | null>(null);
+
+// If a pending flag ever fails to clear (e.g. a browser/extension quirk
+// swallowing an event), this hard ceiling still unblocks the Save button
+// rather than leaving an admin permanently unable to post.
+const MAX_PENDING_MS = 3 * 60 * 1000;
 
 /**
  * Wraps a form so upload widgets (ImageUpload, VideoUpload, etc.) can report
@@ -29,22 +34,31 @@ export function UploadPendingProvider({ children }: { children: React.ReactNode 
 
   const anyPending = Object.keys(pendingIds).length > 0;
 
-  return (
-    <UploadPendingContext.Provider value={{ anyPending, setPending }}>
-      {children}
-    </UploadPendingContext.Provider>
-  );
+  // Stable across renders unless the aggregate flag actually flips, so
+  // consumers' effects only re-run for their own state changes — not every
+  // time any sibling upload widget's pending state changes.
+  const value = useMemo(() => ({ anyPending, setPending }), [anyPending, setPending]);
+
+  return <UploadPendingContext.Provider value={value}>{children}</UploadPendingContext.Provider>;
 }
 
 export function useRegisterUploadPending(isPending: boolean) {
   const ctx = useContext(UploadPendingContext);
+  const ctxRef = useRef(ctx);
+  ctxRef.current = ctx;
   const id = useId();
 
   useEffect(() => {
-    if (!ctx) return;
-    ctx.setPending(id, isPending);
-    return () => ctx.setPending(id, false);
-  }, [ctx, id, isPending]);
+    ctxRef.current?.setPending(id, isPending);
+    if (!isPending) return;
+
+    const failsafe = setTimeout(() => ctxRef.current?.setPending(id, false), MAX_PENDING_MS);
+    return () => {
+      clearTimeout(failsafe);
+      ctxRef.current?.setPending(id, false);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- ctx is read via ref intentionally, see above
+  }, [id, isPending]);
 }
 
 export function useAnyUploadPending(): boolean {

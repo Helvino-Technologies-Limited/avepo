@@ -8,7 +8,7 @@ import { SITE_URL } from "@/lib/site";
 
 const TITLE = "Events";
 const DESCRIPTION =
-  "Agricultural exhibitions, field days, and farmer training sessions hosted by Avepo Enterprises Limited across Kenya.";
+  "Agricultural exhibitions, field days, and farmer training sessions hosted by Avepo Agrovets Limited across Kenya.";
 
 export const metadata: Metadata = {
   title: TITLE,

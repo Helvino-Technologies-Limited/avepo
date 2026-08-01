@@ -3,21 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useCart } from "@/lib/cart-context";
-
-const NAV_ITEMS = [
-  { href: "/", label: "Home" },
-  { href: "/about", label: "About" },
-  { href: "/products", label: "Products" },
-  { href: "/services", label: "Services" },
-  { href: "/smart-farm", label: "Smart Farm" },
-  { href: "/knowledge-centre", label: "Knowledge Centre" },
-  { href: "/news", label: "News" },
-  { href: "/events", label: "Events" },
-  { href: "/gallery", label: "Gallery" },
-  { href: "/success-stories", label: "Success Stories" },
-  { href: "/careers", label: "Careers" },
-  { href: "/contact", label: "Contact" },
-];
+import { NAV_ITEMS } from "@/lib/nav-items";
 
 export function MobileNav() {
   const [isOpen, setIsOpen] = useState(false);

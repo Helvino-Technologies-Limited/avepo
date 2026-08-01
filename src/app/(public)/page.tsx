@@ -60,7 +60,7 @@ export default async function HomePage() {
         <div className="absolute inset-0 bg-black/40" />
         <div className="relative">
           <p className="animate-fade-in-up text-xs font-semibold uppercase tracking-[0.2em] text-[var(--brand-primary)]">
-            Avepo Enterprises Limited
+            Avepo Agrovets Limited
           </p>
           <h1 className="mx-auto mt-3 max-w-2xl animate-fade-in-up text-3xl font-bold sm:text-4xl">
             {hero.headline}

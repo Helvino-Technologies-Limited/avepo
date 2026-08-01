@@ -29,7 +29,7 @@ export async function OrganizationSchema() {
   const schema = {
     "@context": "https://schema.org",
     "@type": "Organization",
-    name: "Avepo Enterprises Limited",
+    name: "Avepo Agrovets Limited",
     alternateName: "Avepo",
     slogan: "Our Farms, Our Future",
     url: SITE_URL,

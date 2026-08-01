@@ -27,11 +27,11 @@ export function ArticleSchema({ post, description }: ArticleSchemaProps) {
     dateModified: post.updatedAt.toISOString(),
     author: {
       "@type": "Organization",
-      name: post.author?.name || "Avepo Enterprises Limited",
+      name: post.author?.name || "Avepo Agrovets Limited",
     },
     publisher: {
       "@type": "Organization",
-      name: "Avepo Enterprises Limited",
+      name: "Avepo Agrovets Limited",
       logo: { "@type": "ImageObject", url: `${SITE_URL}/avepo-logo.jpg` },
     },
   };

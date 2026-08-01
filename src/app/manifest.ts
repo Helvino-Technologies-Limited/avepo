@@ -6,10 +6,10 @@ export default async function manifest(): Promise<MetadataRoute.Manifest> {
   const theme = await getSiteSetting("theme.colors");
 
   return {
-    name: "Avepo Enterprises Limited",
+    name: "Avepo Agrovets Limited",
     short_name: "Avepo",
     description:
-      "Avepo Enterprises Limited — Our Farms, Our Future. Agro-inputs, animal health, farm consultancy, and Smart Farm expertise for farmers across Kenya.",
+      "Avepo Agrovets Limited — Our Farms, Our Future. Agro-inputs, animal health, farm consultancy, and Smart Farm expertise for farmers across Kenya.",
     start_url: "/",
     display: "standalone",
     background_color: "#ffffff",

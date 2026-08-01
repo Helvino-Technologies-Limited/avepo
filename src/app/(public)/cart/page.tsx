@@ -6,7 +6,7 @@ import { SITE_URL } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Order Cart",
-  description: "Review your selected products and submit an order request to Avepo Enterprises Limited.",
+  description: "Review your selected products and submit an order request to Avepo Agrovets Limited.",
   alternates: { canonical: `${SITE_URL}/cart` },
   robots: { index: false, follow: true },
 };

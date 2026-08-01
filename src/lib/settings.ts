@@ -51,7 +51,7 @@ const DEFAULTS = {
     telegram: "",
   } as SocialLinks,
   "homepage.hero": {
-    headline: "Welcome to Avepo Enterprises Limited",
+    headline: "Welcome to Avepo Agrovets Limited",
     subheadline:
       "Our Farms, Our Future — agro-inputs, animal health, and Smart Farm expertise for farmers across Kenya.",
     ctaLabel: "Explore Products",

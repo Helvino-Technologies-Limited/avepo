@@ -16,13 +16,13 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-const SITE_TITLE = "Avepo Enterprises Limited | Agro-Inputs, Animal Health & Smart Farm Solutions in Kenya";
+const SITE_TITLE = "Avepo Agrovets Limited | Agro-Inputs, Animal Health & Smart Farm Solutions in Kenya";
 const SITE_DESCRIPTION =
-  "Avepo Enterprises Limited — Our Farms, Our Future. Trusted agro-inputs, animal health products, farm consultancy, and Smart Farm technology, serving farmers across Kenya for over 15 years.";
+  "Avepo Agrovets Limited — Our Farms, Our Future. Trusted agro-inputs, animal health products, farm consultancy, and Smart Farm technology, serving farmers across Kenya for over 15 years.";
 const SITE_KEYWORDS = [
   "Avepo",
-  "Avepo Enterprises",
-  "Avepo Enterprises Limited",
+  "Avepo Agrovets",
+  "Avepo Agrovets Limited",
   "agrovet Kenya",
   "agro-inputs Kenya",
   "animal health products Kenya",
@@ -39,7 +39,7 @@ export async function generateMetadata(): Promise<Metadata> {
 
   return {
     metadataBase: new URL(SITE_URL),
-    title: { default: SITE_TITLE, template: "%s | Avepo Enterprises" },
+    title: { default: SITE_TITLE, template: "%s | Avepo Agrovets" },
     description: SITE_DESCRIPTION,
     keywords: SITE_KEYWORDS,
     alternates: { canonical: SITE_URL },
@@ -58,7 +58,7 @@ export async function generateMetadata(): Promise<Metadata> {
       title: SITE_TITLE,
       description: SITE_DESCRIPTION,
       url: SITE_URL,
-      siteName: "Avepo Enterprises Limited",
+      siteName: "Avepo Agrovets Limited",
       images: ogImages,
       locale: "en_KE",
       type: "website",

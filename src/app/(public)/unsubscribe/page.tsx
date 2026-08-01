@@ -4,7 +4,7 @@ import { unsubscribe } from "./actions";
 
 export const metadata: Metadata = {
   title: "Unsubscribed",
-  description: "Manage your Avepo Enterprises Limited email subscription preferences.",
+  description: "Manage your Avepo Agrovets Limited email subscription preferences.",
   robots: { index: false, follow: true },
 };
 

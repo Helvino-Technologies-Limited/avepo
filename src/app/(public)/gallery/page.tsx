@@ -7,7 +7,7 @@ import { SITE_URL } from "@/lib/site";
 
 const TITLE = "Gallery";
 const DESCRIPTION =
-  "Browse photos and videos from Avepo Enterprises Limited events, products, Smart Farm demonstrations, branches, and the farmers we serve.";
+  "Browse photos and videos from Avepo Agrovets Limited events, products, Smart Farm demonstrations, branches, and the farmers we serve.";
 
 export const metadata: Metadata = {
   title: TITLE,

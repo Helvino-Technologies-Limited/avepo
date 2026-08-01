@@ -8,7 +8,7 @@ import { SITE_URL } from "@/lib/site";
 
 const TITLE = "Products";
 const DESCRIPTION =
-  "Browse our full range of fertilizers, seeds, herbicides, farm tools, veterinary products, and animal feeds — all from Avepo Enterprises Limited.";
+  "Browse our full range of fertilizers, seeds, herbicides, farm tools, veterinary products, and animal feeds — all from Avepo Agrovets Limited.";
 
 export const metadata: Metadata = {
   title: TITLE,

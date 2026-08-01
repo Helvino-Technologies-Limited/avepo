@@ -6,7 +6,7 @@ import { SITE_URL } from "@/lib/site";
 
 const TITLE = "About Us";
 const DESCRIPTION =
-  "About Avepo Enterprises Limited — Our Farms, Our Future. Serving farmers across Siaya County, Kenya with agro-inputs, animal health, and Smart Farm expertise for over 15 years.";
+  "About Avepo Agrovets Limited — Our Farms, Our Future. Serving farmers across Siaya County, Kenya with agro-inputs, animal health, and Smart Farm expertise for over 15 years.";
 
 export const metadata: Metadata = {
   title: TITLE,
@@ -24,7 +24,7 @@ export default async function AboutPage() {
   return (
     <div>
       <PageHeader
-        title="About Avepo Enterprises"
+        title="About Avepo Agrovets"
         subtitle="Serving farmers across Siaya County with agro-inputs, animal health, and Smart Farm expertise."
       />
       <div className="mx-auto max-w-6xl px-4 py-12">

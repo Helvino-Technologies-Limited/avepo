@@ -5,6 +5,7 @@ import { AddToCartButton } from "@/components/public/add-to-cart-button";
 import { ReviewForm } from "@/components/public/review-form";
 import { ProductSchema } from "@/components/public/product-schema";
 import { BreadcrumbSchema } from "@/components/public/breadcrumb-schema";
+import { SiteNav } from "@/components/public/site-nav";
 import { SITE_URL } from "@/lib/site";
 
 export async function generateMetadata({
@@ -73,7 +74,9 @@ export default async function ProductDetailPage({
     reviews.length > 0 ? reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length : null;
 
   return (
-    <div className="mx-auto max-w-6xl px-4 py-12">
+    <div>
+      <SiteNav variant="bar" />
+      <div className="mx-auto max-w-6xl px-4 py-12">
       <ProductSchema
         product={{
           slug: product.slug,

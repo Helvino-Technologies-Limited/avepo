@@ -42,7 +42,7 @@ export async function Footer() {
       <div className="mx-auto max-w-6xl px-4 py-10">
         <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-5">
           <div>
-            <div className="text-lg font-bold text-white">Avepo Enterprises Limited</div>
+            <div className="text-lg font-bold text-white">Avepo Agrovets Limited</div>
             <p className="mt-1 text-sm italic text-[var(--brand-primary)]">Our Farms, Our Future</p>
             <p className="mt-2 text-sm">
               Agro-inputs, animal health, farm consultancy, and Smart Farm expertise for farmers
@@ -121,7 +121,7 @@ export async function Footer() {
         </div>
 
         <div className="mt-8 flex flex-col gap-1 border-t border-neutral-800 pt-4 text-xs text-neutral-500 sm:flex-row sm:items-center sm:justify-between">
-          <span>© {new Date().getFullYear()} Avepo Enterprises Limited. All rights reserved.</span>
+          <span>© {new Date().getFullYear()} Avepo Agrovets Limited. All rights reserved.</span>
           <span>
             Website by{" "}
             <a href="https://helvino.org" target="_blank" rel="noreferrer" className="hover:text-neutral-300">

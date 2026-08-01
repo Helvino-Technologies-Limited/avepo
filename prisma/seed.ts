@@ -63,7 +63,7 @@ const DEFAULT_SETTINGS: { key: string; value: unknown }[] = [
   {
     key: "homepage.hero",
     value: {
-      headline: "Welcome to Avepo Enterprises Limited",
+      headline: "Welcome to Avepo Agrovets Limited",
       subheadline:
         "Our Farms, Our Future — agro-inputs, animal health, and Smart Farm expertise for farmers across Kenya.",
       ctaLabel: "Explore Products",

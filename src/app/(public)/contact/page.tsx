@@ -9,7 +9,7 @@ import { SITE_URL } from "@/lib/site";
 
 const TITLE = "Contact Us";
 const DESCRIPTION =
-  "Get in touch with Avepo Enterprises Limited — reach our head office or any branch across Siaya County, Kenya.";
+  "Get in touch with Avepo Agrovets Limited — reach our head office or any branch across Siaya County, Kenya.";
 
 export const metadata: Metadata = {
   title: TITLE,

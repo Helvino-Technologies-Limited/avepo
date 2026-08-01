@@ -6,7 +6,7 @@ import { SITE_URL } from "@/lib/site";
 
 const TITLE = "Smart Farm";
 const DESCRIPTION =
-  "Explore Avepo Enterprises Limited's Demonstration Farm, Greenhouse, Dairy Unit, Poultry, and modern Smart Farm techniques in action.";
+  "Explore Avepo Agrovets Limited's Demonstration Farm, Greenhouse, Dairy Unit, Poultry, and modern Smart Farm techniques in action.";
 
 export const metadata: Metadata = {
   title: TITLE,

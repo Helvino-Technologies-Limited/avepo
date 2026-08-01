@@ -6,7 +6,7 @@ import { SITE_URL } from "@/lib/site";
 
 const TITLE = "Success Stories";
 const DESCRIPTION =
-  "Real before-and-after results from farmers who've worked with Avepo Enterprises Limited across Siaya County, Kenya.";
+  "Real before-and-after results from farmers who've worked with Avepo Agrovets Limited across Siaya County, Kenya.";
 
 export const metadata: Metadata = {
   title: TITLE,

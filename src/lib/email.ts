@@ -2,7 +2,7 @@ import { Resend } from "resend";
 import { prisma } from "@/lib/db";
 import { SITE_URL } from "@/lib/site";
 
-const FROM_ADDRESS = process.env.EMAIL_FROM || "Avepo Enterprises <onboarding@resend.dev>";
+const FROM_ADDRESS = process.env.EMAIL_FROM || "Avepo Agrovets <onboarding@resend.dev>";
 
 function getClient(): Resend | null {
   const apiKey = process.env.RESEND_API_KEY;
@@ -16,7 +16,7 @@ function wrapHtml(title: string, bodyHtml: string, unsubscribeUrl: string): stri
       <h2 style="color: #3f6b47;">${title}</h2>
       ${bodyHtml}
       <p style="margin-top: 32px; font-size: 12px; color: #888; border-top: 1px solid #eee; padding-top: 12px;">
-        You're receiving this because you subscribed to Avepo Enterprises updates.
+        You're receiving this because you subscribed to Avepo Agrovets updates.
         <a href="${unsubscribeUrl}" style="color: #888;">Unsubscribe</a>
       </p>
     </div>

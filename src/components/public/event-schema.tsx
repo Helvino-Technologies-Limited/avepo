@@ -27,12 +27,12 @@ export function EventSchema({ event }: EventSchemaProps) {
     ...(event.coverImage ? { image: [event.coverImage] } : {}),
     location: {
       "@type": "Place",
-      name: event.venue || "Avepo Enterprises Limited",
+      name: event.venue || "Avepo Agrovets Limited",
       address: { "@type": "PostalAddress", addressRegion: "Siaya County", addressCountry: "KE" },
     },
     organizer: {
       "@type": "Organization",
-      name: event.organizer || "Avepo Enterprises Limited",
+      name: event.organizer || "Avepo Agrovets Limited",
       url: SITE_URL,
     },
   };

@@ -22,7 +22,7 @@ export async function generateMetadata({
   if (!album) return {};
 
   const url = `${SITE_URL}/gallery/${album.id}`;
-  const description = `${album.type.replaceAll("_", " ")} gallery from Avepo Enterprises Limited.`;
+  const description = `${album.type.replaceAll("_", " ")} gallery from Avepo Agrovets Limited.`;
   const image = album.coverImage || album.media[0]?.url;
   const images = image ? [image] : undefined;
 

@@ -6,7 +6,7 @@ import { SITE_URL } from "@/lib/site";
 
 const TITLE = "Services";
 const DESCRIPTION =
-  "Farm consultancy, soil testing, animal health, artificial insemination, training, and more from Avepo Enterprises Limited.";
+  "Farm consultancy, soil testing, animal health, artificial insemination, training, and more from Avepo Agrovets Limited.";
 
 export const metadata: Metadata = {
   title: TITLE,
