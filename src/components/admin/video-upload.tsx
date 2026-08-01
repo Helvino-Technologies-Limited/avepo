@@ -17,6 +17,7 @@ export function VideoUpload({
 }) {
   const [url, setUrl] = useState(defaultValue ?? "");
   const [error, setError] = useState<string | null>(null);
+  const [progress, setProgress] = useState<number | null>(null);
   const [isPending, startTransition] = useTransition();
   useRegisterUploadPending(isPending);
 
@@ -25,9 +26,15 @@ export function VideoUpload({
     if (!file) return;
 
     setError(null);
+    setProgress(0);
 
     startTransition(async () => {
-      const result = await uploadToBlob(file, { folder, kind: "video" });
+      const result = await uploadToBlob(file, {
+        folder,
+        kind: "video",
+        onProgress: setProgress,
+      });
+      setProgress(null);
       if (result.error) {
         setError(result.error);
         return;
@@ -48,7 +55,12 @@ export function VideoUpload({
         )}
         <input type="file" accept="video/mp4,video/webm,video/ogg" onChange={handleChange} className="text-sm" />
       </div>
-      {isPending && <p className="text-xs text-neutral-500">Uploading (this may take a moment)...</p>}
+      {isPending && (
+        <p className="text-xs text-neutral-500">
+          Uploading{progress != null ? ` ${Math.round(progress)}%` : ""} (large videos can take a
+          few minutes)...
+        </p>
+      )}
       {error && <p className="text-xs text-red-600">{error}</p>}
       {url && (
         <button

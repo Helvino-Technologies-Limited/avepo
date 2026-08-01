@@ -17,6 +17,7 @@ export function ImageUpload({
 }) {
   const [url, setUrl] = useState(defaultValue ?? "");
   const [error, setError] = useState<string | null>(null);
+  const [progress, setProgress] = useState<number | null>(null);
   const [isPending, startTransition] = useTransition();
   const inputRef = useRef<HTMLInputElement>(null);
   useRegisterUploadPending(isPending);
@@ -26,9 +27,15 @@ export function ImageUpload({
     if (!file) return;
 
     setError(null);
+    setProgress(0);
 
     startTransition(async () => {
-      const result = await uploadToBlob(file, { folder, kind: "image" });
+      const result = await uploadToBlob(file, {
+        folder,
+        kind: "image",
+        onProgress: setProgress,
+      });
+      setProgress(null);
       if (result.error) {
         setError(result.error);
         return;
@@ -59,7 +66,11 @@ export function ImageUpload({
             onChange={handleChange}
             className="text-sm"
           />
-          {isPending && <p className="text-xs text-neutral-500">Uploading...</p>}
+          {isPending && (
+            <p className="text-xs text-neutral-500">
+              Uploading{progress != null ? `... ${Math.round(progress)}%` : "..."}
+            </p>
+          )}
           {error && <p className="text-xs text-red-600">{error}</p>}
           {url && (
             <button

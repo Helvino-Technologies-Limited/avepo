@@ -10,6 +10,15 @@ function extFromName(name: string) {
   return dot >= 0 ? name.slice(dot) : "";
 }
 
+// A silently-slow or stalled connection previously left the UI stuck showing
+// "Uploading..." forever with no way out — bound every upload with a timeout
+// so it always resolves to a clear error instead of hanging indefinitely.
+const TIMEOUT_MS: Record<"image" | "video" | "file", number> = {
+  image: 2 * 60 * 1000,
+  file: 2 * 60 * 1000,
+  video: 6 * 60 * 1000,
+};
+
 /**
  * Uploads directly from the browser to Vercel Blob storage via a short-lived
  * token from /api/blob-upload, instead of routing the file body through a
@@ -17,7 +26,12 @@ function extFromName(name: string) {
  */
 export async function uploadToBlob(
   file: File,
-  options: { folder: string; kind: "image" | "video" | "file"; isPublic?: boolean }
+  options: {
+    folder: string;
+    kind: "image" | "video" | "file";
+    isPublic?: boolean;
+    onProgress?: (percentage: number) => void;
+  }
 ): Promise<UploadResult> {
   const maxBytes = maxBytesFor(options.kind, options.isPublic ?? false);
   if (file.size > maxBytes) {
@@ -31,9 +45,20 @@ export async function uploadToBlob(
       access: "public",
       handleUploadUrl: "/api/blob-upload",
       clientPayload: JSON.stringify({ kind: options.kind, isPublic: options.isPublic ?? false }),
+      // Splits large files into parts uploaded in parallel with automatic
+      // retries per part — much more reliable than one giant request for
+      // videos in particular, and doesn't hurt small files.
+      multipart: true,
+      abortSignal: AbortSignal.timeout(TIMEOUT_MS[options.kind]),
+      onUploadProgress: options.onProgress
+        ? ({ percentage }) => options.onProgress!(percentage)
+        : undefined,
     });
     return { url: blob.url };
   } catch (error) {
+    if (error instanceof Error && error.name === "TimeoutError") {
+      return { error: "Upload timed out. Check your connection and try again." };
+    }
     return { error: error instanceof Error ? error.message : "Upload failed." };
   }
 }

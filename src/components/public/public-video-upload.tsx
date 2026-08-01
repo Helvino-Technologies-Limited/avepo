@@ -13,6 +13,7 @@ export function PublicVideoUpload({
 }) {
   const [url, setUrl] = useState("");
   const [error, setError] = useState<string | null>(null);
+  const [progress, setProgress] = useState<number | null>(null);
   const [isPending, startTransition] = useTransition();
   useRegisterUploadPending(isPending);
 
@@ -21,9 +22,16 @@ export function PublicVideoUpload({
     if (!file) return;
 
     setError(null);
+    setProgress(0);
 
     startTransition(async () => {
-      const result = await uploadToBlob(file, { folder: "submissions/videos", kind: "video", isPublic: true });
+      const result = await uploadToBlob(file, {
+        folder: "submissions/videos",
+        kind: "video",
+        isPublic: true,
+        onProgress: setProgress,
+      });
+      setProgress(null);
       if (result.error) {
         setError(result.error);
         return;
@@ -42,7 +50,12 @@ export function PublicVideoUpload({
         onChange={handleChange}
         className="mt-1 text-sm"
       />
-      {isPending && <p className="text-xs text-neutral-500">Uploading (this may take a moment)...</p>}
+      {isPending && (
+        <p className="text-xs text-neutral-500">
+          Uploading{progress != null ? ` ${Math.round(progress)}%` : ""} (large videos can take a
+          few minutes)...
+        </p>
+      )}
       {error && <p className="text-xs text-red-600">{error}</p>}
       {url && <p className="mt-1 text-xs text-[var(--brand-primary-dark)]">Video uploaded ✓</p>}
     </div>

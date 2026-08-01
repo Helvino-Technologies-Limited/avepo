@@ -13,6 +13,7 @@ export function PublicImageUpload({
 }) {
   const [url, setUrl] = useState("");
   const [error, setError] = useState<string | null>(null);
+  const [progress, setProgress] = useState<number | null>(null);
   const [isPending, startTransition] = useTransition();
   useRegisterUploadPending(isPending);
 
@@ -21,9 +22,16 @@ export function PublicImageUpload({
     if (!file) return;
 
     setError(null);
+    setProgress(0);
 
     startTransition(async () => {
-      const result = await uploadToBlob(file, { folder: "submissions/images", kind: "image", isPublic: true });
+      const result = await uploadToBlob(file, {
+        folder: "submissions/images",
+        kind: "image",
+        isPublic: true,
+        onProgress: setProgress,
+      });
+      setProgress(null);
       if (result.error) {
         setError(result.error);
         return;
@@ -43,7 +51,11 @@ export function PublicImageUpload({
         )}
         <input type="file" accept="image/*,.jfif" onChange={handleChange} className="text-sm" />
       </div>
-      {isPending && <p className="text-xs text-neutral-500">Uploading...</p>}
+      {isPending && (
+        <p className="text-xs text-neutral-500">
+          Uploading{progress != null ? `... ${Math.round(progress)}%` : "..."}
+        </p>
+      )}
       {error && <p className="text-xs text-red-600">{error}</p>}
     </div>
   );

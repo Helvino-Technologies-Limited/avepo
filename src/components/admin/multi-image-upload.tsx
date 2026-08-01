@@ -17,6 +17,7 @@ export function MultiImageUpload({
 }) {
   const [urls, setUrls] = useState<string[]>(defaultValue ?? []);
   const [error, setError] = useState<string | null>(null);
+  const [progress, setProgress] = useState<number | null>(null);
   const [isPending, startTransition] = useTransition();
   useRegisterUploadPending(isPending);
 
@@ -25,11 +26,23 @@ export function MultiImageUpload({
     if (files.length === 0) return;
 
     setError(null);
+    setProgress(0);
+    const fileProgress = new Array(files.length).fill(0);
 
     startTransition(async () => {
       const results = await Promise.all(
-        files.map((file) => uploadToBlob(file, { folder, kind: "image" }))
+        files.map((file, i) =>
+          uploadToBlob(file, {
+            folder,
+            kind: "image",
+            onProgress: (pct) => {
+              fileProgress[i] = pct;
+              setProgress(fileProgress.reduce((sum, p) => sum + p, 0) / fileProgress.length);
+            },
+          })
+        )
       );
+      setProgress(null);
 
       const errors = results.filter((r) => r.error).map((r) => r.error!);
       if (errors.length > 0) setError(errors[0]);
@@ -75,7 +88,11 @@ export function MultiImageUpload({
         onChange={handleChange}
         className="mt-2 text-sm"
       />
-      {isPending && <p className="text-xs text-neutral-500">Uploading...</p>}
+      {isPending && (
+        <p className="text-xs text-neutral-500">
+          Uploading{progress != null ? `... ${Math.round(progress)}%` : "..."}
+        </p>
+      )}
       {error && <p className="text-xs text-red-600">{error}</p>}
     </div>
   );

@@ -17,6 +17,7 @@ export function FileUpload({
 }) {
   const [url, setUrl] = useState(defaultValue ?? "");
   const [error, setError] = useState<string | null>(null);
+  const [progress, setProgress] = useState<number | null>(null);
   const [isPending, startTransition] = useTransition();
   useRegisterUploadPending(isPending);
 
@@ -25,9 +26,11 @@ export function FileUpload({
     if (!file) return;
 
     setError(null);
+    setProgress(0);
 
     startTransition(async () => {
-      const result = await uploadToBlob(file, { folder, kind: "file" });
+      const result = await uploadToBlob(file, { folder, kind: "file", onProgress: setProgress });
+      setProgress(null);
       if (result.error) {
         setError(result.error);
         return;
@@ -48,7 +51,11 @@ export function FileUpload({
         )}
         <input type="file" accept="application/pdf" onChange={handleChange} className="text-sm" />
       </div>
-      {isPending && <p className="text-xs text-neutral-500">Uploading...</p>}
+      {isPending && (
+        <p className="text-xs text-neutral-500">
+          Uploading{progress != null ? `... ${Math.round(progress)}%` : "..."}
+        </p>
+      )}
       {error && <p className="text-xs text-red-600">{error}</p>}
     </div>
   );
