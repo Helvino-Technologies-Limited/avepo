@@ -98,34 +98,38 @@ export default async function HomePage() {
             New products are on their way — check back soon, or browse our full range.
           </p>
         ) : (
-          <div className="mt-4 grid grid-cols-2 gap-4 sm:grid-cols-4">
-            {featuredProducts.map((product) => (
-              <div key={product.id} className="rounded-lg border border-neutral-200 p-3">
-                <a href={`/products/${product.slug}`}>
-                  {product.images[0] ? (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img
-                      src={product.images[0]}
-                      alt={product.name}
-                      className="h-28 w-full rounded object-cover"
-                    />
-                  ) : (
-                    <div className="flex h-28 w-full items-center justify-center rounded bg-neutral-100 text-xs text-neutral-400">
-                      No image
+          <div className="mt-4">
+            <Carousel>
+              {featuredProducts.map((product) => (
+                <CarouselItem key={product.id}>
+                  <div className="h-full rounded-lg border border-neutral-200 bg-white p-3">
+                    <a href={`/products/${product.slug}`}>
+                      {product.images[0] ? (
+                        // eslint-disable-next-line @next/next/no-img-element
+                        <img
+                          src={product.images[0]}
+                          alt={product.name}
+                          className="h-28 w-full rounded object-cover"
+                        />
+                      ) : (
+                        <div className="flex h-28 w-full items-center justify-center rounded bg-neutral-100 text-xs text-neutral-400">
+                          No image
+                        </div>
+                      )}
+                      <div className="mt-2 text-sm font-medium text-neutral-900">{product.name}</div>
+                    </a>
+                    <div className="mt-2">
+                      <AddToCartButton
+                        productId={product.id}
+                        name={product.name}
+                        price={product.price ? Number(product.price) : null}
+                        image={product.images[0] ?? null}
+                      />
                     </div>
-                  )}
-                  <div className="mt-2 text-sm font-medium text-neutral-900">{product.name}</div>
-                </a>
-                <div className="mt-2">
-                  <AddToCartButton
-                    productId={product.id}
-                    name={product.name}
-                    price={product.price ? Number(product.price) : null}
-                    image={product.images[0] ?? null}
-                  />
-                </div>
-              </div>
-            ))}
+                  </div>
+                </CarouselItem>
+              ))}
+            </Carousel>
           </div>
         )}
       </section>

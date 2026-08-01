@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useCallback, useContext, useEffect, useId, useMemo, useRef, useState } from "react";
+import { createContext, useCallback, useContext, useEffect, useId, useMemo, useState } from "react";
 
 type UploadPendingContextValue = {
   anyPending: boolean;
@@ -44,21 +44,21 @@ export function UploadPendingProvider({ children }: { children: React.ReactNode 
 
 export function useRegisterUploadPending(isPending: boolean) {
   const ctx = useContext(UploadPendingContext);
-  const ctxRef = useRef(ctx);
-  ctxRef.current = ctx;
   const id = useId();
 
   useEffect(() => {
-    ctxRef.current?.setPending(id, isPending);
+    ctx?.setPending(id, isPending);
     if (!isPending) return;
 
-    const failsafe = setTimeout(() => ctxRef.current?.setPending(id, false), MAX_PENDING_MS);
+    const failsafe = setTimeout(() => ctx?.setPending(id, false), MAX_PENDING_MS);
     return () => {
       clearTimeout(failsafe);
-      ctxRef.current?.setPending(id, false);
+      ctx?.setPending(id, false);
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps -- ctx is read via ref intentionally, see above
-  }, [id, isPending]);
+    // ctx is stable unless the aggregate anyPending flag flips (see the
+    // provider's useMemo above), so depending on it here is safe and
+    // doesn't cause cross-widget churn.
+  }, [ctx, id, isPending]);
 }
 
 export function useAnyUploadPending(): boolean {
