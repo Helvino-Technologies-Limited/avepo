@@ -17,9 +17,17 @@ export const metadata: Metadata = {
   openGraph: { title: TITLE, description: DESCRIPTION, url: `${SITE_URL}/products` },
 };
 
-export default async function ProductsPage() {
+export default async function ProductsPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ q?: string }>;
+}) {
+  const { q } = await searchParams;
   const products = await prisma.product.findMany({
-    where: { isActive: true },
+    where: {
+      isActive: true,
+      ...(q ? { name: { contains: q, mode: "insensitive" } } : {}),
+    },
     include: { category: true },
     orderBy: { createdAt: "desc" },
   });
@@ -37,8 +45,29 @@ export default async function ProductsPage() {
         subtitle="Fertilizers, seeds, herbicides, farm tools, veterinary products, and animal feeds."
       />
       <div className="mx-auto max-w-6xl px-4 py-12">
+        <form action="/products" method="GET" className="mb-6 flex max-w-md gap-2">
+          <input
+            type="search"
+            name="q"
+            defaultValue={q ?? ""}
+            placeholder="Search products..."
+            className="w-full rounded-md border border-neutral-300 bg-white px-3 py-2 text-sm text-neutral-900"
+          />
+          <button
+            type="submit"
+            className="shrink-0 rounded-md bg-[var(--brand-primary)] px-4 py-2 text-sm font-semibold text-[var(--brand-primary-dark)] hover:brightness-95"
+          >
+            Search
+          </button>
+        </form>
         {products.length === 0 ? (
-          <EmptyState message="No products published yet. Please check back soon." />
+          <EmptyState
+            message={
+              q
+                ? `No products match "${q}". Try a different search.`
+                : "No products published yet. Please check back soon."
+            }
+          />
         ) : (
           <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
             {products.map((product) => (

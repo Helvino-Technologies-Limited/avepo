@@ -14,13 +14,17 @@ import {
 export default async function ProductsPage({
   searchParams,
 }: {
-  searchParams: Promise<{ saved?: string }>;
+  searchParams: Promise<{ saved?: string; q?: string }>;
 }) {
-  const [{ saved }, products, categories] = await Promise.all([
+  const [{ saved, q }, products, categories] = await Promise.all([
     searchParams,
     prisma.product.findMany({ include: { category: true }, orderBy: { createdAt: "desc" } }),
     prisma.productCategory.findMany({ orderBy: { order: "asc" } }),
   ]);
+
+  const filteredProducts = q
+    ? products.filter((p) => p.name.toLowerCase().includes(q.toLowerCase()))
+    : products;
 
   return (
     <div>
@@ -34,6 +38,11 @@ export default async function ProductsPage({
           Add Product
         </Link>
       </div>
+
+      <form action="/admin/products" method="GET" className="mt-4 flex max-w-sm gap-2">
+        <TextInput type="search" name="q" defaultValue={q ?? ""} placeholder="Search products..." />
+        <SubmitButton>Search</SubmitButton>
+      </form>
 
       <div className="mt-6 rounded-lg border border-neutral-200 bg-white p-4">
         <h2 className="text-sm font-semibold text-neutral-900">Categories</h2>
@@ -58,8 +67,8 @@ export default async function ProductsPage({
 
       <div className="mt-6">
         <DataTable
-          rows={products}
-          emptyMessage="No products yet. Add your first product above."
+          rows={filteredProducts}
+          emptyMessage={q ? `No products match "${q}".` : "No products yet. Add your first product above."}
           editHref={(p) => `/admin/products/${p.id}`}
           columns={[
             { header: "Name", render: (p) => p.name },
