@@ -45,6 +45,13 @@ export async function uploadToBlob(
       access: "public",
       handleUploadUrl: "/api/blob-upload",
       clientPayload: JSON.stringify({ kind: options.kind, isPublic: options.isPublic ?? false }),
+      // Without this, Vercel Blob infers contentType from the pathname's
+      // extension — its lookup table doesn't know oddball extensions like
+      // .jfif, so it silently fell back to "application/octet-stream" and
+      // then rejected the upload against our allowedContentTypes. Trusting
+      // the browser's own File.type (accurate for the vast majority of
+      // real files) sidesteps that entirely.
+      contentType: file.type || "application/octet-stream",
       // Splits large files into parts uploaded in parallel with automatic
       // retries per part — much more reliable than one giant request for
       // videos in particular, and doesn't hurt small files.

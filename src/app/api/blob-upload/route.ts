@@ -4,11 +4,14 @@ import { requireSession, checkPublicUploadRateLimit, maxBytesFor, type UploadKin
 
 const ALLOWED_CONTENT_TYPES: Record<UploadKind, string[]> = {
   // Vercel's own MIME allowlist is a light UX check, not the security
-  // boundary (that's the auth/rate-limit checks below), so images stay
-  // permissive here rather than tripping over oddball .jfif content types.
-  image: ["image/*"],
-  video: ["video/mp4", "video/webm", "video/ogg"],
-  file: ["application/pdf"],
+  // boundary (that's the auth/rate-limit checks below). "application/
+  // octet-stream" is included everywhere as a fallback for files whose type
+  // the browser itself can't determine (some file managers, oddball
+  // extensions like .jfif) — the client already sends the real File.type
+  // when it has one, so this only kicks in for genuinely ambiguous files.
+  image: ["image/*", "application/octet-stream"],
+  video: ["video/mp4", "video/webm", "video/ogg", "application/octet-stream"],
+  file: ["application/pdf", "application/octet-stream"],
 };
 
 /**
