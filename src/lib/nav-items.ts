@@ -4,6 +4,7 @@ export const NAV_ITEMS = [
   { href: "/products", label: "Products" },
   { href: "/services", label: "Services" },
   { href: "/smart-farm", label: "Smart Farm" },
+  { href: "/farmer-tips", label: "Farmer Tips" },
   { href: "/events", label: "Events" },
   { href: "/gallery", label: "Gallery" },
   { href: "/success-stories", label: "Success Stories" },

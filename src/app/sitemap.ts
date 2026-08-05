@@ -9,6 +9,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     "/products",
     "/services",
     "/smart-farm",
+    "/farmer-tips",
     "/events",
     "/gallery",
     "/contact",
@@ -17,14 +18,16 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     lastModified: new Date(),
   }));
 
-  const [products, events] = await Promise.all([
+  const [products, events, farmerTips] = await Promise.all([
     prisma.product.findMany({ where: { isActive: true }, select: { slug: true, updatedAt: true } }),
     prisma.event.findMany({ where: { isActive: true }, select: { slug: true, updatedAt: true } }),
+    prisma.farmerTip.findMany({ where: { isActive: true }, select: { slug: true, updatedAt: true } }),
   ]);
 
   const dynamicRoutes: MetadataRoute.Sitemap = [
     ...products.map((p) => ({ url: `${SITE_URL}/products/${p.slug}`, lastModified: p.updatedAt })),
     ...events.map((e) => ({ url: `${SITE_URL}/events/${e.slug}`, lastModified: e.updatedAt })),
+    ...farmerTips.map((t) => ({ url: `${SITE_URL}/farmer-tips/${t.slug}`, lastModified: t.updatedAt })),
   ];
 
   return [...staticRoutes, ...dynamicRoutes];

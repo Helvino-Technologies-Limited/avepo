@@ -10,6 +10,8 @@ const NAV_ITEMS = [
   { href: "/admin/products", label: "Products" },
   { href: "/admin/orders", label: "Orders" },
   { href: "/admin/reviews", label: "Reviews" },
+  { href: "/admin/farmer-tips", label: "Farmer Tips" },
+  { href: "/admin/farmer-tips/comments", label: "Tip Comments" },
   { href: "/admin/services", label: "Services" },
   { href: "/admin/events", label: "Events" },
   { href: "/admin/gallery", label: "Gallery" },

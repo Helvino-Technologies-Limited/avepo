@@ -353,3 +353,39 @@ model Review {
 
   @@index([productId])
 }
+
+// ---------- Farmer Tips ----------
+// Admin-authored advice (disease control, pest control, seed choices, etc).
+// category is free text (like Event.category) so admins aren't boxed into a
+// fixed enum. Comments follow the Review pattern: isApproved gates visibility.
+
+model FarmerTip {
+  id         String       @id @default(cuid())
+  title      String
+  slug       String       @unique
+  category   String?
+  body       String
+  images     String[]
+  videoUrl   String?
+  isFeatured Boolean      @default(false)
+  isActive   Boolean      @default(true)
+  createdAt  DateTime     @default(now())
+  updatedAt  DateTime     @updatedAt
+
+  comments   TipComment[]
+
+  @@index([category])
+}
+
+model TipComment {
+  id         String    @id @default(cuid())
+  tipId      String
+  tip        FarmerTip @relation(fields: [tipId], references: [id], onDelete: Cascade)
+  authorName String
+  rating     Int?
+  comment    String
+  isApproved Boolean   @default(false)
+  createdAt  DateTime  @default(now())
+
+  @@index([tipId])
+}
