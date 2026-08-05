@@ -20,6 +20,7 @@ export type HomepageHero = {
   posterImage: string;
 };
 export type SmartFarmHero = { videoUrl: string; posterImage: string };
+export type FarmerTipsHero = { videoUrl: string; posterImage: string };
 export type BrandingLogo = { url: string; secondaryUrl: string };
 export type ThemeColors = { primary: string; secondary: string; accent: string; background: string };
 export type ThemeTypography = { fontFamily: "sans" | "serif" | "classic"; textColor: string };
@@ -61,6 +62,7 @@ const DEFAULTS = {
     posterImage: "",
   } as HomepageHero,
   "smartfarm.hero": { videoUrl: "", posterImage: "" } as SmartFarmHero,
+  "farmertips.hero": { videoUrl: "", posterImage: "" } as FarmerTipsHero,
   "branding.logo": { url: "", secondaryUrl: "" } as BrandingLogo,
   // Gold and deep navy-teal sampled directly from the Avepo logo
   // (src/app/icon.jpg); a muted farm green for the page background. Admin

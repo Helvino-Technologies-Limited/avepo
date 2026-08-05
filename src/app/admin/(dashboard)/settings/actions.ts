@@ -72,6 +72,11 @@ export async function updateSiteSettings(formData: FormData) {
     posterImage: String(formData.get("smartFarmHeroPosterImage") ?? ""),
   });
 
+  await upsert("farmertips.hero", {
+    videoUrl: String(formData.get("farmerTipsHeroVideoUrl") ?? ""),
+    posterImage: String(formData.get("farmerTipsHeroPosterImage") ?? ""),
+  });
+
   await upsert("analytics.ga", {
     gaMeasurementId: String(formData.get("gaMeasurementId") ?? ""),
   });
@@ -87,6 +92,7 @@ export async function updateSiteSettings(formData: FormData) {
   // so revalidate broadly rather than trying to enumerate every route.
   revalidatePath("/", "layout");
   revalidatePath("/about");
+  revalidatePath("/farmer-tips");
   revalidatePath("/admin/settings");
   redirect("/admin/settings?saved=1");
 }

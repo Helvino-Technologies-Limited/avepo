@@ -247,6 +247,27 @@ export default async function SiteSettingsPage({
         </section>
 
         <section>
+          <h2 className="text-sm font-semibold text-neutral-900">Farmer Tips Page Hero</h2>
+          <p className="text-xs text-neutral-500">
+            Shown at the top of the Farmer Tips page, same as the homepage hero.
+          </p>
+          <div className="mt-3 space-y-4">
+            <VideoUpload
+              name="farmerTipsHeroVideoUrl"
+              label="Hero Background Video (YouTube link, MP4 URL, or file upload)"
+              folder="farmer-tips-hero"
+              defaultValue={settings["farmertips.hero"].videoUrl}
+            />
+            <ImageUpload
+              name="farmerTipsHeroPosterImage"
+              label="Hero Fallback Image (shown if video doesn't load)"
+              folder="farmer-tips-hero"
+              defaultValue={settings["farmertips.hero"].posterImage}
+            />
+          </div>
+        </section>
+
+        <section>
           <h2 className="text-sm font-semibold text-neutral-900">About Page Content</h2>
           <div className="mt-3 space-y-4">
             <Field label="Our Vision" htmlFor="aboutVision">

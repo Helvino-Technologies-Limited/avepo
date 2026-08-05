@@ -1,8 +1,11 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { prisma } from "@/lib/db";
-import { PageHeader, EmptyState } from "@/components/public/page-header";
+import { EmptyState } from "@/components/public/page-header";
+import { HeroVideo } from "@/components/public/hero-video";
+import { SiteNav } from "@/components/public/site-nav";
 import { BreadcrumbSchema } from "@/components/public/breadcrumb-schema";
+import { getSiteSetting } from "@/lib/settings";
 import { SITE_URL } from "@/lib/site";
 
 const TITLE = "Farmer Tips";
@@ -23,7 +26,7 @@ export default async function FarmerTipsPage({
 }) {
   const { category } = await searchParams;
 
-  const [tips, categories] = await Promise.all([
+  const [tips, categories, hero] = await Promise.all([
     prisma.farmerTip.findMany({
       where: {
         isActive: true,
@@ -36,6 +39,7 @@ export default async function FarmerTipsPage({
       select: { category: true },
       distinct: ["category"],
     }),
+    getSiteSetting("farmertips.hero"),
   ]);
 
   const categoryOptions = categories.map((c) => c.category!).filter(Boolean).sort();
@@ -45,10 +49,22 @@ export default async function FarmerTipsPage({
       <BreadcrumbSchema
         items={[{ name: "Home", url: SITE_URL }, { name: "Farmer Tips", url: `${SITE_URL}/farmer-tips` }]}
       />
-      <PageHeader
-        title="Farmer Tips"
-        subtitle="Disease control, pest control, seed choices, and more — straight from our agronomists."
-      />
+      <section className="relative overflow-hidden bg-[var(--brand-primary-dark)] text-center text-white">
+        <HeroVideo videoUrl={hero.videoUrl} posterImage={hero.posterImage} />
+        <div className="absolute inset-0 bg-black/40" />
+        <div className="relative">
+          <SiteNav variant="overlay" />
+          <div className="px-4 py-20">
+            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[var(--brand-primary)]">
+              Avepo Agrovets Limited
+            </p>
+            <h1 className="mx-auto mt-3 max-w-2xl text-3xl font-bold sm:text-4xl">Farmer Tips</h1>
+            <p className="mx-auto mt-4 max-w-xl text-white/85">
+              Disease control, pest control, seed choices, and more — straight from our agronomists.
+            </p>
+          </div>
+        </div>
+      </section>
       <div className="mx-auto max-w-6xl px-4 py-12">
         {categoryOptions.length > 0 && (
           <div className="mb-6 flex flex-wrap gap-2 text-sm">
