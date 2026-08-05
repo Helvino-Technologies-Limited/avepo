@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useSyncExternalStore } from "react";
 
 const STORAGE_KEY = "avepo.cookie-consent";
 
@@ -12,23 +12,31 @@ export function getStoredConsent(): ConsentValue | null {
   return value === "accepted" || value === "declined" ? value : null;
 }
 
-export function CookieConsent() {
-  const [consent, setConsent] = useState<ConsentValue | null>("declined");
-  const [hasMounted, setHasMounted] = useState(false);
+// "storage" only fires in other tabs; "avepo-consent-changed" is dispatched
+// by choose() below so this tab's own banner reacts immediately.
+function subscribe(callback: () => void) {
+  window.addEventListener("storage", callback);
+  window.addEventListener("avepo-consent-changed", callback);
+  return () => {
+    window.removeEventListener("storage", callback);
+    window.removeEventListener("avepo-consent-changed", callback);
+  };
+}
 
-  useEffect(() => {
-    setConsent(getStoredConsent());
-    setHasMounted(true);
-  }, []);
+function getServerSnapshot(): ConsentValue | null {
+  return null;
+}
+
+export function CookieConsent() {
+  const consent = useSyncExternalStore(subscribe, getStoredConsent, getServerSnapshot);
 
   function choose(value: ConsentValue) {
     localStorage.setItem(STORAGE_KEY, value);
-    setConsent(value);
-    // Let same-tab listeners (e.g. the analytics loader) react immediately.
+    // Let same-tab listeners (e.g. the analytics loader, and this banner) react immediately.
     window.dispatchEvent(new Event("avepo-consent-changed"));
   }
 
-  if (!hasMounted || consent !== null) return null;
+  if (consent !== null) return null;
 
   return (
     <div className="fixed inset-x-0 bottom-0 z-[60] border-t border-neutral-200 bg-white px-4 py-4 shadow-[0_-4px_12px_rgba(0,0,0,0.08)] sm:px-6">

@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
+import { createContext, useContext, useSyncExternalStore, type ReactNode } from "react";
 
 export type CartItem = {
   productId: string;
@@ -21,52 +21,83 @@ type CartContextValue = {
 
 const CartContext = createContext<CartContextValue | null>(null);
 const STORAGE_KEY = "avepo.cart";
+// localStorage's own "storage" event only fires in *other* tabs, so
+// mutations dispatch this custom event to notify subscribers in this tab.
+const CHANGE_EVENT = "avepo-cart-changed";
+
+// useSyncExternalStore requires getSnapshot to return the same reference
+// when the underlying value hasn't changed, so we cache the parsed array
+// keyed on the raw string rather than re-parsing (and re-allocating) on
+// every call.
+let cachedRaw: string | null = null;
+let cachedItems: CartItem[] = [];
+
+function readItems(): CartItem[] {
+  let raw: string | null = null;
+  try {
+    raw = localStorage.getItem(STORAGE_KEY);
+  } catch {
+    // ignore inaccessible local storage
+  }
+  if (raw === cachedRaw) return cachedItems;
+  cachedRaw = raw;
+  try {
+    cachedItems = raw ? JSON.parse(raw) : [];
+  } catch {
+    cachedItems = [];
+  }
+  return cachedItems;
+}
+
+function writeItems(items: CartItem[]) {
+  cachedRaw = JSON.stringify(items);
+  cachedItems = items;
+  localStorage.setItem(STORAGE_KEY, cachedRaw);
+  window.dispatchEvent(new Event(CHANGE_EVENT));
+}
+
+function subscribe(callback: () => void) {
+  window.addEventListener("storage", callback);
+  window.addEventListener(CHANGE_EVENT, callback);
+  return () => {
+    window.removeEventListener("storage", callback);
+    window.removeEventListener(CHANGE_EVENT, callback);
+  };
+}
+
+function getServerSnapshot(): CartItem[] {
+  return [];
+}
 
 export function CartProvider({ children }: { children: ReactNode }) {
-  const [items, setItems] = useState<CartItem[]>([]);
-  const [hasLoaded, setHasLoaded] = useState(false);
-
-  useEffect(() => {
-    try {
-      const raw = localStorage.getItem(STORAGE_KEY);
-      if (raw) setItems(JSON.parse(raw));
-    } catch {
-      // ignore malformed local storage
-    }
-    setHasLoaded(true);
-  }, []);
-
-  useEffect(() => {
-    if (!hasLoaded) return;
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
-  }, [items, hasLoaded]);
+  const items = useSyncExternalStore(subscribe, readItems, getServerSnapshot);
 
   function addItem(item: Omit<CartItem, "quantity">, quantity = 1) {
-    setItems((prev) => {
-      const existing = prev.find((i) => i.productId === item.productId);
-      if (existing) {
-        return prev.map((i) =>
+    const current = readItems();
+    const existing = current.find((i) => i.productId === item.productId);
+    const next = existing
+      ? current.map((i) =>
           i.productId === item.productId ? { ...i, quantity: i.quantity + quantity } : i
-        );
-      }
-      return [...prev, { ...item, quantity }];
-    });
+        )
+      : [...current, { ...item, quantity }];
+    writeItems(next);
   }
 
   function updateQuantity(productId: string, quantity: number) {
-    setItems((prev) =>
+    const current = readItems();
+    const next =
       quantity <= 0
-        ? prev.filter((i) => i.productId !== productId)
-        : prev.map((i) => (i.productId === productId ? { ...i, quantity } : i))
-    );
+        ? current.filter((i) => i.productId !== productId)
+        : current.map((i) => (i.productId === productId ? { ...i, quantity } : i));
+    writeItems(next);
   }
 
   function removeItem(productId: string) {
-    setItems((prev) => prev.filter((i) => i.productId !== productId));
+    writeItems(readItems().filter((i) => i.productId !== productId));
   }
 
   function clear() {
-    setItems([]);
+    writeItems([]);
   }
 
   const totalCount = items.reduce((sum, i) => sum + i.quantity, 0);
